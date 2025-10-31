@@ -1,9 +1,9 @@
 # Block Analysis Report
 
-**Generated:** 10/31/2025, 8:19:51 AM
+**Generated:** 10/31/2025, 8:39:04 AM
 **Base URL:** https://about.bankofamerica.com
 **Total Pages Analyzed:** 189
-**Unique Blocks Found:** 61
+**Unique Blocks Found:** 59
 
 ---
 
@@ -17,7 +17,6 @@
 | [cta](#cta) | 263 | 123 | [/en/making-an-impact/report-center](https://about.bankofamerica.com/en/making-an-impact/report-center) (15x) |
 | [header](#header) | 192 | 150 | [/en/executive-wealth-services/farallon](https://about.bankofamerica.com/en/executive-wealth-services/farallon) (12x) |
 | [horizontal-tile](#horizontal-tile) | 192 | 96 | [/en/local/colorado](https://about.bankofamerica.com/en/local/colorado) (2x) |
-| [one-push](#one-push) | 192 | 96 | [/en/local/colorado](https://about.bankofamerica.com/en/local/colorado) (2x) |
 | [notched-image](#notched-image) | 125 | 119 | [/en/making-an-impact/red](https://about.bankofamerica.com/en/making-an-impact/red) (2x) |
 | [icon-list](#icon-list) | 97 | 97 | [/en/social-media](https://about.bankofamerica.com/en/social-media) (1x) |
 | [locator-block](#locator-block) | 93 | 93 | [/en/local/colorado](https://about.bankofamerica.com/en/local/colorado) (1x) |
@@ -32,7 +31,6 @@
 | [footnote](#footnote) | 26 | 8 | [/en/executive-wealth-services/farallon](https://about.bankofamerica.com/en/executive-wealth-services/farallon) (12x) |
 | [simple-image](#simple-image) | 18 | 3 | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) (7x) |
 | [media-kaltura](#media-kaltura) | 18 | 12 | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) (3x) |
-| [media](#media) | 18 | 12 | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) (3x) |
 | [opt-in-out-form](#opt-in-out-form) | 17 | 17 | [/en/making-an-impact/arts-and-culture](https://about.bankofamerica.com/en/making-an-impact/arts-and-culture) (1x) |
 | [arts-long-form](#arts-long-form) | 12 | 12 | [/en/making-an-impact/art-in-our-communities/vision-and-spirit](https://about.bankofamerica.com/en/making-an-impact/art-in-our-communities/vision-and-spirit) (1x) |
 | [highlight-block](#highlight-block) | 11 | 9 | [/en/making-an-impact/sports](https://about.bankofamerica.com/en/making-an-impact/sports) (2x) |
@@ -79,7 +77,56 @@
 
 ### container-layout {#container-layout}
 
-**Total uses:** 1520 | **Found on:** 185 page(s)
+**Total uses:** 1520 | **Found on:** 185 page(s) | **Standalone:** 39 (3%)
+
+**Commonly found inside:**
+- `container-layout` (140x)
+- `text-block` (4x)
+- `spotlight` (3x)
+- `notched-image` (2x)
+- `dynamic-container` (2x)
+- `tab` (2x)
+- `story-block` (2x)
+- `spacer` (1x)
+
+**Commonly contains:**
+- `text` (150x)
+- `header` (147x)
+- `container-layout` (140x)
+- `cta` (110x)
+- `image` (103x)
+- `icon-list` (97x)
+- `horizontal-tile` (96x)
+- `locator-block` (93x)
+- `social-share` (30x)
+- `story-block` (28x)
+- `text-block` (20x)
+- `opt-in-out-form` (17x)
+- `notched-image` (14x)
+- `media-kaltura` (8x)
+- `image-wrapper-container` (7x)
+- `footnote` (7x)
+- `highlight-block` (6x)
+- `horizontal-content` (4x)
+- `tile` (3x)
+- `heading-group` (3x)
+- `quote` (3x)
+- `spotlight` (2x)
+- `award` (2x)
+- `report-center` (2x)
+- `infographic` (2x)
+- `modular-tiles` (2x)
+- `event-block` (1x)
+- `article-impact-exhibit` (1x)
+- `manual-tile` (1x)
+- `carousel` (1x)
+- `linklist` (1x)
+- `accordion` (1x)
+- `arts-locator` (1x)
+- `simple-image` (1x)
+- `tab` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -271,7 +318,21 @@
 
 ### text {#text}
 
-**Total uses:** 561 | **Found on:** 166 page(s)
+**Total uses:** 561 | **Found on:** 166 page(s) | **Standalone:** 2 (0%)
+
+**Commonly found inside:**
+- `container-layout` (150x)
+- `arts-carousel` (10x)
+- `image-wrapper-container` (7x)
+- `notched-image` (3x)
+- `carousel` (1x)
+- `accordion` (1x)
+- `arts-masthead` (1x)
+- `text-block` (1x)
+- `highlight-block` (1x)
+- `header` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -446,6 +507,16 @@
 
 **Total uses:** 351 | **Found on:** 117 page(s)
 
+**Commonly found inside:**
+- `container-layout` (103x)
+- `story-block` (9x)
+- `image-wrapper-container` (7x)
+- `storyblock` (1x)
+- `carousel` (1x)
+- `spotlight` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 11x | [/en/making-an-impact/la-business-spotlight](https://about.bankofamerica.com/en/making-an-impact/la-business-spotlight) |
@@ -569,6 +640,17 @@
 ### cta {#cta}
 
 **Total uses:** 263 | **Found on:** 123 page(s)
+
+**Commonly found inside:**
+- `container-layout` (110x)
+- `story-block` (11x)
+- `header` (5x)
+- `text-block` (2x)
+- `highlight-block` (2x)
+- `notched-image` (1x)
+- `spotlight` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -699,6 +781,18 @@
 ### header {#header}
 
 **Total uses:** 192 | **Found on:** 150 page(s)
+
+**Commonly found inside:**
+- `container-layout` (147x)
+- `notched-image` (2x)
+- `text-block` (1x)
+- `arts-story-block` (1x)
+
+**Commonly contains:**
+- `cta` (5x)
+- `text` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -857,108 +951,10 @@
 
 **Total uses:** 192 | **Found on:** 96 page(s)
 
-| Count | Page URL |
-|-------|----------|
-| 2x | [/en/local/colorado](https://about.bankofamerica.com/en/local/colorado) |
-| 2x | [/en/local/utah](https://about.bankofamerica.com/en/local/utah) |
-| 2x | [/en/local/wisconsin](https://about.bankofamerica.com/en/local/wisconsin) |
-| 2x | [/en/local/neworleans-batonrouge](https://about.bankofamerica.com/en/local/neworleans-batonrouge) |
-| 2x | [/en/local/omaha](https://about.bankofamerica.com/en/local/omaha) |
-| 2x | [/en/local/minneapolis-stpaul](https://about.bankofamerica.com/en/local/minneapolis-stpaul) |
-| 2x | [/en/local/philadelphia](https://about.bankofamerica.com/en/local/philadelphia) |
-| 2x | [/en/local/pittsburgh](https://about.bankofamerica.com/en/local/pittsburgh) |
-| 2x | [/en/local/indianapolis](https://about.bankofamerica.com/en/local/indianapolis) |
-| 2x | [/en/local/atlanta](https://about.bankofamerica.com/en/local/atlanta) |
-| 2x | [/en/local/washington-dc](https://about.bankofamerica.com/en/local/washington-dc) |
-| 2x | [/en/local/sarasota-manatee](https://about.bankofamerica.com/en/local/sarasota-manatee) |
-| 2x | [/en/local/austin](https://about.bankofamerica.com/en/local/austin) |
-| 2x | [/en/local/charlotte](https://about.bankofamerica.com/en/local/charlotte) |
-| 2x | [/en/local/san-francisco](https://about.bankofamerica.com/en/local/san-francisco) |
-| 2x | [/en/local/nashville](https://about.bankofamerica.com/en/local/nashville) |
-| 2x | [/en/local/new-jersey](https://about.bankofamerica.com/en/local/new-jersey) |
-| 2x | [/en/local/spokane-boise](https://about.bankofamerica.com/en/local/spokane-boise) |
-| 2x | [/en/local/low-country](https://about.bankofamerica.com/en/local/low-country) |
-| 2x | [/en/local/oklahoma-city](https://about.bankofamerica.com/en/local/oklahoma-city) |
-| 2x | [/en/local/columbus](https://about.bankofamerica.com/en/local/columbus) |
-| 2x | [/en/local/central-new-york](https://about.bankofamerica.com/en/local/central-new-york) |
-| 2x | [/en/local/metro-new-york-city](https://about.bankofamerica.com/en/local/metro-new-york-city) |
-| 2x | [/en/local/new-mexico](https://about.bankofamerica.com/en/local/new-mexico) |
-| 2x | [/en/local/triad](https://about.bankofamerica.com/en/local/triad) |
-| 2x | [/en/local/maine](https://about.bankofamerica.com/en/local/maine) |
-| 2x | [/en/local/chicago](https://about.bankofamerica.com/en/local/chicago) |
-| 2x | [/en/local/augusta](https://about.bankofamerica.com/en/local/augusta) |
-| 2x | [/en/local/palm-beach-county](https://about.bankofamerica.com/en/local/palm-beach-county) |
-| 2x | [/en/local/tampa-bay](https://about.bankofamerica.com/en/local/tampa-bay) |
-| 2x | [/en/local/delaware](https://about.bankofamerica.com/en/local/delaware) |
-| 2x | [/en/local/silicon-valley](https://about.bankofamerica.com/en/local/silicon-valley) |
-| 2x | [/en/local/san-luis-obispo](https://about.bankofamerica.com/en/local/san-luis-obispo) |
-| 2x | [/en/local/san-diego](https://about.bankofamerica.com/en/local/san-diego) |
-| 2x | [/en/local/los-angeles](https://about.bankofamerica.com/en/local/los-angeles) |
-| 2x | [/en/local/boston](https://about.bankofamerica.com/en/local/boston) |
-| 2x | [/en/local/cincinnati](https://about.bankofamerica.com/en/local/cincinnati) |
-| 2x | [/en/local/tucson](https://about.bankofamerica.com/en/local/tucson) |
-| 2x | [/en/local/cleveland](https://about.bankofamerica.com/en/local/cleveland) |
-| 2x | [/en/local/southern-connecticut](https://about.bankofamerica.com/en/local/southern-connecticut) |
-| 2x | [/en/local/hartford](https://about.bankofamerica.com/en/local/hartford) |
-| 2x | [/en/local/orange-county](https://about.bankofamerica.com/en/local/orange-county) |
-| 2x | [/en/local/monterey-bay](https://about.bankofamerica.com/en/local/monterey-bay) |
-| 2x | [/en/local/sacramento](https://about.bankofamerica.com/en/local/sacramento) |
-| 2x | [/en/local/bakersfield](https://about.bankofamerica.com/en/local/bakersfield) |
-| 2x | [/en/local/phoenix](https://about.bankofamerica.com/en/local/phoenix) |
-| 2x | [/en/local/jacksonville](https://about.bankofamerica.com/en/local/jacksonville) |
-| 2x | [/en/local/fort-lauderdale](https://about.bankofamerica.com/en/local/fort-lauderdale) |
-| 2x | [/en/local/the-upstate](https://about.bankofamerica.com/en/local/the-upstate) |
-| 2x | [/en/local/tulsa](https://about.bankofamerica.com/en/local/tulsa) |
-| 2x | [/en/local/rochester](https://about.bankofamerica.com/en/local/rochester) |
-| 2x | [/en/local/buffalo-niagara](https://about.bankofamerica.com/en/local/buffalo-niagara) |
-| 2x | [/en/local/new-hampshire](https://about.bankofamerica.com/en/local/new-hampshire) |
-| 2x | [/en/local/seattle](https://about.bankofamerica.com/en/local/seattle) |
-| 2x | [/en/local/north-texas](https://about.bankofamerica.com/en/local/north-texas) |
-| 2x | [/en/local/coastal-north-carolina](https://about.bankofamerica.com/en/local/coastal-north-carolina) |
-| 2x | [/en/local/st-louis](https://about.bankofamerica.com/en/local/st-louis) |
-| 2x | [/en/local/columbia](https://about.bankofamerica.com/en/local/columbia) |
-| 2x | [/en/local/richmond](https://about.bankofamerica.com/en/local/richmond) |
-| 2x | [/en/local/houston](https://about.bankofamerica.com/en/local/houston) |
-| 2x | [/en/local/kansas-city](https://about.bankofamerica.com/en/local/kansas-city) |
-| 2x | [/en/local/grand-rapids](https://about.bankofamerica.com/en/local/grand-rapids) |
-| 2x | [/en/local/detroit](https://about.bankofamerica.com/en/local/detroit) |
-| 2x | [/en/local/southwest-florida](https://about.bankofamerica.com/en/local/southwest-florida) |
-| 2x | [/en/local/worcester](https://about.bankofamerica.com/en/local/worcester) |
-| 2x | [/en/local/iowa](https://about.bankofamerica.com/en/local/iowa) |
-| 2x | [/en/local/central-florida](https://about.bankofamerica.com/en/local/central-florida) |
-| 2x | [/en/local/miami](https://about.bankofamerica.com/en/local/miami) |
-| 2x | [/en/local/savannah](https://about.bankofamerica.com/en/local/savannah) |
-| 2x | [/en/local/wichita](https://about.bankofamerica.com/en/local/wichita) |
-| 2x | [/en/local/ventura-santabarbara](https://about.bankofamerica.com/en/local/ventura-santabarbara) |
-| 2x | [/en/local/thetriangle](https://about.bankofamerica.com/en/local/thetriangle) |
-| 2x | [/en/local/treasurecoast](https://about.bankofamerica.com/en/local/treasurecoast) |
-| 2x | [/en/local/sanantonio](https://about.bankofamerica.com/en/local/sanantonio) |
-| 2x | [/en/local/rhodeisland](https://about.bankofamerica.com/en/local/rhodeisland) |
-| 2x | [/en/local/reno](https://about.bankofamerica.com/en/local/reno) |
-| 2x | [/en/local/northbay](https://about.bankofamerica.com/en/local/northbay) |
-| 2x | [/en/local/myrtlebeach](https://about.bankofamerica.com/en/local/myrtlebeach) |
-| 2x | [/en/local/memphis](https://about.bankofamerica.com/en/local/memphis) |
-| 2x | [/en/local/longisland](https://about.bankofamerica.com/en/local/longisland) |
-| 2x | [/en/local/eastcentralflorida](https://about.bankofamerica.com/en/local/eastcentralflorida) |
-| 2x | [/en/local/charlottesville](https://about.bankofamerica.com/en/local/charlottesville) |
-| 2x | [/en/local/asheville](https://about.bankofamerica.com/en/local/asheville) |
-| 2x | [/en/local/amarillo](https://about.bankofamerica.com/en/local/amarillo) |
-| 2x | [/en/local/capitalregion-hudsonvalley](https://about.bankofamerica.com/en/local/capitalregion-hudsonvalley) |
-| 2x | [/en/local/arkansas](https://about.bankofamerica.com/en/local/arkansas) |
-| 2x | [/en/local/fresno-visalia](https://about.bankofamerica.com/en/local/fresno-visalia) |
-| 2x | [/en/local/knoxville](https://about.bankofamerica.com/en/local/knoxville) |
-| 2x | [/en/local/elpaso](https://about.bankofamerica.com/en/local/elpaso) |
-| 2x | [/en/local/lasvegas](https://about.bankofamerica.com/en/local/lasvegas) |
-| 2x | [/en/local/greatermaryland](https://about.bankofamerica.com/en/local/greatermaryland) |
-| 2x | [/en/local/hamptonroads](https://about.bankofamerica.com/en/local/hamptonroads) |
-| 2x | [/en/local/inlandempire](https://about.bankofamerica.com/en/local/inlandempire) |
-| 2x | [/en/local/portland-southwestwashington](https://about.bankofamerica.com/en/local/portland-southwestwashington) |
-| 2x | [/en/local/tallahassee](https://about.bankofamerica.com/en/local/tallahassee) |
-| 2x | [/en/local/kentucky](https://about.bankofamerica.com/en/local/kentucky) |
+**Commonly found inside:**
+- `container-layout` (96x)
 
-### one-push {#one-push}
-
-**Total uses:** 192 | **Found on:** 96 page(s)
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1061,7 +1057,19 @@
 
 ### notched-image {#notched-image}
 
-**Total uses:** 125 | **Found on:** 119 page(s)
+**Total uses:** 125 | **Found on:** 119 page(s) | **Standalone:** 104 (83%)
+
+**Commonly found inside:**
+- `container-layout` (14x)
+- `dynamic-container` (1x)
+
+**Commonly contains:**
+- `text` (3x)
+- `container-layout` (2x)
+- `header` (2x)
+- `cta` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1189,6 +1197,11 @@
 
 **Total uses:** 97 | **Found on:** 97 page(s)
 
+**Commonly found inside:**
+- `container-layout` (97x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/social-media](https://about.bankofamerica.com/en/social-media) |
@@ -1293,6 +1306,11 @@
 
 **Total uses:** 93 | **Found on:** 93 page(s)
 
+**Commonly found inside:**
+- `container-layout` (93x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/local/colorado](https://about.bankofamerica.com/en/local/colorado) |
@@ -1393,6 +1411,12 @@
 
 **Total uses:** 71 | **Found on:** 3 page(s)
 
+**Commonly found inside:**
+- `content-card-container` (3x)
+- `carousel` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 45x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
@@ -1401,7 +1425,21 @@
 
 ### story-block {#story-block}
 
-**Total uses:** 63 | **Found on:** 36 page(s)
+**Total uses:** 63 | **Found on:** 36 page(s) | **Standalone:** 7 (11%)
+
+**Commonly found inside:**
+- `container-layout` (28x)
+- `dynamic-container` (1x)
+- `text-block` (1x)
+
+**Commonly contains:**
+- `cta` (11x)
+- `image` (9x)
+- `container-layout` (2x)
+- `media-kaltura` (1x)
+- `infographic` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1444,7 +1482,9 @@
 
 ### breadcrumb {#breadcrumb}
 
-**Total uses:** 40 | **Found on:** 40 page(s)
+**Total uses:** 40 | **Found on:** 40 page(s) | **Standalone:** 40 (100%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1491,7 +1531,12 @@
 
 ### tile {#tile}
 
-**Total uses:** 36 | **Found on:** 36 page(s)
+**Total uses:** 36 | **Found on:** 36 page(s) | **Standalone:** 33 (92%)
+
+**Commonly found inside:**
+- `container-layout` (3x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1534,7 +1579,14 @@
 
 ### heading-group {#heading-group}
 
-**Total uses:** 34 | **Found on:** 6 page(s)
+**Total uses:** 34 | **Found on:** 6 page(s) | **Standalone:** 1 (3%)
+
+**Commonly found inside:**
+- `container-layout` (3x)
+- `carousel` (1x)
+- `dynamic-container` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1547,7 +1599,9 @@
 
 ### article-masthead {#article-masthead}
 
-**Total uses:** 31 | **Found on:** 31 page(s)
+**Total uses:** 31 | **Found on:** 31 page(s) | **Standalone:** 31 (100%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1587,6 +1641,19 @@
 
 **Total uses:** 30 | **Found on:** 20 page(s)
 
+**Commonly found inside:**
+- `container-layout` (20x)
+
+**Commonly contains:**
+- `container-layout` (4x)
+- `cta` (2x)
+- `media-kaltura` (1x)
+- `header` (1x)
+- `text` (1x)
+- `story-block` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 4x | [/en/our-company/enabling-financial-health](https://about.bankofamerica.com/en/our-company/enabling-financial-health) |
@@ -1613,6 +1680,11 @@
 ### social-share {#social-share}
 
 **Total uses:** 30 | **Found on:** 30 page(s)
+
+**Commonly found inside:**
+- `container-layout` (30x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1649,7 +1721,12 @@
 
 ### footnote {#footnote}
 
-**Total uses:** 26 | **Found on:** 8 page(s)
+**Total uses:** 26 | **Found on:** 8 page(s) | **Standalone:** 1 (4%)
+
+**Commonly found inside:**
+- `container-layout` (7x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1666,6 +1743,12 @@
 
 **Total uses:** 18 | **Found on:** 3 page(s)
 
+**Commonly found inside:**
+- `carousel` (2x)
+- `container-layout` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 7x | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) |
@@ -1674,26 +1757,16 @@
 
 ### media-kaltura {#media-kaltura}
 
-**Total uses:** 18 | **Found on:** 12 page(s)
+**Total uses:** 18 | **Found on:** 12 page(s) | **Standalone:** 1 (6%)
 
-| Count | Page URL |
-|-------|----------|
-| 3x | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) |
-| 2x | [/en/making-an-impact/ken-burns-documentaries](https://about.bankofamerica.com/en/making-an-impact/ken-burns-documentaries) |
-| 2x | [/en/making-an-impact/red](https://about.bankofamerica.com/en/making-an-impact/red) |
-| 2x | [/en/making-an-impact/henrylouisgates](https://about.bankofamerica.com/en/making-an-impact/henrylouisgates) |
-| 2x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
-| 1x | [/en/making-an-impact/student-leaders](https://about.bankofamerica.com/en/making-an-impact/student-leaders) |
-| 1x | [/en/making-an-impact/supporting-people-with-disabilities](https://about.bankofamerica.com/en/making-an-impact/supporting-people-with-disabilities) |
-| 1x | [/en/making-an-impact/support-services](https://about.bankofamerica.com/en/making-an-impact/support-services) |
-| 1x | [/en/making-an-impact/tech-jobs-without-degree](https://about.bankofamerica.com/en/making-an-impact/tech-jobs-without-degree) |
-| 1x | [/en/making-an-impact/financial-education-special-olympics](https://about.bankofamerica.com/en/making-an-impact/financial-education-special-olympics) |
-| 1x | [/en/making-an-impact/special-olympics-ben-stofsky](https://about.bankofamerica.com/en/making-an-impact/special-olympics-ben-stofsky) |
-| 1x | [/en/making-an-impact/education-and-career-development-resources](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources) |
+**Commonly found inside:**
+- `container-layout` (8x)
+- `spotlight` (3x)
+- `text-block` (1x)
+- `story-block` (1x)
+- `carousel` (1x)
 
-### media {#media}
-
-**Total uses:** 18 | **Found on:** 12 page(s)
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1713,6 +1786,11 @@
 ### opt-in-out-form {#opt-in-out-form}
 
 **Total uses:** 17 | **Found on:** 17 page(s)
+
+**Commonly found inside:**
+- `container-layout` (17x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1736,7 +1814,9 @@
 
 ### arts-long-form {#arts-long-form}
 
-**Total uses:** 12 | **Found on:** 12 page(s)
+**Total uses:** 12 | **Found on:** 12 page(s) | **Standalone:** 12 (100%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1755,7 +1835,17 @@
 
 ### highlight-block {#highlight-block}
 
-**Total uses:** 11 | **Found on:** 9 page(s)
+**Total uses:** 11 | **Found on:** 9 page(s) | **Standalone:** 2 (18%)
+
+**Commonly found inside:**
+- `container-layout` (6x)
+- `dynamic-container` (1x)
+
+**Commonly contains:**
+- `cta` (2x)
+- `text` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1771,7 +1861,16 @@
 
 ### content-card-container {#content-card-container}
 
-**Total uses:** 11 | **Found on:** 3 page(s)
+**Total uses:** 11 | **Found on:** 3 page(s) | **Standalone:** 1 (9%)
+
+**Commonly found inside:**
+- `tab` (1x)
+- `natural-language` (1x)
+
+**Commonly contains:**
+- `content-card` (3x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1782,6 +1881,15 @@
 ### image-wrapper-container {#image-wrapper-container}
 
 **Total uses:** 10 | **Found on:** 7 page(s)
+
+**Commonly found inside:**
+- `container-layout` (7x)
+
+**Commonly contains:**
+- `image` (7x)
+- `text` (7x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1795,7 +1903,12 @@
 
 ### arts-carousel {#arts-carousel}
 
-**Total uses:** 10 | **Found on:** 10 page(s)
+**Total uses:** 10 | **Found on:** 10 page(s) | **Standalone:** 10 (100%)
+
+**Commonly contains:**
+- `text` (10x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1814,6 +1927,12 @@
 
 **Total uses:** 8 | **Found on:** 4 page(s)
 
+**Commonly found inside:**
+- `container-layout` (3x)
+- `carousel` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 3x | [/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness) |
@@ -1823,7 +1942,13 @@
 
 ### spacer {#spacer}
 
-**Total uses:** 7 | **Found on:** 1 page(s)
+**Total uses:** 7 | **Found on:** 1 page(s) | **Standalone:** 1 (14%)
+
+**Commonly contains:**
+- `container-layout` (1x)
+- `carousel` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1831,7 +1956,22 @@
 
 ### dynamic-container {#dynamic-container}
 
-**Total uses:** 6 | **Found on:** 3 page(s)
+**Total uses:** 6 | **Found on:** 3 page(s) | **Standalone:** 3 (50%)
+
+**Commonly contains:**
+- `container-layout` (2x)
+- `masthead-v2` (1x)
+- `media-overlay` (1x)
+- `story-block` (1x)
+- `storyblock` (1x)
+- `split-content-block` (1x)
+- `highlight-block` (1x)
+- `heading-group` (1x)
+- `carousel` (1x)
+- `notched-image` (1x)
+- `spotlight` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1841,7 +1981,25 @@
 
 ### carousel {#carousel}
 
-**Total uses:** 6 | **Found on:** 4 page(s)
+**Total uses:** 6 | **Found on:** 4 page(s) | **Standalone:** 1 (17%)
+
+**Commonly found inside:**
+- `dynamic-container` (1x)
+- `spacer` (1x)
+- `container-layout` (1x)
+
+**Commonly contains:**
+- `simple-image` (2x)
+- `heading-group` (1x)
+- `content-card` (1x)
+- `media-kaltura` (1x)
+- `quote` (1x)
+- `background` (1x)
+- `image` (1x)
+- `text` (1x)
+- `masthead` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1852,7 +2010,12 @@
 
 ### horizontal-content {#horizontal-content}
 
-**Total uses:** 6 | **Found on:** 6 page(s)
+**Total uses:** 6 | **Found on:** 6 page(s) | **Standalone:** 2 (33%)
+
+**Commonly found inside:**
+- `container-layout` (4x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1865,7 +2028,12 @@
 
 ### report-center {#report-center}
 
-**Total uses:** 6 | **Found on:** 3 page(s)
+**Total uses:** 6 | **Found on:** 3 page(s) | **Standalone:** 1 (17%)
+
+**Commonly found inside:**
+- `container-layout` (2x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1877,13 +2045,20 @@
 
 **Total uses:** 6 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `tab` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 6x | [/en/our-company/local-presence/rebuilding-los-angeles-california](https://about.bankofamerica.com/en/our-company/local-presence/rebuilding-los-angeles-california) |
 
 ### arts-masonry-tile {#arts-masonry-tile}
 
-**Total uses:** 5 | **Found on:** 3 page(s)
+**Total uses:** 5 | **Found on:** 3 page(s) | **Standalone:** 3 (60%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1893,7 +2068,19 @@
 
 ### spotlight {#spotlight}
 
-**Total uses:** 4 | **Found on:** 4 page(s)
+**Total uses:** 4 | **Found on:** 4 page(s) | **Standalone:** 1 (25%)
+
+**Commonly found inside:**
+- `container-layout` (2x)
+- `dynamic-container` (1x)
+
+**Commonly contains:**
+- `media-kaltura` (3x)
+- `container-layout` (3x)
+- `cta` (1x)
+- `image` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1904,7 +2091,12 @@
 
 ### modular-tiles {#modular-tiles}
 
-**Total uses:** 4 | **Found on:** 4 page(s)
+**Total uses:** 4 | **Found on:** 4 page(s) | **Standalone:** 2 (50%)
+
+**Commonly found inside:**
+- `container-layout` (2x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1915,7 +2107,12 @@
 
 ### arts-story-block {#arts-story-block}
 
-**Total uses:** 4 | **Found on:** 2 page(s)
+**Total uses:** 4 | **Found on:** 2 page(s) | **Standalone:** 2 (50%)
+
+**Commonly contains:**
+- `header` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1924,7 +2121,12 @@
 
 ### scroll-to-nav {#scroll-to-nav}
 
-**Total uses:** 3 | **Found on:** 3 page(s)
+**Total uses:** 3 | **Found on:** 3 page(s) | **Standalone:** 2 (67%)
+
+**Commonly found inside:**
+- `masthead-v2` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1934,7 +2136,12 @@
 
 ### award {#award}
 
-**Total uses:** 3 | **Found on:** 3 page(s)
+**Total uses:** 3 | **Found on:** 3 page(s) | **Standalone:** 1 (33%)
+
+**Commonly found inside:**
+- `container-layout` (2x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1946,6 +2153,12 @@
 
 **Total uses:** 3 | **Found on:** 3 page(s)
 
+**Commonly found inside:**
+- `container-layout` (2x)
+- `story-block` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/making-an-impact/france-gender-equality-index](https://about.bankofamerica.com/en/making-an-impact/france-gender-equality-index) |
@@ -1954,7 +2167,9 @@
 
 ### related-work {#related-work}
 
-**Total uses:** 3 | **Found on:** 3 page(s)
+**Total uses:** 3 | **Found on:** 3 page(s) | **Standalone:** 3 (100%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1964,7 +2179,16 @@
 
 ### storyblock {#storyblock}
 
-**Total uses:** 2 | **Found on:** 2 page(s)
+**Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
+
+**Commonly found inside:**
+- `dynamic-container` (1x)
+
+**Commonly contains:**
+- `image` (1x)
+- `standalone-link` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1973,7 +2197,12 @@
 
 ### article-impact-exhibit {#article-impact-exhibit}
 
-**Total uses:** 2 | **Found on:** 2 page(s)
+**Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
+
+**Commonly found inside:**
+- `container-layout` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1982,7 +2211,12 @@
 
 ### split-content-block {#split-content-block}
 
-**Total uses:** 2 | **Found on:** 2 page(s)
+**Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
+
+**Commonly found inside:**
+- `dynamic-container` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -1991,7 +2225,12 @@
 
 ### manual-tile {#manual-tile}
 
-**Total uses:** 2 | **Found on:** 2 page(s)
+**Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
+
+**Commonly found inside:**
+- `container-layout` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -2000,7 +2239,17 @@
 
 ### tab {#tab}
 
-**Total uses:** 2 | **Found on:** 2 page(s)
+**Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
+
+**Commonly found inside:**
+- `container-layout` (1x)
+
+**Commonly contains:**
+- `container-layout` (2x)
+- `content-card-container` (1x)
+- `icon-grid` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -2011,6 +2260,11 @@
 
 **Total uses:** 2 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `carousel` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 2x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
@@ -2019,13 +2273,23 @@
 
 **Total uses:** 2 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `carousel` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 2x | [/en](https://about.bankofamerica.com/en) |
 
 ### linklist {#linklist}
 
-**Total uses:** 2 | **Found on:** 2 page(s)
+**Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
+
+**Commonly found inside:**
+- `container-layout` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -2036,6 +2300,11 @@
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `dynamic-container` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) |
@@ -2044,13 +2313,23 @@
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `container-layout` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/making-an-impact/financial-education-resources-advice](https://about.bankofamerica.com/en/making-an-impact/financial-education-resources-advice) |
 
 ### natural-language {#natural-language}
 
-**Total uses:** 1 | **Found on:** 1 page(s)
+**Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
+
+**Commonly contains:**
+- `content-card-container` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -2058,7 +2337,9 @@
 
 ### button {#button}
 
-**Total uses:** 1 | **Found on:** 1 page(s)
+**Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -2068,6 +2349,11 @@
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `storyblock` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
@@ -2076,13 +2362,26 @@
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `container-layout` (1x)
+
+**Commonly contains:**
+- `text` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/making-an-impact/student-leader-eligibility-criteria](https://about.bankofamerica.com/en/making-an-impact/student-leader-eligibility-criteria) |
 
 ### arts-masthead {#arts-masthead}
 
-**Total uses:** 1 | **Found on:** 1 page(s)
+**Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
+
+**Commonly contains:**
+- `text` (1x)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -2090,7 +2389,9 @@
 
 ### arts-title-image {#arts-title-image}
 
-**Total uses:** 1 | **Found on:** 1 page(s)
+**Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|
@@ -2100,13 +2401,20 @@
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
+**Commonly found inside:**
+- `container-layout` (1x)
+
+**Pages:**
+
 | Count | Page URL |
 |-------|----------|
 | 1x | [/en/making-an-impact/arts-and-culture](https://about.bankofamerica.com/en/making-an-impact/arts-and-culture) |
 
 ### arts-museums-table {#arts-museums-table}
 
-**Total uses:** 1 | **Found on:** 1 page(s)
+**Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
+
+**Pages:**
 
 | Count | Page URL |
 |-------|----------|

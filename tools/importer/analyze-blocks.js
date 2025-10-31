@@ -36,6 +36,7 @@ async function takeBlockScreenshots(sortedBlocks, baseUrl, reportFile) {
   let playwright;
   try {
     // Dynamic import to avoid requiring playwright if not using screenshots
+    // eslint-disable-next-line import/no-extraneous-dependencies
     playwright = await import('playwright');
   } catch (error) {
     console.error('\n❌ Playwright not installed. Install it with:');
@@ -78,16 +79,30 @@ async function takeBlockScreenshots(sortedBlocks, baseUrl, reportFile) {
       const element = await page.locator(blockSelector).first();
 
       if (await element.count() > 0) {
-        // Scroll element into view
+        // Scroll element into view centered
         await element.scrollIntoViewIfNeeded();
 
-        // Take screenshot of the element
+        // Wait a moment for any animations
+        await page.waitForTimeout(500);
+
+        // Take screenshot of just the element
         const screenshotPath = path.join(screenshotDir, `${blockName}.png`);
         await element.screenshot({ path: screenshotPath });
 
-        // Also take a full page screenshot for context
+        // Highlight the element for context screenshot
+        await element.evaluate((el) => {
+          el.style.outline = '4px solid #ff0000';
+          el.style.outlineOffset = '2px';
+          el.style.boxShadow = '0 0 0 4px rgba(255, 0, 0, 0.2)';
+          el.scrollIntoView({ block: 'center', behavior: 'instant' });
+        });
+
+        // Wait for highlight to render
+        await page.waitForTimeout(300);
+
+        // Take a full-page screenshot for context (shows whole page with highlight)
         const contextPath = path.join(screenshotDir, `${blockName}-context.png`);
-        await page.screenshot({ path: contextPath, fullPage: false });
+        await page.screenshot({ path: contextPath, fullPage: true });
 
         screenshotCount += 2;
       } else {
@@ -176,12 +191,14 @@ const records = await parseReportFile(reportFile);
 console.log(`\n📊 Analyzing ${records.length} pages...\n`);
 
 // Data structures for analysis
-const blockStats = new Map(); // blockName -> { totalCount, pageCount, pages: [] }
+// blockName -> { totalCount, pageCount, pages: [], parents: Map, children: Map, standalone: 0 }
+const blockStats = new Map();
 
 // Parse each page
 records.forEach((row) => {
   const pagePath = row.path || row.URL || 'unknown';
   const aemBlocks = row['AEM Blocks'] || '';
+  const relationships = row['Block Relationships'] || '';
 
   if (!aemBlocks || aemBlocks === 'None found') {
     return;
@@ -200,6 +217,9 @@ records.forEach((row) => {
           totalCount: 0,
           pageCount: 0,
           pages: [],
+          parents: new Map(),
+          children: new Map(),
+          standalone: 0,
         });
       }
 
@@ -207,6 +227,37 @@ records.forEach((row) => {
       stats.totalCount += countNum;
       stats.pageCount += 1;
       stats.pages.push({ path: pagePath, count: countNum });
+    });
+  }
+
+  // Parse relationships: "container-layout[p:none|c:text,image]; text[p:container-layout|c:none]"
+  if (relationships && relationships !== 'None') {
+    const relMatches = relationships.split('; ');
+    relMatches.forEach((relString) => {
+      const match = relString.match(/([a-z-]+)\[p:([^|]+)\|c:([^\]]+)\]/);
+      if (match) {
+        const [, blockName, parents, children] = match;
+
+        if (blockStats.has(blockName)) {
+          const stats = blockStats.get(blockName);
+
+          // Track parent relationships
+          if (parents === 'none') {
+            stats.standalone += 1;
+          } else {
+            parents.split(',').forEach((parent) => {
+              stats.parents.set(parent, (stats.parents.get(parent) || 0) + 1);
+            });
+          }
+
+          // Track child relationships
+          if (children !== 'none') {
+            children.split(',').forEach((child) => {
+              stats.children.set(child, (stats.children.get(child) || 0) + 1);
+            });
+          }
+        }
+      }
     });
   }
 });
@@ -249,11 +300,39 @@ sortedBlocks.forEach(([blockName, stats]) => {
   // Add anchor ID for linking from summary
   const anchor = blockName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   markdown += `### ${blockName} {#${anchor}}\n\n`;
-  markdown += `**Total uses:** ${stats.totalCount} | **Found on:** ${stats.pageCount} page(s)\n\n`;
+  markdown += `**Total uses:** ${stats.totalCount} | **Found on:** ${stats.pageCount} page(s)`;
+
+  // Add standalone vs nested info
+  if (stats.standalone > 0) {
+    const standalonePercent = ((stats.standalone / stats.totalCount) * 100).toFixed(0);
+    markdown += ` | **Standalone:** ${stats.standalone} (${standalonePercent}%)`;
+  }
+  markdown += '\n\n';
+
+  // Show parent relationships (blocks this appears inside)
+  if (stats.parents.size > 0) {
+    markdown += '**Commonly found inside:**\n';
+    const sortedParents = [...stats.parents.entries()].sort((a, b) => b[1] - a[1]);
+    sortedParents.forEach(([parent, count]) => {
+      markdown += `- \`${parent}\` (${count}x)\n`;
+    });
+    markdown += '\n';
+  }
+
+  // Show child relationships (blocks found inside this)
+  if (stats.children.size > 0) {
+    markdown += '**Commonly contains:**\n';
+    const sortedChildren = [...stats.children.entries()].sort((a, b) => b[1] - a[1]);
+    sortedChildren.forEach(([child, count]) => {
+      markdown += `- \`${child}\` (${count}x)\n`;
+    });
+    markdown += '\n';
+  }
 
   // Sort pages by count (most usage first)
   const sortedPages = [...stats.pages].sort((a, b) => b.count - a.count);
 
+  markdown += '**Pages:**\n\n';
   markdown += '| Count | Page URL |\n';
   markdown += '|-------|----------|\n';
 
@@ -283,6 +362,9 @@ const output = {
     name,
     totalCount: stats.totalCount,
     pageCount: stats.pageCount,
+    standalone: stats.standalone,
+    parents: Object.fromEntries([...stats.parents.entries()].sort((a, b) => b[1] - a[1])),
+    children: Object.fromEntries([...stats.children.entries()].sort((a, b) => b[1] - a[1])),
     pages: stats.pages.sort((a, b) => b.count - a.count),
   })),
 };

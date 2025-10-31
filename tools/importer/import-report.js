@@ -53,6 +53,18 @@ export default {
       'Page Title': document.title,
     };
 
+    // Extract template information
+    const templateMeta = document.querySelector('meta[name="template"]');
+    if (templateMeta) {
+      report.Template = templateMeta.getAttribute('content');
+    }
+
+    // Extract body classes (may contain template info)
+    const bodyClasses = document.body?.className || '';
+    if (bodyClasses) {
+      report['Body Classes'] = bodyClasses;
+    }
+
     if (main) {
       sectionCount = main.querySelectorAll('section').length
                     || main.querySelectorAll(':scope > div').length;
@@ -60,14 +72,48 @@ export default {
 
       // Extract AEM block candidates from aem-wrap--* classes
       const aemWrapBlocks = new Map();
+      const blockRelationships = new Map(); // blockName -> { parents: Set, children: Set }
       const aemWrapElements = main.querySelectorAll('[class*="aem-wrap--"]');
 
+      // Helper to get block name from element
+      const getBlockName = (element) => {
+        const classes = element.className.split(/\s+/);
+        const aemClass = classes.find((cls) => cls.startsWith('aem-wrap--'));
+        return aemClass ? aemClass.replace('aem-wrap--', '') : null;
+      };
+
       aemWrapElements.forEach((el) => {
-        const classes = el.className.split(/\s+/);
-        classes.forEach((cls) => {
-          if (cls.startsWith('aem-wrap--')) {
-            const blockName = cls.replace('aem-wrap--', '');
-            aemWrapBlocks.set(blockName, (aemWrapBlocks.get(blockName) || 0) + 1);
+        const blockName = getBlockName(el);
+        if (!blockName) return;
+
+        // Count occurrences
+        aemWrapBlocks.set(blockName, (aemWrapBlocks.get(blockName) || 0) + 1);
+
+        // Initialize relationships if needed
+        if (!blockRelationships.has(blockName)) {
+          blockRelationships.set(blockName, { parents: new Set(), children: new Set() });
+        }
+
+        // Find parent blocks (blocks this is nested inside)
+        const parentEl = el.parentElement?.closest('[class*="aem-wrap--"]');
+        if (parentEl && main.contains(parentEl)) {
+          const parentBlockName = getBlockName(parentEl);
+          if (parentBlockName) {
+            blockRelationships.get(blockName).parents.add(parentBlockName);
+          }
+        }
+
+        // Find direct child blocks (blocks whose immediate parent block is this one)
+        const childBlocks = el.querySelectorAll('[class*="aem-wrap--"]');
+        childBlocks.forEach((child) => {
+          if (child === el) return;
+          const childBlockName = getBlockName(child);
+          if (childBlockName) {
+            // Check if this block's immediate parent block is the current block
+            const childParentBlock = child.parentElement?.closest('[class*="aem-wrap--"]');
+            if (childParentBlock === el) {
+              blockRelationships.get(blockName).children.add(childBlockName);
+            }
           }
         });
       });
@@ -78,7 +124,17 @@ export default {
         .map(([name, count]) => `${name}(${count})`)
         .join(', ');
 
+      // Format relationships
+      const relationshipList = [...blockRelationships.entries()]
+        .map(([name, rels]) => {
+          const parents = [...rels.parents].join(',') || 'none';
+          const children = [...rels.children].join(',') || 'none';
+          return `${name}[p:${parents}|c:${children}]`;
+        })
+        .join('; ');
+
       report['AEM Blocks'] = blockList || 'None found';
+      report['Block Relationships'] = relationshipList || 'None';
     } else {
       report['Has Main Element'] = 'No - skipped analysis';
     }
