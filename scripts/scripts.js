@@ -12,7 +12,7 @@ import {
   loadSections,
   loadCSS,
 } from './aem.js';
-
+import { rewriteLinkUrl } from './utils.js';
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -71,6 +71,20 @@ function buildAutoBlocks(main) {
   }
 }
 
+function mergeButtonContainers(main) {
+  let consecContainer = main.querySelector('.button-container + .button-container');
+  while (consecContainer) {
+    const prevContainer = consecContainer.previousElementSibling;
+    prevContainer.append(...consecContainer.children);
+    consecContainer.remove();
+    consecContainer = main.querySelector('.button-container + .button-container');
+  }
+}
+
+function decorateLinks(main) {
+  main.querySelectorAll('a').forEach(rewriteLinkUrl);
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -79,8 +93,10 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateLinks(main);
   decorateButtons(main);
   decorateIcons(main);
+  mergeButtonContainers(main);
 }
 
 /**
