@@ -297,9 +297,8 @@ markdown += '\n---\n\n';
 markdown += '## Detailed Breakdown\n\n';
 
 sortedBlocks.forEach(([blockName, stats]) => {
-  // Add anchor ID for linking from summary
-  const anchor = blockName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  markdown += `### ${blockName} {#${anchor}}\n\n`;
+  // GitHub auto-generates anchors from heading text
+  markdown += `### ${blockName}\n\n`;
   markdown += `**Total uses:** ${stats.totalCount} | **Found on:** ${stats.pageCount} page(s)`;
 
   // Add standalone vs nested info

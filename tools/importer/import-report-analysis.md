@@ -75,7 +75,7 @@
 
 ## Detailed Breakdown
 
-### container-layout {#container-layout}
+### container-layout
 
 **Total uses:** 1520 | **Found on:** 185 page(s) | **Standalone:** 39 (3%)
 
@@ -316,7 +316,7 @@
 | 1x | [/en/making-an-impact/special-olympics-amanda-vito](https://about.bankofamerica.com/en/making-an-impact/special-olympics-amanda-vito) |
 | 1x | [/en/making-an-impact/disaster-recovery-financial-guide](https://about.bankofamerica.com/en/making-an-impact/disaster-recovery-financial-guide) |
 
-### text {#text}
+### text
 
 **Total uses:** 561 | **Found on:** 166 page(s) | **Standalone:** 2 (0%)
 
@@ -503,7 +503,7 @@
 | 1x | [/en/our-company/supplier-management](https://about.bankofamerica.com/en/our-company/supplier-management) |
 | 1x | [/en/search](https://about.bankofamerica.com/en/search) |
 
-### image {#image}
+### image
 
 **Total uses:** 351 | **Found on:** 117 page(s)
 
@@ -637,7 +637,7 @@
 | 1x | [/en/our-company/local-presence](https://about.bankofamerica.com/en/our-company/local-presence) |
 | 1x | [/en/our-company/supplier-management](https://about.bankofamerica.com/en/our-company/supplier-management) |
 
-### cta {#cta}
+### cta
 
 **Total uses:** 263 | **Found on:** 123 page(s)
 
@@ -778,7 +778,7 @@
 | 1x | [/en/our-company/business-practices](https://about.bankofamerica.com/en/our-company/business-practices) |
 | 1x | [/en/our-company/supplier-management](https://about.bankofamerica.com/en/our-company/supplier-management) |
 
-### header {#header}
+### header
 
 **Total uses:** 192 | **Found on:** 150 page(s)
 
@@ -947,7 +947,7 @@
 | 1x | [/en/local/kentucky](https://about.bankofamerica.com/en/local/kentucky) |
 | 1x | [/en/sitemap](https://about.bankofamerica.com/en/sitemap) |
 
-### horizontal-tile {#horizontal-tile}
+### horizontal-tile
 
 **Total uses:** 192 | **Found on:** 96 page(s)
 
@@ -1055,7 +1055,7 @@
 | 2x | [/en/local/tallahassee](https://about.bankofamerica.com/en/local/tallahassee) |
 | 2x | [/en/local/kentucky](https://about.bankofamerica.com/en/local/kentucky) |
 
-### notched-image {#notched-image}
+### notched-image
 
 **Total uses:** 125 | **Found on:** 119 page(s) | **Standalone:** 104 (83%)
 
@@ -1193,7 +1193,7 @@
 | 1x | [/en/local/kentucky](https://about.bankofamerica.com/en/local/kentucky) |
 | 1x | [/en/executive-wealth-services/farallon](https://about.bankofamerica.com/en/executive-wealth-services/farallon) |
 
-### icon-list {#icon-list}
+### icon-list
 
 **Total uses:** 97 | **Found on:** 97 page(s)
 
@@ -1302,7 +1302,7 @@
 | 1x | [/en/local/tallahassee](https://about.bankofamerica.com/en/local/tallahassee) |
 | 1x | [/en/local/kentucky](https://about.bankofamerica.com/en/local/kentucky) |
 
-### locator-block {#locator-block}
+### locator-block
 
 **Total uses:** 93 | **Found on:** 93 page(s)
 
@@ -1407,7 +1407,7 @@
 | 1x | [/en/local/portland-southwestwashington](https://about.bankofamerica.com/en/local/portland-southwestwashington) |
 | 1x | [/en/local/tallahassee](https://about.bankofamerica.com/en/local/tallahassee) |
 
-### content-card {#content-card}
+### content-card
 
 **Total uses:** 71 | **Found on:** 3 page(s)
 
@@ -1423,7 +1423,7 @@
 | 19x | [/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness) |
 | 7x | [/en/making-an-impact/sports](https://about.bankofamerica.com/en/making-an-impact/sports) |
 
-### story-block {#story-block}
+### story-block
 
 **Total uses:** 63 | **Found on:** 36 page(s) | **Standalone:** 7 (11%)
 
@@ -1480,7 +1480,7 @@
 | 1x | [/en/local/miami](https://about.bankofamerica.com/en/local/miami) |
 | 1x | [/en/local/rhodeisland](https://about.bankofamerica.com/en/local/rhodeisland) |
 
-### breadcrumb {#breadcrumb}
+### breadcrumb
 
 **Total uses:** 40 | **Found on:** 40 page(s) | **Standalone:** 40 (100%)
 
@@ -1529,7 +1529,7 @@
 | 1x | [/en/sitemap](https://about.bankofamerica.com/en/sitemap) |
 | 1x | [/en/executive-wealth-services/farallon](https://about.bankofamerica.com/en/executive-wealth-services/farallon) |
 
-### tile {#tile}
+### tile
 
 **Total uses:** 36 | **Found on:** 36 page(s) | **Standalone:** 33 (92%)
 
@@ -1577,7 +1577,7 @@
 | 1x | [/en/our-company/supporting-small-businesses](https://about.bankofamerica.com/en/our-company/supporting-small-businesses) |
 | 1x | [/en/our-company/environmental-social-risk-policy-framework](https://about.bankofamerica.com/en/our-company/environmental-social-risk-policy-framework) |
 
-### heading-group {#heading-group}
+### heading-group
 
 **Total uses:** 34 | **Found on:** 6 page(s) | **Standalone:** 1 (3%)
 
@@ -1597,7 +1597,7 @@
 | 1x | [/en/making-an-impact/education-and-career-development-resources](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources) |
 | 1x | [/en/local/chicago](https://about.bankofamerica.com/en/local/chicago) |
 
-### article-masthead {#article-masthead}
+### article-masthead
 
 **Total uses:** 31 | **Found on:** 31 page(s) | **Standalone:** 31 (100%)
 
@@ -1637,7 +1637,7 @@
 | 1x | [/en/making-an-impact/disaster-recovery-financial-guide](https://about.bankofamerica.com/en/making-an-impact/disaster-recovery-financial-guide) |
 | 1x | [/en/our-company/environmental-social-risk-policy-framework](https://about.bankofamerica.com/en/our-company/environmental-social-risk-policy-framework) |
 
-### text-block {#text-block}
+### text-block
 
 **Total uses:** 30 | **Found on:** 20 page(s)
 
@@ -1677,7 +1677,7 @@
 | 1x | [/en/our-company/supplier-management](https://about.bankofamerica.com/en/our-company/supplier-management) |
 | 1x | [/en/executive-wealth-services/farallon](https://about.bankofamerica.com/en/executive-wealth-services/farallon) |
 
-### social-share {#social-share}
+### social-share
 
 **Total uses:** 30 | **Found on:** 30 page(s)
 
@@ -1719,7 +1719,7 @@
 | 1x | [/en/making-an-impact/disaster-recovery-financial-guide](https://about.bankofamerica.com/en/making-an-impact/disaster-recovery-financial-guide) |
 | 1x | [/en/our-company/environmental-social-risk-policy-framework](https://about.bankofamerica.com/en/our-company/environmental-social-risk-policy-framework) |
 
-### footnote {#footnote}
+### footnote
 
 **Total uses:** 26 | **Found on:** 8 page(s) | **Standalone:** 1 (4%)
 
@@ -1739,7 +1739,7 @@
 | 1x | [/en/making-an-impact/arts-and-culture](https://about.bankofamerica.com/en/making-an-impact/arts-and-culture) |
 | 1x | [/en/making-an-impact/art-partnerships](https://about.bankofamerica.com/en/making-an-impact/art-partnerships) |
 
-### simple-image {#simple-image}
+### simple-image
 
 **Total uses:** 18 | **Found on:** 3 page(s)
 
@@ -1755,7 +1755,7 @@
 | 6x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 | 5x | [/en/our-company/local-presence/rebuilding-los-angeles-california](https://about.bankofamerica.com/en/our-company/local-presence/rebuilding-los-angeles-california) |
 
-### media-kaltura {#media-kaltura}
+### media-kaltura
 
 **Total uses:** 18 | **Found on:** 12 page(s) | **Standalone:** 1 (6%)
 
@@ -1783,7 +1783,7 @@
 | 1x | [/en/making-an-impact/special-olympics-ben-stofsky](https://about.bankofamerica.com/en/making-an-impact/special-olympics-ben-stofsky) |
 | 1x | [/en/making-an-impact/education-and-career-development-resources](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources) |
 
-### opt-in-out-form {#opt-in-out-form}
+### opt-in-out-form
 
 **Total uses:** 17 | **Found on:** 17 page(s)
 
@@ -1812,7 +1812,7 @@
 | 1x | [/en/making-an-impact/art-conservation-project](https://about.bankofamerica.com/en/making-an-impact/art-conservation-project) |
 | 1x | [/en/making-an-impact/museums-on-us-partners](https://about.bankofamerica.com/en/making-an-impact/museums-on-us-partners) |
 
-### arts-long-form {#arts-long-form}
+### arts-long-form
 
 **Total uses:** 12 | **Found on:** 12 page(s) | **Standalone:** 12 (100%)
 
@@ -1833,7 +1833,7 @@
 | 1x | [/en/making-an-impact/art-in-our-communities/figurative-art](https://about.bankofamerica.com/en/making-an-impact/art-in-our-communities/figurative-art) |
 | 1x | [/en/making-an-impact/art-in-our-communities/andy-warhol](https://about.bankofamerica.com/en/making-an-impact/art-in-our-communities/andy-warhol) |
 
-### highlight-block {#highlight-block}
+### highlight-block
 
 **Total uses:** 11 | **Found on:** 9 page(s) | **Standalone:** 2 (18%)
 
@@ -1859,7 +1859,7 @@
 | 1x | [/en/our-company/enabling-financial-health](https://about.bankofamerica.com/en/our-company/enabling-financial-health) |
 | 1x | [/en/our-company/financial-products-services](https://about.bankofamerica.com/en/our-company/financial-products-services) |
 
-### content-card-container {#content-card-container}
+### content-card-container
 
 **Total uses:** 11 | **Found on:** 3 page(s) | **Standalone:** 1 (9%)
 
@@ -1878,7 +1878,7 @@
 | 3x | [/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness) |
 | 1x | [/en/making-an-impact/sports](https://about.bankofamerica.com/en/making-an-impact/sports) |
 
-### image-wrapper-container {#image-wrapper-container}
+### image-wrapper-container
 
 **Total uses:** 10 | **Found on:** 7 page(s)
 
@@ -1901,7 +1901,7 @@
 | 1x | [/en/making-an-impact/austin-affordable-housing](https://about.bankofamerica.com/en/making-an-impact/austin-affordable-housing) |
 | 1x | [/en/making-an-impact/vcmda](https://about.bankofamerica.com/en/making-an-impact/vcmda) |
 
-### arts-carousel {#arts-carousel}
+### arts-carousel
 
 **Total uses:** 10 | **Found on:** 10 page(s) | **Standalone:** 10 (100%)
 
@@ -1923,7 +1923,7 @@
 | 1x | [/en/making-an-impact/art-in-our-communities/modern-women-modern-vision](https://about.bankofamerica.com/en/making-an-impact/art-in-our-communities/modern-women-modern-vision) |
 | 1x | [/en/making-an-impact/art-in-our-communities/luces-y-sombras](https://about.bankofamerica.com/en/making-an-impact/art-in-our-communities/luces-y-sombras) |
 
-### quote {#quote}
+### quote
 
 **Total uses:** 8 | **Found on:** 4 page(s)
 
@@ -1940,7 +1940,7 @@
 | 2x | [/en/making-an-impact/sustainable-markets-initiative](https://about.bankofamerica.com/en/making-an-impact/sustainable-markets-initiative) |
 | 1x | [/en/making-an-impact/education-and-career-development-resources](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources) |
 
-### spacer {#spacer}
+### spacer
 
 **Total uses:** 7 | **Found on:** 1 page(s) | **Standalone:** 1 (14%)
 
@@ -1954,7 +1954,7 @@
 |-------|----------|
 | 7x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### dynamic-container {#dynamic-container}
+### dynamic-container
 
 **Total uses:** 6 | **Found on:** 3 page(s) | **Standalone:** 3 (50%)
 
@@ -1979,7 +1979,7 @@
 | 2x | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) |
 | 1x | [/en/local/chicago](https://about.bankofamerica.com/en/local/chicago) |
 
-### carousel {#carousel}
+### carousel
 
 **Total uses:** 6 | **Found on:** 4 page(s) | **Standalone:** 1 (17%)
 
@@ -2008,7 +2008,7 @@
 | 1x | [/en/making-an-impact/sports](https://about.bankofamerica.com/en/making-an-impact/sports) |
 | 1x | [/en](https://about.bankofamerica.com/en) |
 
-### horizontal-content {#horizontal-content}
+### horizontal-content
 
 **Total uses:** 6 | **Found on:** 6 page(s) | **Standalone:** 2 (33%)
 
@@ -2026,7 +2026,7 @@
 | 1x | [/en/making-an-impact/sustainable-markets-initiative](https://about.bankofamerica.com/en/making-an-impact/sustainable-markets-initiative) |
 | 1x | [/en/our-company/local-presence/rebuilding-los-angeles-california](https://about.bankofamerica.com/en/our-company/local-presence/rebuilding-los-angeles-california) |
 
-### report-center {#report-center}
+### report-center
 
 **Total uses:** 6 | **Found on:** 3 page(s) | **Standalone:** 1 (17%)
 
@@ -2041,7 +2041,7 @@
 | 1x | [/en/making-an-impact/2023-small-business-owner-report](https://about.bankofamerica.com/en/making-an-impact/2023-small-business-owner-report) |
 | 1x | [/en/our-company/local-presence](https://about.bankofamerica.com/en/our-company/local-presence) |
 
-### icon-grid {#icon-grid}
+### icon-grid
 
 **Total uses:** 6 | **Found on:** 1 page(s)
 
@@ -2054,7 +2054,7 @@
 |-------|----------|
 | 6x | [/en/our-company/local-presence/rebuilding-los-angeles-california](https://about.bankofamerica.com/en/our-company/local-presence/rebuilding-los-angeles-california) |
 
-### arts-masonry-tile {#arts-masonry-tile}
+### arts-masonry-tile
 
 **Total uses:** 5 | **Found on:** 3 page(s) | **Standalone:** 3 (60%)
 
@@ -2066,7 +2066,7 @@
 | 2x | [/en/making-an-impact/art-in-our-communities](https://about.bankofamerica.com/en/making-an-impact/art-in-our-communities) |
 | 1x | [/en/making-an-impact/art-conservation-project](https://about.bankofamerica.com/en/making-an-impact/art-conservation-project) |
 
-### spotlight {#spotlight}
+### spotlight
 
 **Total uses:** 4 | **Found on:** 4 page(s) | **Standalone:** 1 (25%)
 
@@ -2089,7 +2089,7 @@
 | 1x | [/en/making-an-impact/education-and-career-development-resources](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources) |
 | 1x | [/en/local/chicago](https://about.bankofamerica.com/en/local/chicago) |
 
-### modular-tiles {#modular-tiles}
+### modular-tiles
 
 **Total uses:** 4 | **Found on:** 4 page(s) | **Standalone:** 2 (50%)
 
@@ -2105,7 +2105,7 @@
 | 1x | [/en/our-company/local-presence/rebuilding-los-angeles-california](https://about.bankofamerica.com/en/our-company/local-presence/rebuilding-los-angeles-california) |
 | 1x | [/en/local/chicago](https://about.bankofamerica.com/en/local/chicago) |
 
-### arts-story-block {#arts-story-block}
+### arts-story-block
 
 **Total uses:** 4 | **Found on:** 2 page(s) | **Standalone:** 2 (50%)
 
@@ -2119,7 +2119,7 @@
 | 3x | [/en/making-an-impact/arts-and-culture](https://about.bankofamerica.com/en/making-an-impact/arts-and-culture) |
 | 1x | [/en/making-an-impact/museums-on-us-partners](https://about.bankofamerica.com/en/making-an-impact/museums-on-us-partners) |
 
-### scroll-to-nav {#scroll-to-nav}
+### scroll-to-nav
 
 **Total uses:** 3 | **Found on:** 3 page(s) | **Standalone:** 2 (67%)
 
@@ -2134,7 +2134,7 @@
 | 1x | [/en/making-an-impact/sports](https://about.bankofamerica.com/en/making-an-impact/sports) |
 | 1x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### award {#award}
+### award
 
 **Total uses:** 3 | **Found on:** 3 page(s) | **Standalone:** 1 (33%)
 
@@ -2149,7 +2149,7 @@
 | 1x | [/en/making-an-impact/supporting-people-with-disabilities](https://about.bankofamerica.com/en/making-an-impact/supporting-people-with-disabilities) |
 | 1x | [/en/making-an-impact/red](https://about.bankofamerica.com/en/making-an-impact/red) |
 
-### infographic {#infographic}
+### infographic
 
 **Total uses:** 3 | **Found on:** 3 page(s)
 
@@ -2165,7 +2165,7 @@
 | 1x | [/en/making-an-impact/homebuyer-insights-report](https://about.bankofamerica.com/en/making-an-impact/homebuyer-insights-report) |
 | 1x | [/en/our-company/financial-products-services](https://about.bankofamerica.com/en/our-company/financial-products-services) |
 
-### related-work {#related-work}
+### related-work
 
 **Total uses:** 3 | **Found on:** 3 page(s) | **Standalone:** 3 (100%)
 
@@ -2177,7 +2177,7 @@
 | 1x | [/en/making-an-impact/art-in-our-communities](https://about.bankofamerica.com/en/making-an-impact/art-in-our-communities) |
 | 1x | [/en/making-an-impact/art-conservation-project](https://about.bankofamerica.com/en/making-an-impact/art-conservation-project) |
 
-### storyblock {#storyblock}
+### storyblock
 
 **Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
 
@@ -2195,7 +2195,7 @@
 | 1x | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) |
 | 1x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### article-impact-exhibit {#article-impact-exhibit}
+### article-impact-exhibit
 
 **Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
 
@@ -2209,7 +2209,7 @@
 | 1x | [/en/making-an-impact/red](https://about.bankofamerica.com/en/making-an-impact/red) |
 | 1x | [/en/making-an-impact/sustainable-finance](https://about.bankofamerica.com/en/making-an-impact/sustainable-finance) |
 
-### split-content-block {#split-content-block}
+### split-content-block
 
 **Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
 
@@ -2223,7 +2223,7 @@
 | 1x | [/en/making-an-impact/sports](https://about.bankofamerica.com/en/making-an-impact/sports) |
 | 1x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### manual-tile {#manual-tile}
+### manual-tile
 
 **Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
 
@@ -2237,7 +2237,7 @@
 | 1x | [/en/making-an-impact/education-and-career-development-resources](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources) |
 | 1x | [/en/our-company/local-presence/rebuilding-los-angeles-california](https://about.bankofamerica.com/en/our-company/local-presence/rebuilding-los-angeles-california) |
 
-### tab {#tab}
+### tab
 
 **Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
 
@@ -2256,7 +2256,7 @@
 | 1x | [/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness](https://about.bankofamerica.com/en/making-an-impact/education-and-career-development-resources/career-readiness-and-financial-wellness) |
 | 1x | [/en/our-company/local-presence/rebuilding-los-angeles-california](https://about.bankofamerica.com/en/our-company/local-presence/rebuilding-los-angeles-california) |
 
-### background {#background}
+### background
 
 **Total uses:** 2 | **Found on:** 1 page(s)
 
@@ -2269,7 +2269,7 @@
 |-------|----------|
 | 2x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### masthead {#masthead}
+### masthead
 
 **Total uses:** 2 | **Found on:** 1 page(s)
 
@@ -2282,7 +2282,7 @@
 |-------|----------|
 | 2x | [/en](https://about.bankofamerica.com/en) |
 
-### linklist {#linklist}
+### linklist
 
 **Total uses:** 2 | **Found on:** 2 page(s) | **Standalone:** 1 (50%)
 
@@ -2296,7 +2296,7 @@
 | 1x | [/en/making-an-impact](https://about.bankofamerica.com/en/making-an-impact) |
 | 1x | [/en/our-company/financial-products-services](https://about.bankofamerica.com/en/our-company/financial-products-services) |
 
-### media-overlay {#media-overlay}
+### media-overlay
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
@@ -2309,7 +2309,7 @@
 |-------|----------|
 | 1x | [/en/making-an-impact/golf](https://about.bankofamerica.com/en/making-an-impact/golf) |
 
-### event-block {#event-block}
+### event-block
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
@@ -2322,7 +2322,7 @@
 |-------|----------|
 | 1x | [/en/making-an-impact/financial-education-resources-advice](https://about.bankofamerica.com/en/making-an-impact/financial-education-resources-advice) |
 
-### natural-language {#natural-language}
+### natural-language
 
 **Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
 
@@ -2335,7 +2335,7 @@
 |-------|----------|
 | 1x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### button {#button}
+### button
 
 **Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
 
@@ -2345,7 +2345,7 @@
 |-------|----------|
 | 1x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### standalone-link {#standalone-link}
+### standalone-link
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
@@ -2358,7 +2358,7 @@
 |-------|----------|
 | 1x | [/en/chicago-marathon](https://about.bankofamerica.com/en/chicago-marathon) |
 
-### accordion {#accordion}
+### accordion
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
@@ -2374,7 +2374,7 @@
 |-------|----------|
 | 1x | [/en/making-an-impact/student-leader-eligibility-criteria](https://about.bankofamerica.com/en/making-an-impact/student-leader-eligibility-criteria) |
 
-### arts-masthead {#arts-masthead}
+### arts-masthead
 
 **Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
 
@@ -2387,7 +2387,7 @@
 |-------|----------|
 | 1x | [/en/making-an-impact/arts-and-culture](https://about.bankofamerica.com/en/making-an-impact/arts-and-culture) |
 
-### arts-title-image {#arts-title-image}
+### arts-title-image
 
 **Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
 
@@ -2397,7 +2397,7 @@
 |-------|----------|
 | 1x | [/en/making-an-impact/arts-and-culture](https://about.bankofamerica.com/en/making-an-impact/arts-and-culture) |
 
-### arts-locator {#arts-locator}
+### arts-locator
 
 **Total uses:** 1 | **Found on:** 1 page(s)
 
@@ -2410,7 +2410,7 @@
 |-------|----------|
 | 1x | [/en/making-an-impact/arts-and-culture](https://about.bankofamerica.com/en/making-an-impact/arts-and-culture) |
 
-### arts-museums-table {#arts-museums-table}
+### arts-museums-table
 
 **Total uses:** 1 | **Found on:** 1 page(s) | **Standalone:** 1 (100%)
 
