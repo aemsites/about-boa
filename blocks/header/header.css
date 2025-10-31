@@ -8,17 +8,16 @@
   }
 
   header nav {
-    box-sizing: border-box;
     display: grid;
     grid-template:
       'hamburger brand tools' var(--nav-height)
       'sections sections sections' 1fr / auto 1fr auto;
     align-items: center;
-    gap: 0 24px;
+    gap: 0 var(--spacing-l);
     margin: auto;
-    max-width: 1248px;
+    max-width: calc(var(--max-content-width) + var(--spacing-l) * 2);
     height: var(--nav-height);
-    padding: 0 24px;
+    padding: 0 var(--spacing-l);
     font-family: var(--body-font-family);
   }
 
@@ -35,9 +34,9 @@
     header nav {
       display: flex;
       justify-content: space-between;
-      gap: 0 32px;
-      max-width: 1264px;
-      padding: 0 32px;
+      gap: 0 var(--spacing-xl);
+      max-width: calc(var(--max-content-width) + var(--spacing-xl) * 2);
+      padding: 0 var(--spacing-xl);
     }
 
     header nav[aria-expanded='true'] {
@@ -79,7 +78,6 @@
   header nav .nav-hamburger-icon,
   header nav .nav-hamburger-icon::before,
   header nav .nav-hamburger-icon::after {
-    box-sizing: border-box;
     display: block;
     position: relative;
     width: 20px;
@@ -195,7 +193,7 @@
 
     header nav .nav-sections .nav-drop {
       position: relative;
-      padding-right: 16px;
+      padding-right: var(--spacing-m);
       cursor: pointer;
     }
 
@@ -221,7 +219,7 @@
 
     header nav .nav-sections ul {
       display: flex;
-      gap: 24px;
+      gap: var(--spacing-l);
       margin: 0;
     }
 
@@ -238,10 +236,10 @@
     header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
       display: block;
       position: absolute;
-      left: -24px;
+      left: calc(-1 * var(--spacing-l));
       width: 200px;
       top: 150%;
-      padding: 16px;
+      padding: var(--spacing-m);
       background-color: var(--light-color);
       white-space: initial;
     }
@@ -250,7 +248,7 @@
       content: '';
       position: absolute;
       top: -8px;
-      left: 16px;
+      left: var(--spacing-m);
       width: 0;
       height: 0;
       border-left: 8px solid transparent;
@@ -259,7 +257,7 @@
     }
 
     header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
-      padding: 8px 0;
+      padding: var(--spacing-xs) 0;
     }
   }
 

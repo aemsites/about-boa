@@ -13,32 +13,37 @@
 @layer reset, core, blocks, utilities;
 
 @layer reset {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    transition-behavior: allow-discrete;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      interpolate-size: allow-keywords;
+    }
+  }
+
   body {
     margin: 0;
   }
 
-  main > div {
-    margin: 40px 16px;
+  /* Images */
+  img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
   }
 
-  p,
-  dl,
-  ol,
-  ul,
-  pre,
-  blockquote {
-    margin-top: 0.8em;
-    margin-bottom: 0.25em;
+  img, picture {
+    height: auto;
+    width: auto;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin-top: 0.8em;
-    margin-bottom: 0.25em;
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
   }
 }
 
@@ -71,6 +76,17 @@
 
     /* nav height */
     --nav-height: 64px;
+
+    /* layout */
+    --max-content-width: 1200px;
+
+    /* spacing */
+    --spacing-xs: 8px;
+    --spacing-s: 12px;
+    --spacing-m: 16px;
+    --spacing-l: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 40px;
   }
 
   @media (width >= 900px) {
@@ -111,10 +127,25 @@
     font-family: var(--body-font-family);
     font-size: var(--body-font-size-m);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
   }
 
   body.appear {
     display: block;
+  }
+
+  main > div {
+    margin: var(--spacing-xxl) var(--spacing-m);
+  }
+
+  p,
+  dl,
+  ol,
+  ul,
+  pre,
+  blockquote {
+    margin-top: 0.8em;
+    margin-bottom: 0.25em;
   }
 
   /* Typography */
@@ -124,10 +155,12 @@
   h4,
   h5,
   h6 {
+    margin-top: 0.8em;
+    margin-bottom: 0.25em;
     font-family: var(--heading-font-family);
     font-weight: 600;
     line-height: 1.25;
-    scroll-margin: 40px;
+    scroll-margin: var(--spacing-xxl);
   }
 
   h1 { font-size: var(--heading-font-size-xxl); }
@@ -143,19 +176,11 @@
   }
 
   pre {
-    padding: 16px;
+    padding: var(--spacing-m);
     border-radius: 8px;
     background-color: var(--light-color);
     overflow-x: auto;
     white-space: pre;
-  }
-
-  /* Form elements */
-  input,
-  textarea,
-  select,
-  button {
-    font: inherit;
   }
 
   /* Links */
@@ -173,10 +198,9 @@
   /* Buttons */
   a.button:any-link,
   button {
-    box-sizing: border-box;
     display: inline-block;
     max-width: 100%;
-    margin: 12px 0;
+    margin: var(--spacing-s) 0;
     border: 2px solid transparent;
     border-radius: 2.4em;
     padding: 0.5em 1.2em;
@@ -215,13 +239,6 @@
     color: var(--text-color);
   }
 
-  /* Images */
-  main img {
-    max-width: 100%;
-    width: auto;
-    height: auto;
-  }
-
   /* Icons */
   .icon {
     display: inline-block;
@@ -229,7 +246,8 @@
     width: 24px;
   }
 
-  .icon img {
+  .icon img,
+  .icon svg {
     height: 100%;
     width: 100%;
   }
@@ -251,13 +269,13 @@
 
   /* Sections */
   main > .section {
-    margin: 40px 0;
+    margin: var(--spacing-xxl) 0;
   }
 
   main > .section > div {
-    max-width: 1200px;
+    max-width: var(--max-content-width);
     margin: auto;
-    padding: 0 24px;
+    padding: 0 var(--spacing-l);
   }
 
   main > .section:first-of-type {
@@ -266,19 +284,16 @@
 
   @media (width >= 900px) {
     main > .section > div {
-      padding: 0 32px;
+      padding: 0 var(--spacing-xl);
     }
-  }
-
-  /* Section metadata */
-  main .section.light,
-  main .section.highlight {
-    background-color: var(--light-color);
-    margin: 0;
-    padding: 40px 0;
   }
 }
 
 @layer utilities {
-  /* Utility classes can be added here */
+  main .section.light,
+  main .section.highlight {
+    background-color: var(--light-color);
+    margin: 0;
+    padding: var(--spacing-xxl) 0;
+  }
 }
