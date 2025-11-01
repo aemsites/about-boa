@@ -49,30 +49,55 @@
 
 @layer core {
   :root {
-    /* colors */
-    --background-color: white;
-    --light-color: #f8f8f8;
-    --dark-color: #505050;
-    --text-color: #131313;
-    --link-color: #3b63fb;
-    --link-hover-color: #1d3ecf;
+    /* Brand Colors - Primary */
+    --color-brand-blue: #012169;
+    --color-brand-red: #e31837;
+    --color-white: #fff;
+    --color-black: #000;
+
+    /* Brand Colors - Blue Shades */
+    --color-blue-dark: #001543;
+    --color-blue-primary: #012169;
+    --color-blue-royal: #0053c2;
+    --color-blue-bright: #0073cf;
+    --color-blue-light: #cedfff;
+
+    /* Brand Colors - Red Shades */
+    --color-red-bright: #e31837;
+    --color-red-regal: #c41230;
+    --color-red-crimson: #780032;
+    --color-red-light: #ffd7d5;
+
+    /* Neutrals */
+    --color-gray-dark: #5c5050;
+    --color-gray: #646464;
+    --color-gray-light: #ededed;
+    --color-gray-lightest: #f5f5f5;
+
+    /* Semantic Colors */
+    --background-color: var(--color-white);
+    --light-color: var(--color-gray-lightest);
+    --dark-color: var(--color-gray-dark);
+    --text-color: var(--color-black);
+    --link-color: var(--color-blue-royal);
+    --link-hover-color: var(--color-blue-primary);
 
     /* fonts */
-    --body-font-family: roboto, roboto-fallback, sans-serif;
-    --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+    --body-font-family: connections, connections-fallback, sans-serif;
+    --heading-font-family: connectionscond, connectionscond-fallback, sans-serif;
 
     /* body sizes */
-    --body-font-size-m: 22px;
-    --body-font-size-s: 19px;
-    --body-font-size-xs: 17px;
+    --body-font-size-m: 1.125rem;  /* 18px */
+    --body-font-size-s: 1rem;      /* 16px */
+    --body-font-size-xs: 0.875rem; /* 14px */
 
     /* heading sizes */
-    --heading-font-size-xxl: 55px;
-    --heading-font-size-xl: 44px;
-    --heading-font-size-l: 34px;
-    --heading-font-size-m: 27px;
-    --heading-font-size-s: 24px;
-    --heading-font-size-xs: 22px;
+    --heading-font-size-xxl: 2rem;   /* 32px - h1 */
+    --heading-font-size-xl: 1.5rem;  /* 24px - h2 */
+    --heading-font-size-l: 1.25rem;  /* 20px - h3 */
+    --heading-font-size-m: 1rem;     /* 16px - h4 */
+    --heading-font-size-s: 1rem;     /* 16px - h5 */
+    --heading-font-size-xs: 1rem;    /* 16px - h6 */
 
     /* nav height */
     --nav-height: 64px;
@@ -81,45 +106,38 @@
     --max-content-width: 1200px;
 
     /* spacing */
-    --spacing-xs: 8px;
-    --spacing-s: 12px;
-    --spacing-m: 16px;
-    --spacing-l: 24px;
-    --spacing-xl: 32px;
-    --spacing-xxl: 40px;
-    --default-inline-spacing: var(--spacing-l);
+    --spacing-xs: 0.5rem;    /* 8px */
+    --spacing-sm: 1rem;      /* 16px */
+    --spacing-md: 1.25rem;   /* 20px - most common in BofA blocks */
+    --spacing-lg: 1.5rem;    /* 24px */
+    --spacing-xl: 2rem;      /* 32px */
+    --spacing-xxl: 3rem;     /* 48px */
+    --spacing-xxxl: 4rem;    /* 64px */
+
+    /* Legacy spacing names for compatibility */
+    --spacing-s: var(--spacing-sm);
+    --spacing-m: var(--spacing-md);
+    --spacing-l: var(--spacing-lg);
+    --default-inline-spacing: var(--spacing-lg);
   }
 
   @media (width >= 900px) {
     :root {
-      /* body sizes */
-      --body-font-size-m: 18px;
-      --body-font-size-s: 16px;
-      --body-font-size-xs: 14px;
-
-      /* heading sizes */
-      --heading-font-size-xxl: 45px;
-      --heading-font-size-xl: 36px;
-      --heading-font-size-l: 28px;
-      --heading-font-size-m: 22px;
-      --heading-font-size-s: 20px;
-      --heading-font-size-xs: 18px;
-
       /* spacing */
-      --default-inline-spacing: var(--spacing-xl);
+      --default-inline-spacing: var(--spacing-xxl);
     }
   }
 
-  /* fallback fonts */
+  /* fallback fonts - TODO: Adjust size-adjust values to match Connections metrics */
   @font-face {
-    font-family: roboto-condensed-fallback;
-    size-adjust: 88.82%;
+    font-family: connections-fallback;
+    size-adjust: 100%;
     src: local('Arial');
   }
 
   @font-face {
-    font-family: roboto-fallback;
-    size-adjust: 99.529%;
+    font-family: connectionscond-fallback;
+    size-adjust: 100%;
     src: local('Arial');
   }
 
@@ -147,8 +165,8 @@
   ul,
   pre,
   blockquote {
-    margin-top: 0.8em;
-    margin-bottom: 0.25em;
+    margin-top: 0;
+    margin-bottom: 1em;
   }
 
   /* Typography */
@@ -158,20 +176,52 @@
   h4,
   h5,
   h6 {
-    margin-top: 0.8em;
-    margin-bottom: 0.25em;
-    font-family: var(--heading-font-family);
-    font-weight: 600;
-    line-height: 1.25;
+    margin-top: 0;
+    margin-bottom: 0.5em;
     scroll-margin: var(--spacing-xxl);
   }
 
-  h1 { font-size: var(--heading-font-size-xxl); }
-  h2 { font-size: var(--heading-font-size-xl); }
-  h3 { font-size: var(--heading-font-size-l); }
-  h4 { font-size: var(--heading-font-size-m); }
-  h5 { font-size: var(--heading-font-size-s); }
-  h6 { font-size: var(--heading-font-size-xs); }
+  /* Large headings - light weight */
+  h1,
+  .h1,
+  h2,
+  .h2,
+  h3,
+  .h3 {
+    font-family: connectionslight, connections-fallback, sans-serif;
+    font-weight: 300;
+    line-height: 1.25;
+  }
+
+  h1,
+  .h1 { font-size: var(--heading-font-size-xxl); }
+
+  h2,
+  .h2 { font-size: var(--heading-font-size-xl); }
+
+  h3,
+  .h3 { font-size: var(--heading-font-size-l); }
+
+  /* Small headings - regular weight */
+  h4,
+  .h4,
+  h5,
+  .h5,
+  h6,
+  .h6 {
+    font-family: var(--body-font-family);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  h4,
+  .h4 { font-size: var(--heading-font-size-m); }
+
+  h5,
+  .h5 { font-size: var(--heading-font-size-s); }
+
+  h6,
+  .h6 { font-size: var(--heading-font-size-xs); }
 
   code,
   pre {
@@ -203,43 +253,55 @@
   button {
     display: inline-block;
     max-width: 100%;
-    margin: var(--spacing-s) 0;
+    margin: var(--spacing-sm) 0;
     border: 2px solid transparent;
-    border-radius: 2.4em;
-    padding: 0.5em 1.2em;
+    border-radius: 0.25rem;
+    padding: 0.663em 1rem;
     font-family: var(--body-font-family);
     font-style: normal;
     font-weight: 500;
+    font-size: 1rem;
     line-height: 1.25;
     text-align: center;
     text-decoration: none;
-    background-color: var(--link-color);
-    color: var(--background-color);
+    background-color: var(--color-blue-royal);
+    color: var(--color-white);
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    transition: background-color 0.2s ease;
   }
 
   a.button:hover,
   a.button:focus,
   button:hover,
   button:focus {
-    background-color: var(--link-hover-color);
+    background-color: var(--color-blue-primary);
+    text-decoration: none;
     cursor: pointer;
   }
 
   button:disabled,
   button:disabled:hover {
-    background-color: var(--light-color);
-    cursor: unset;
+    background-color: var(--color-gray-light);
+    color: var(--color-gray);
+    cursor: not-allowed;
   }
 
   a.button.secondary,
   button.secondary {
-    background-color: unset;
-    border: 2px solid currentcolor;
-    color: var(--text-color);
+    background-color: transparent;
+    border: 2px solid var(--color-blue-royal);
+    color: var(--color-blue-royal);
+  }
+
+  a.button.secondary:hover,
+  a.button.secondary:focus,
+  button.secondary:hover,
+  button.secondary:focus {
+    background-color: var(--color-blue-royal);
+    color: var(--color-white);
   }
 
   /* Icons */
@@ -287,6 +349,31 @@
 }
 
 @layer utilities {
+  /* Accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Heading utilities - margins for utility classes */
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+
+  /* Section utilities */
   main .section.light,
   main .section.highlight {
     background-color: var(--light-color);
