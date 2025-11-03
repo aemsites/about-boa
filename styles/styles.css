@@ -132,14 +132,14 @@
   /* fallback fonts - TODO: Adjust size-adjust values to match Connections metrics */
   @font-face {
     font-family: connections-fallback;
-    size-adjust: 94%;
-    src: local('Arial');
+    src: local('Tahoma');
+    size-adjust: 96%;
   }
 
   @font-face {
     font-family: connectionslight-fallback;
-    size-adjust: 91%;
-    src: local('Arial');
+    src: local('Tahoma');
+    size-adjust: 92%;
   }
 
   /* Body and base styles */
