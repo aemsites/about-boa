@@ -1,6 +1,6 @@
 import {
   buildBlock,
-  loadHeader,
+  // loadHeader, // TODO: Re-enable when header is fixed
   loadFooter,
   decorateButtons,
   decorateIcons,
@@ -135,7 +135,8 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
+  // TODO: Re-enable when header is fixed
+  // loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);

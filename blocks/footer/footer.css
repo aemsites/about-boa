@@ -4,8 +4,16 @@
     font-size: var(--body-font-size-xs);
   }
 
+  /* Remove padding from sections to allow edge-to-edge backgrounds */
   footer .footer > div {
-    margin: auto;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Add padding to content wrappers inside sections */
+  footer .footer > div > div {
+    max-width: var(--max-content-width);
+    margin: 0 auto;
     padding: var(--spacing-xl) var(--spacing-l);
   }
 
@@ -173,7 +181,7 @@
 
   /* Tablet and Desktop Styles */
   @media (width >= 600px) {
-    footer .footer > div {
+    footer .footer > div > div {
       padding: var(--spacing-xl) var(--spacing-xl);
     }
 
@@ -231,7 +239,7 @@
   }
 
   @media (width >= 1200px) {
-    footer .footer > div {
+    footer .footer > div > div {
       padding: var(--spacing-xxl) var(--spacing-xl);
     }
   }
