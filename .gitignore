@@ -10,3 +10,5 @@ helix-importer-ui
 
 # Import analysis screenshots
 tools/importer/screenshots/
+
+test/tmp/

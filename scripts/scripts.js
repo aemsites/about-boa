@@ -1,8 +1,7 @@
 import {
   buildBlock,
-  loadHeader,
+  // loadHeader, // TODO: Re-enable when header is fixed
   loadFooter,
-  decorateButtons,
   decorateIcons,
   decorateSections,
   decorateBlocks,
@@ -71,18 +70,56 @@ function buildAutoBlocks(main) {
   }
 }
 
+/**
+ * Decorates buttons in the main content area
+ * @param {Element} main The main element
+ */
+function decorateButtons(main) {
+  main.querySelectorAll('p a[href]').forEach((a) => {
+    a.title = a.title || a.textContent;
+    const p = a.closest('p');
+    // identify standalone links - only if parent of p is a div
+    if (a.href !== a.textContent
+      && p.textContent === a.textContent
+      && p.parentElement?.tagName === 'DIV') {
+      a.className = 'button';
+      const strong = a.closest('strong');
+      const em = a.closest('em');
+      const double = !!strong && !!em;
+      if (double) a.classList.add('accent');
+      else if (strong) a.classList.add('emphasis');
+      else if (em) a.classList.add('outline');
+      p.innerHTML = a.outerHTML;
+      p.className = 'button-wrapper';
+    }
+  });
+}
+
 function mergeButtonContainers(main) {
-  let consecContainer = main.querySelector('.button-container + .button-container');
+  let consecContainer = main.querySelector('.button-wrapper + .button-wrapper');
   while (consecContainer) {
     const prevContainer = consecContainer.previousElementSibling;
     prevContainer.append(...consecContainer.children);
     consecContainer.remove();
-    consecContainer = main.querySelector('.button-container + .button-container');
+    consecContainer = main.querySelector('.button-wrapper + .button-wrapper');
   }
 }
 
 function decorateLinks(main) {
   main.querySelectorAll('a').forEach(rewriteLinkUrl);
+}
+
+function normalizeLists(main) {
+  main.querySelectorAll('li').forEach((li) => {
+    const p = li.querySelector('p:first-child');
+    if (p) {
+      const children = p.childNodes;
+      children.forEach((child) => {
+        p.before(child);
+      });
+      p.remove();
+    }
+  });
 }
 
 /**
@@ -93,6 +130,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  normalizeLists(main);
   decorateLinks(main);
   decorateButtons(main);
   decorateIcons(main);
@@ -135,7 +173,8 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
+  // TODO: Re-enable when header is fixed
+  // loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);

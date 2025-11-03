@@ -83,8 +83,8 @@
     --link-hover-color: var(--color-blue-primary);
 
     /* fonts */
-    --body-font-family: connections, connections-fallback, sans-serif;
-    --heading-font-family: connectionscond, connectionscond-fallback, sans-serif;
+    --body-font-family: connections, connections-fallback, helvetica, arial, sans-serif;
+    --heading-font-family: connectionslight, connectionslight-fallback, helvetica, arial, sans-serif;
 
     /* body sizes */
     --body-font-size-m: 1.125rem;  /* 18px */
@@ -96,8 +96,8 @@
     --heading-font-size-xl: 1.5rem;  /* 24px - h2 */
     --heading-font-size-l: 1.25rem;  /* 20px - h3 */
     --heading-font-size-m: 1rem;     /* 16px - h4 */
-    --heading-font-size-s: 1rem;     /* 16px - h5 */
-    --heading-font-size-xs: 1rem;    /* 16px - h6 */
+    --heading-font-size-s: 0.875rem;     /* 14px - h5 */
+    --heading-font-size-xs: 0.75rem;    /* 12px - h6 */
 
     /* nav height */
     --nav-height: 64px;
@@ -106,6 +106,7 @@
     --max-content-width: 1200px;
 
     /* spacing */
+    --spacing-xxs: 0.25rem;  /* 4px */
     --spacing-xs: 0.5rem;    /* 8px */
     --spacing-sm: 1rem;      /* 16px */
     --spacing-md: 1.25rem;   /* 20px - most common in BofA blocks */
@@ -131,14 +132,14 @@
   /* fallback fonts - TODO: Adjust size-adjust values to match Connections metrics */
   @font-face {
     font-family: connections-fallback;
-    size-adjust: 100%;
-    src: local('Arial');
+    src: local('Tahoma');
+    size-adjust: 96%;
   }
 
   @font-face {
-    font-family: connectionscond-fallback;
-    size-adjust: 100%;
-    src: local('Arial');
+    font-family: connectionslight-fallback;
+    src: local('Tahoma');
+    size-adjust: 92%;
   }
 
   /* Body and base styles */
@@ -188,7 +189,7 @@
   .h2,
   h3,
   .h3 {
-    font-family: connectionslight, connections-fallback, sans-serif;
+    font-family: var(--heading-font-family);
     font-weight: 300;
     line-height: 1.25;
   }
@@ -311,6 +312,11 @@
     width: 24px;
   }
 
+  .icon-bank-of-america {
+    height: 32px;
+    width: auto;
+  }
+
   .icon img,
   .icon svg {
     height: 100%;
@@ -342,9 +348,13 @@
   }
 
   main > .section > div {
-    max-width: var(--max-content-width);
-    margin: auto;
+    max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    margin: 0 auto;
     padding: 0 var(--default-inline-spacing);
+  }
+
+  .block {
+    margin-block: var(--spacing-md);
   }
 }
 
