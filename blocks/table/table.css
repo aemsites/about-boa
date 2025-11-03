@@ -1,0 +1,30 @@
+@layer blocks {
+  .table {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .table table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--text-color);
+  }
+
+  .table td {
+    border: 1px solid var(--text-color);
+    padding: var(--spacing-s) var(--spacing-m);
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .table td strong {
+    font-weight: 700;
+  }
+
+  /* Ensure table is scrollable on very small screens */
+  @media (width < 600px) {
+    .table {
+      margin: var(--spacing-m) calc(var(--spacing-m) * -1);
+    }
+  }
+}
