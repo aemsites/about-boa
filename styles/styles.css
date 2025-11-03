@@ -83,8 +83,8 @@
     --link-hover-color: var(--color-blue-primary);
 
     /* fonts */
-    --body-font-family: connections, connections-fallback, sans-serif;
-    --heading-font-family: connectionscond, connectionscond-fallback, sans-serif;
+    --body-font-family: connections, connections-fallback, helvetica, arial, sans-serif;
+    --heading-font-family: connectionslight, connectionslight-fallback, helvetica, arial, sans-serif;
 
     /* body sizes */
     --body-font-size-m: 1.125rem;  /* 18px */
@@ -132,13 +132,13 @@
   /* fallback fonts - TODO: Adjust size-adjust values to match Connections metrics */
   @font-face {
     font-family: connections-fallback;
-    size-adjust: 100%;
+    size-adjust: 94%;
     src: local('Arial');
   }
 
   @font-face {
-    font-family: connectionscond-fallback;
-    size-adjust: 100%;
+    font-family: connectionslight-fallback;
+    size-adjust: 91%;
     src: local('Arial');
   }
 
@@ -189,7 +189,7 @@
   .h2,
   h3,
   .h3 {
-    font-family: connectionslight, connections-fallback, sans-serif;
+    font-family: var(--heading-font-family);
     font-weight: 300;
     line-height: 1.25;
   }
