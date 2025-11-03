@@ -11,13 +11,8 @@ export default async function decorate(block) {
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
   const fragment = await loadFragment(footerPath);
 
-  // decorate footer DOM
-  block.textContent = '';
-  const footer = document.createElement('div');
-  while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
-
   // decorate sections by their data-id attributes (already processed by section decoration)
-  const sections = footer.querySelectorAll(':scope > div.section');
+  const sections = [...fragment.children];
 
   sections.forEach((section) => {
     // Get section ID from data-id attribute and add footer-prefixed class
@@ -27,5 +22,30 @@ export default async function decorate(block) {
     }
   });
 
-  block.append(footer);
+  // create two wrapper divs for different background sections
+  const mainSection = document.createElement('div');
+  mainSection.className = 'footer-main';
+  const utilitySection = document.createElement('div');
+  utilitySection.className = 'footer-utility';
+
+  // move sections into appropriate wrapper
+  sections.forEach((section) => {
+    const sectionId = section.dataset.id;
+    if (sectionId === 'quick-links' || sectionId === 'navigation') {
+      mainSection.append(section);
+    } else {
+      utilitySection.append(section);
+    }
+  });
+
+  const privacyLink = utilitySection.querySelector('a[href*="#lot"]');
+  if (privacyLink) {
+    privacyLink.className = '';
+    privacyLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      // open privacy modal
+    });
+  }
+
+  block.replaceChildren(mainSection, utilitySection);
 }
