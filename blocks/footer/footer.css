@@ -92,7 +92,7 @@
   .footer .footer-legal ul {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-xs) 0;
     margin-block-end: var(--spacing-sm);
   }
 
