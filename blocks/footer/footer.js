@@ -18,29 +18,12 @@ export default async function decorate(block) {
 
   // decorate sections by their data-id attributes (already processed by section decoration)
   const sections = footer.querySelectorAll(':scope > div.section');
-  const sectionIds = [];
 
   sections.forEach((section) => {
-    // Get section ID from data-id attribute
+    // Get section ID from data-id attribute and add footer-prefixed class
     const sectionId = section.dataset.id;
-
     if (sectionId) {
-      // Handle duplicate IDs by tracking occurrences
-      const occurrenceCount = sectionIds.filter((id) => id === sectionId).length;
-      sectionIds.push(sectionId);
-
-      // Add appropriate class based on section ID and occurrence
-      if (sectionId === 'company') {
-        section.classList.add('footer-quick-links');
-      } else if (sectionId === 'utility' && occurrenceCount === 0) {
-        section.classList.add('footer-navigation');
-      } else if (sectionId === 'disclaimer') {
-        section.classList.add('footer-disclaimer');
-      } else if (sectionId === 'utility' && occurrenceCount === 1) {
-        section.classList.add('footer-legal');
-      } else if (sectionId === 'social') {
-        section.classList.add('footer-social');
-      }
+      section.classList.add(`footer-${sectionId}`);
     }
   });
 

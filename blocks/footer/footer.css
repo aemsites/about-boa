@@ -37,6 +37,7 @@
   footer .footer-quick-links {
     background-color: #00205b;
     color: white;
+    border-bottom: 1px solid rgb(255 255 255 / 20%);
   }
 
   footer .footer-quick-links ul {
@@ -57,36 +58,32 @@
     color: white;
   }
 
-  footer .footer-navigation ul {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-l);
+  /* Mobile: Show only parent links in 2-column grid, hide children */
+  footer .footer-navigation > div > ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-m) var(--spacing-l);
   }
 
   footer .footer-navigation ul > li {
-    margin-bottom: var(--spacing-m);
+    margin-bottom: 0;
   }
 
   footer .footer-navigation ul > li > p {
     font-size: var(--body-font-size-m);
-    font-weight: 600;
-    margin-bottom: var(--spacing-s);
+    font-weight: 400;
+    margin-bottom: 0;
   }
 
   footer .footer-navigation ul > li > p > a {
     color: white;
+    display: block;
+    padding: var(--spacing-s) 0;
   }
 
+  /* Hide child links on mobile */
   footer .footer-navigation ul > li > ul {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-  }
-
-  footer .footer-navigation ul > li > ul a {
-    font-size: var(--body-font-size-s);
-    font-weight: 400;
-    opacity: 0.9;
+    display: none;
   }
 
   /* Disclaimer Section */
@@ -193,6 +190,10 @@
 
   @media (width >= 900px) {
     /* Quick Links - horizontal row on desktop */
+    footer .footer-quick-links {
+      border-bottom: none;
+    }
+
     footer .footer-quick-links ul {
       display: flex;
       justify-content: space-between;
@@ -203,8 +204,9 @@
       padding: var(--spacing-m) 0;
     }
 
-    /* Navigation - 5 column grid on desktop */
-    footer .footer-navigation ul {
+    /* Navigation - 5 column grid on desktop with child links */
+    footer .footer-navigation > div > ul {
+      display: flex;
       flex-direction: row;
       justify-content: space-between;
       gap: var(--spacing-xl);
@@ -213,6 +215,25 @@
     footer .footer-navigation ul > li {
       flex: 1;
       margin-bottom: 0;
+    }
+
+    footer .footer-navigation ul > li > p {
+      font-weight: 600;
+      margin-bottom: var(--spacing-s);
+    }
+
+    /* Show child links on desktop */
+    footer .footer-navigation ul > li > ul {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+
+    footer .footer-navigation ul > li > ul a {
+      font-size: var(--body-font-size-s);
+      font-weight: 400;
+      opacity: 0.9;
+      padding: var(--spacing-xs) 0;
     }
 
     /* Legal - horizontal row with separators */
