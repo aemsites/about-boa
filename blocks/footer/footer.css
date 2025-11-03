@@ -115,7 +115,7 @@
   @media (width >= 900px) {
     .footer .footer-utility {
       padding: var(--spacing-xl);
-      max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+      max-width: calc(var(--max-content-width) + (var(--spacing-xl) * 2));
       margin: 0 auto;
       display: grid;
     }
