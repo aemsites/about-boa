@@ -10,10 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
+/* global WebImporter */
 /* eslint-disable no-console, class-methods-use-this */
-
-// WebImporter utilities are available as global variables
-// when this script runs in the import context
 
 /**
  * Create metadata block
@@ -63,7 +61,6 @@ function createMetadata(main, document) {
   }
 
   // Create and append metadata block
-  // eslint-disable-next-line no-undef
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
   main.append(block);
 
@@ -107,7 +104,6 @@ function transformNotchedImage(main, document) {
     const content = el.querySelector('.notched-image__content');
 
     // Create the block using the official Blocks.createBlock helper
-    // eslint-disable-next-line no-undef
     const block = WebImporter.Blocks.createBlock(document, {
       name: 'notched-image',
       variants,
@@ -143,6 +139,17 @@ function ensureDesktopImages(main, document) {
   });
 }
 
+function normalizeURLs(main) {
+  const resetAttributeBase = (tag, attr) => {
+    main.querySelectorAll(`${tag}[${attr}]`).forEach((elem) => {
+      elem[attr] = new URL(elem.getAttribute(attr), new URL('https://about.bankofamerica.com')).href;
+    });
+  };
+
+  resetAttributeBase('img', 'src');
+  resetAttributeBase('source', 'srcset');
+}
+
 /**
  * Main transformation function
  */
@@ -159,7 +166,7 @@ export default {
   transformDOM: ({
     document,
     // eslint-disable-next-line no-unused-vars
-    url,
+    _url,
     // eslint-disable-next-line no-unused-vars
     html,
     // eslint-disable-next-line no-unused-vars
@@ -173,19 +180,16 @@ export default {
       return document.body;
     }
 
-    // eslint-disable-next-line no-undef
-    WebImporter.rules.transformBackgroundImages(main, document);
-
     const transforms = [
+      WebImporter.rules.transformBackgroundImages,
+      normalizeURLs,
       ensureDesktopImages,
       transformNotchedImage,
-      // more transformations here
+      // more block transformations here
+      createMetadata,
     ];
 
     transforms.forEach((transform) => transform(main, document));
-
-    // Create metadata block
-    createMetadata(main, document);
 
     return main;
   },
@@ -227,7 +231,6 @@ export default {
 
     // Sanitize the path to follow AEM URL conventions
     // (lowercase, latin characters only, hyphens only)
-    // eslint-disable-next-line no-undef
     return WebImporter.FileUtils.sanitizePath(path);
   },
 };
