@@ -14,6 +14,19 @@
 /* eslint-disable no-console, class-methods-use-this */
 
 /**
+ * Create a row from an element by extracting image and content using selectors
+ * @param {Element} element - The element to query
+ * @param {string} imageSelector - CSS selector for the image
+ * @param {string} contentSelector - CSS selector for the content
+ * @returns {Array} Array containing [image, content]
+ */
+function createRowFromSelectors(element, imageSelector, contentSelector) {
+  const img = element.querySelector(imageSelector);
+  const content = element.querySelector(contentSelector);
+  return [img, content];
+}
+
+/**
  * Create metadata block
  * @param {Element} main - The main element
  * @param {Document} document - The document object
@@ -60,6 +73,11 @@ function createMetadata(main, document) {
     meta.Keywords = keywords.content || keywords.getAttribute('content');
   }
 
+  const breadcrumb = document.querySelector('meta[name="breadcrumb"]');
+  if (breadcrumb) {
+    meta.Breadcrumb = breadcrumb.content;
+  }
+
   // Create and append metadata block
   const block = WebImporter.Blocks.getMetadataBlock(document, meta);
   main.append(block);
@@ -97,22 +115,70 @@ function transformNotchedImage(main, document) {
       variants.push('shadowed');
     }
 
-    // Find the image
-    const img = el.querySelector('.notched-image__image img');
-
-    // Find the content using the specific class
-    const content = el.querySelector('.notched-image__content');
-
     // Create the block using the official Blocks.createBlock helper
     const block = WebImporter.Blocks.createBlock(document, {
       name: 'notched-image',
       variants,
       cells: [
-        [img, content],
+        createRowFromSelectors(el, '.notched-image__image img', '.notched-image__content'),
       ],
     });
 
     // Replace original element with the block
+    el.replaceWith(block);
+  });
+}
+
+function transformCarousels(main, document) {
+  main.querySelectorAll('.aem-wrap--horizontal-content, .aem-wrap--horizontal-tile').forEach((el) => {
+    const cells = [];
+
+    const container = el.querySelector('.horizontal-tile__item-container');
+    [...container.children].forEach((child) => {
+      cells.push(createRowFromSelectors(
+        child,
+        '.horizontal-tile__image-container img',
+        '.horizontal-tile__text-container',
+      ));
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'carousel',
+      cells,
+    });
+
+    // Replace original element with the block
+    el.replaceWith(block);
+  });
+
+  main.querySelectorAll('.aem-wrap--carousel').forEach((el) => {
+    const cells = [];
+    const variants = [];
+    const items = el.querySelectorAll('.uc-carousel__item');
+    items.forEach((item) => {
+      if (item.querySelector('uc-masthead')) {
+        variants.push('masthead');
+        cells.push(createRowFromSelectors(
+          item,
+          '.uc-masthead__image img',
+          '.uc-masthead__body',
+        ));
+      } else {
+        console.warn('Unknown carousel item', item);
+      }
+    });
+
+    const uniqueVariants = [...new Set(variants)];
+    if (uniqueVariants.length > 1) {
+      console.warn('Multiple variants found in carousel', el);
+    }
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'carousel',
+      variants: uniqueVariants,
+      cells,
+    });
+
     el.replaceWith(block);
   });
 }
@@ -150,6 +216,116 @@ function normalizeURLs(main) {
   resetAttributeBase('source', 'srcset');
 }
 
+function transformHighlightBlock(main, document) {
+  main.querySelectorAll('.aem-wrap--highlight-block').forEach((el) => {
+    const content = el.querySelector('.highlight-block__box');
+    const color = [...content.classList].find((cls) => cls.includes('highlight-block--bg-'));
+    const variants = [color.replace('highlight-block--bg-', '')];
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'highlight',
+      variants,
+      cells: [
+        createRowFromSelectors(el, '.highlight-block__image img', '.highlight-block__box'),
+      ],
+    });
+
+    el.replaceWith(block);
+  });
+}
+
+function transformStoryBlock(main, document) {
+  main.querySelectorAll('.aem-wrap--story-block').forEach((el) => {
+    const color = [...el.querySelector('.story-block').classList].find((cls) => cls.includes('story-block--bg-'));
+    const align = [...el.querySelector('.story-block').classList].find((cls) => cls.includes('story-block--align-'));
+    const variants = [color.replace('story-block--', ''), align.replace('story-block--', '')];
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'story',
+      variants,
+      cells: [
+        createRowFromSelectors(el, '.story-block__image img', '.story-block__content'),
+      ],
+    });
+
+    el.replaceWith(block);
+  });
+}
+
+function transformSections(main, document) {
+  const sectionBreak = document.createElement('div');
+  sectionBreak.innerHTML = '<p>---</p>';
+
+  [...main.children].forEach((sectionEl) => {
+    if (sectionEl.textContent.trim() === '') {
+      return;
+    }
+
+    const sectionDiv = document.createElement('div');
+    main.insertBefore(sectionDiv, sectionEl);
+    sectionDiv.append(sectionEl);
+
+    const sectionStyle = [...sectionEl.firstElementChild.classList]
+      .filter((cls) => cls.includes('container-layout_theme_') && cls !== 'container-layout_theme_transparent')
+      .map((cls) => cls.replace('container-layout_theme_', 'bg-'));
+
+    if (sectionStyle.length > 0) {
+      const sectionMeta = WebImporter.Blocks.createBlock(document, {
+        name: 'section-metadata',
+        cells: [
+          ['style', sectionStyle],
+        ],
+      });
+
+      sectionDiv.append(sectionMeta);
+    }
+
+    sectionDiv.append(sectionBreak.cloneNode(true));
+  });
+}
+
+function transformTile(main, document) {
+  main.querySelectorAll('.aem-wrap--tile').forEach((el) => {
+    const heading = el.querySelector('.tile__label');
+    const items = el.querySelectorAll('.tile__item');
+
+    const cells = [];
+    items.forEach((item) => {
+      cells.push(createRowFromSelectors(
+        item,
+        '.tile__top-section img',
+        '.tile__short-section',
+      ));
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'tile',
+      cells,
+    });
+
+    if (heading) {
+      el.parentNode.insertBefore(heading, el);
+    }
+
+    el.replaceWith(block);
+  });
+}
+
+function transformBreadcrumb(main, document) {
+  const bc = main.querySelector('.aem-wrap--breadcrumb');
+  if (bc && bc.textContent.trim() !== '') {
+    const bcContent = bc.querySelector('.breadcrumb li:last-child');
+    const bcValue = bcContent ? bcContent.textContent.trim() : 'true';
+
+    const bcMeta = document.createElement('meta');
+    bcMeta.name = 'breadcrumb';
+    bcMeta.content = bcValue;
+    document.head.append(bcMeta);
+
+    bc.remove();
+  }
+}
+
 /**
  * Main transformation function
  */
@@ -184,7 +360,13 @@ export default {
       WebImporter.rules.transformBackgroundImages,
       normalizeURLs,
       ensureDesktopImages,
+      transformBreadcrumb,
+      transformSections,
       transformNotchedImage,
+      transformCarousels,
+      transformHighlightBlock,
+      transformStoryBlock,
+      transformTile,
       // more block transformations here
       createMetadata,
     ];
