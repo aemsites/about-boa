@@ -218,9 +218,33 @@ function normalizeURLs(main) {
 
 function transformHighlightBlock(main, document) {
   main.querySelectorAll('.aem-wrap--highlight-block').forEach((el) => {
+    const highlightBlock = el.querySelector('.highlight-block');
     const content = el.querySelector('.highlight-block__box');
-    const color = [...content.classList].find((cls) => cls.includes('highlight-block--bg-'));
-    const variants = [color.replace('highlight-block--bg-', '')];
+
+    const variants = [];
+
+    // Get position from .highlight-block
+    if (highlightBlock) {
+      const blockClasses = [...highlightBlock.classList];
+      const position = blockClasses.find((cls) => cls.includes('highlight-block--position-'));
+      if (position) {
+        variants.push(position.replace('highlight-block--', ''));
+      }
+    }
+
+    // Get color and rounded from .highlight-block__box
+    if (content) {
+      const boxClasses = [...content.classList];
+
+      const color = boxClasses.find((cls) => cls.includes('highlight-block--bg-'));
+      if (color) {
+        variants.push(color.replace('highlight-block--', ''));
+      }
+
+      if (boxClasses.includes('highlight-block--rounded')) {
+        variants.push('rounded');
+      }
+    }
 
     const block = WebImporter.Blocks.createBlock(document, {
       name: 'highlight',
