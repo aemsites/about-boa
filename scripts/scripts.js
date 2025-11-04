@@ -1,5 +1,4 @@
 import {
-  buildBlock,
   // loadHeader, // TODO: Re-enable when header is fixed
   loadFooter,
   decorateIcons,
@@ -12,20 +11,6 @@ import {
   loadCSS,
 } from './aem.js';
 import { rewriteLinkUrl } from './utils.js';
-/**
- * Builds hero block and prepends to main in a new section.
- * @param {Element} main The container element
- */
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
-    main.prepend(section);
-  }
-}
 
 /**
  * load fonts.css and set a session storage flag
@@ -39,31 +24,32 @@ async function loadFonts() {
   }
 }
 
+function loadFragments(main) {
+  const fragments = main.querySelectorAll('a[href*="/fragments/"]');
+  if (fragments.length > 0) {
+    // eslint-disable-next-line import/no-cycle
+    import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
+      fragments.forEach(async (fragment) => {
+        try {
+          const { pathname } = new URL(fragment.href);
+          const frag = await loadFragment(pathname);
+          fragment.parentElement.replaceWith(frag.firstElementChild);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Fragment loading failed', error);
+        }
+      });
+    });
+  }
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
-    // auto block `*/fragments/*` references
-    const fragments = main.querySelectorAll('a[href*="/fragments/"]');
-    if (fragments.length > 0) {
-      // eslint-disable-next-line import/no-cycle
-      import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
-        fragments.forEach(async (fragment) => {
-          try {
-            const { pathname } = new URL(fragment.href);
-            const frag = await loadFragment(pathname);
-            fragment.parentElement.replaceWith(frag.firstElementChild);
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Fragment loading failed', error);
-          }
-        });
-      });
-    }
-
-    buildHeroBlock(main);
+    loadFragments(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

@@ -1,0 +1,131 @@
+@layer blocks {
+  .notched-image {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 400px;
+    overflow: hidden;
+  }
+
+  /* Image container */
+  .notched-image-image {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .notched-image-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Content container - the notched panel */
+  .notched-image-content {
+    grid-column: 1;
+    grid-row: 1;
+    place-self: end center;
+    background-color: var(--background-color);
+    padding: var(--spacing-l);
+    margin: var(--spacing-m);
+    max-width: 90%;
+    z-index: 1;
+  }
+
+  /* Mobile: stack vertically, no overlap */
+  @media (width < 600px) {
+    .notched-image {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notched-image-image {
+      min-height: 300px;
+    }
+
+    .notched-image-content {
+      margin: 0;
+      max-width: 100%;
+    }
+  }
+
+  /* Tablet and up: side-by-side with notch effect */
+  @media (width >= 600px) {
+    .notched-image {
+      min-height: 500px;
+    }
+
+    .notched-image-content {
+      padding: var(--spacing-xl);
+      max-width: 500px;
+      place-self: center;
+    }
+
+    /* Left aligned: overlap from left side */
+    .notched-image.align-left .notched-image-content {
+      place-self: center start;
+      margin-left: var(--spacing-l);
+    }
+
+    /* Right aligned: overlap from right side */
+    .notched-image.align-right .notched-image-content {
+      place-self: center end;
+      margin-right: var(--spacing-l);
+    }
+  }
+
+  /* Desktop breakpoint */
+  @media (width >= 900px) {
+    .notched-image {
+      min-height: 600px;
+    }
+
+    .notched-image-content {
+      padding: var(--spacing-xxl);
+      max-width: 600px;
+    }
+
+    .notched-image.align-left .notched-image-content {
+      margin-left: var(--spacing-xl);
+    }
+
+    .notched-image.align-right .notched-image-content {
+      margin-right: var(--spacing-xl);
+    }
+  }
+
+  /* Large desktop */
+  @media (width >= 1200px) {
+    .notched-image {
+      min-height: 700px;
+    }
+
+    .notched-image-content {
+      max-width: 700px;
+    }
+  }
+
+  /* Shadowed variant */
+  .notched-image.shadowed .notched-image-content {
+    box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+  }
+
+  /* Content styling */
+  .notched-image-content > *:first-child {
+    margin-top: 0;
+  }
+
+  .notched-image-content > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .notched-image-content h1,
+  .notched-image-content h2,
+  .notched-image-content h3,
+  .notched-image-content h4,
+  .notched-image-content h5,
+  .notched-image-content h6 {
+    margin-top: 0;
+  }
+}
+
