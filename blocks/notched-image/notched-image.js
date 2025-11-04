@@ -4,31 +4,54 @@
  */
 export default async function decorate(block) {
   // Get the image and content from the block cells
-  const rows = [...block.children];
-  const imageCell = rows[0]?.children[0];
-  const contentCell = rows[0]?.children[1];
+  let imageContainer;
+  let contentContainer;
+  let additionalCells = false;
 
-  if (!imageCell || !contentCell) {
+  [...block.children].forEach((row) => {
+    [...row.children].forEach((cell) => {
+      if (cell.querySelector('picture')) {
+        if (imageContainer) {
+          additionalCells = true;
+        }
+        imageContainer = cell;
+      } else {
+        if (contentContainer) {
+          additionalCells = true;
+        }
+        contentContainer = cell;
+      }
+    });
+  });
+
+  if (!imageContainer || !contentContainer || additionalCells) {
+    block.classList.add('authoring-error');
     return;
   }
 
-  // Clear the block
-  block.innerHTML = '';
+  [...block.classList].forEach((cls) => {
+    if (cls.startsWith('img-focus-')) {
+      const focusPosition = cls.replace('img-focus-', '');
+      let focusValue;
+      if (focusPosition.match(/^[0-9]+$/)) {
+        focusValue = `${focusPosition}%`;
+      } else if (focusPosition === 'left') {
+        focusValue = '25%';
+      } else if (focusPosition === 'right') {
+        focusValue = '75%';
+      } else {
+        focusValue = 'center';
+      }
+      imageContainer.style.setProperty('--focus-position', focusValue);
+    }
+  });
 
-  // Create the image container (full-bleed background)
-  const imageContainer = document.createElement('div');
   imageContainer.className = 'notched-image-image';
-  const img = imageCell.querySelector('img');
-  if (img) {
-    imageContainer.appendChild(img);
-  }
-
-  // Create the content container (notched panel)
-  const contentContainer = document.createElement('div');
   contentContainer.className = 'notched-image-content';
-  contentContainer.append(...contentCell.children);
+  const contentInner = document.createElement('div');
+  contentInner.className = 'notched-image-content-inner';
+  contentInner.append(...contentContainer.children);
+  contentContainer.replaceChildren(contentInner);
 
-  // Add both to the block
-  block.appendChild(imageContainer);
-  block.appendChild(contentContainer);
+  block.replaceChildren(imageContainer, contentContainer);
 }
