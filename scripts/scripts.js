@@ -9,8 +9,10 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  getMetadata,
 } from './aem.js';
-import { rewriteLinkUrl } from './utils.js';
+import { rewriteLinkUrl, linkTextIncludesHref } from './utils.js';
+import { replacePlaceholders } from './placeholders.js';
 
 /**
  * load fonts.css and set a session storage flag
@@ -30,13 +32,15 @@ function loadFragments(main) {
     // eslint-disable-next-line import/no-cycle
     import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
       fragments.forEach(async (fragment) => {
-        try {
-          const { pathname } = new URL(fragment.href);
-          const frag = await loadFragment(pathname);
-          fragment.parentElement.replaceWith(frag.firstElementChild);
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error('Fragment loading failed', error);
+        if (linkTextIncludesHref(fragment)) {
+          try {
+            const { pathname } = new URL(fragment.href);
+            const frag = await loadFragment(pathname);
+            fragment.parentElement.replaceWith(frag.firstElementChild);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Fragment loading failed', error);
+          }
         }
       });
     });
@@ -121,6 +125,7 @@ export function decorateMain(main) {
   decorateButtons(main);
   decorateIcons(main);
   mergeButtonContainers(main);
+  replacePlaceholders(main);
 }
 
 /**
@@ -128,7 +133,7 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  doc.documentElement.lang = getMetadata('language') || 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {

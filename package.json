@@ -5,6 +5,10 @@
   "type": "module",
   "description": "Starter project for Adobe Helix",
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "lint:js": "eslint .",
     "lint:css": "stylelint \"blocks/**/*.css\" \"styles/*.css\"",
     "lint": "npm run lint:js && npm run lint:css",
@@ -22,12 +26,16 @@
   "homepage": "https://github.com/adobe/aem-boilerplate#readme",
   "devDependencies": {
     "@babel/eslint-parser": "7.28.5",
+    "@vitest/coverage-v8": "^4.0.7",
+    "@vitest/ui": "^4.0.7",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.32.0",
+    "jsdom": "^27.1.0",
     "playwright": "^1.56.1",
     "stylelint": "16.25.0",
     "stylelint-config-standard": "39.0.1",
+    "vitest": "^4.0.7",
     "xlsx": "^0.18.5"
   }
 }

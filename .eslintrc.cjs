@@ -15,4 +15,12 @@ module.exports = {
     'linebreak-style': ['error', 'unix'], // enforce unix linebreaks
     'no-param-reassign': [2, { props: false }], // allow modifying properties of param
   },
+  overrides: [
+    {
+      files: ['**/*.config.js', '**/*.config.cjs'],
+      rules: {
+        'import/no-unresolved': 'off', // allow imports of config packages
+      },
+    },
+  ],
 };

@@ -1,7 +1,9 @@
 .*
 *.md
+*.test.js
 karma.config.js
 LICENSE
 package.json
 package-lock.json
 test/*
+vitest.config.js
