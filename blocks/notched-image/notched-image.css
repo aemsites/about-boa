@@ -1,0 +1,76 @@
+@layer blocks {
+  /* Make the section wrapper full-width for this block */
+  main > .section > div.notched-image-wrapper {
+    max-width: unset;
+    padding: 0;
+  }
+
+  .notched-image .notched-image-content {
+    position: relative;
+    z-index: 10;
+    top: -4rem;
+    max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    margin: 0 auto;
+    padding: 0 var(--default-inline-spacing);
+  }
+
+  .notched-image .notched-image-content h2:first-child,
+  .notched-image .notched-image-content h3:first-child {
+    color: var(--color-brand-red);
+  }
+
+  .notched-image .notched-image-content .notched-image-content-inner {
+    padding: 2rem;
+    margin-inline: auto;
+    max-width: calc(100vw - (var(--default-inline-spacing) * 2));
+    background-color: var(--color-white);
+  }
+
+  .notched-image .notched-image-image {
+    position: relative;
+    max-height: 540px;
+    min-height: 300px;
+    width: 100%;
+  }
+
+  @media (width >= 900px) {
+    .notched-image .notched-image-content .notched-image-content-inner {
+      padding: 4rem;
+    }
+
+    .notched-image .notched-image-image {
+      min-height: 400px;
+    }
+  }
+
+  .notched-image .notched-image-image picture {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    object-fit: cover;
+  }
+
+  .notched-image .notched-image-image img {
+    object-fit: cover;
+    object-position: var(--focus-position, center);
+    width: 100%;
+    height: 100%;
+  }
+
+  /* variants */
+  .notched-image.shadowed .notched-image-content .notched-image-content-inner {
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+  }
+
+  @media (width >= 900px) {
+    .notched-image.align-left .notched-image-content .notched-image-content-inner {
+      max-width: min(800px, 75%);
+      margin-left: 0;
+    }
+
+    .notched-image.align-right .notched-image-content .notched-image-content-inner {
+      margin-right: 0;
+      max-width: min(800px, 75%);
+    }
+  }
+}
