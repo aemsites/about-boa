@@ -215,6 +215,10 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+
+  if (searchParams.get('dapreview')) {
+    document.body.classList.add('da-preview');
+  }
 }
 
 /**
@@ -247,7 +251,6 @@ export const NX_ORIGIN = branch === 'local' || origin.includes('localhost') ? 'h
   if (searchParams.get('dapreview')) {
     import('https://da.live/scripts/dapreview.js')
       .then(({ default: daPreview }) => daPreview(loadPage));
-    document.body.classList.add('da-preview');
   }
   if (searchParams.get('daexperiment')) {
     import(`${NX_ORIGIN}/public/plugins/exp/exp.js`);
