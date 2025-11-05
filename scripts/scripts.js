@@ -159,10 +159,6 @@ async function loadEager(doc) {
     if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
       loadFonts();
     }
-
-    if (searchParams.get('dapreview')) {
-      import('./da.js').then((daModule) => daModule.loadLazy());
-    }
   } catch (e) {
     // do nothing
   }
@@ -186,10 +182,6 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
-
-  if (searchParams.get('dapreview')) {
-    import('./da.js').then((daModule) => daModule.loadLazy());
-  }
 }
 
 /**
@@ -200,10 +192,6 @@ function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
-
-  if (searchParams.get('dapreview')) {
-    import('./da.js').then((daModule) => daModule.loadDelayed());
-  }
 }
 
 async function loadPage() {
