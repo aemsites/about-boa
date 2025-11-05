@@ -5,6 +5,11 @@
     padding: 0;
   }
 
+  /* Account for content being positioned 4rem higher */
+  .notched-image {
+    margin-bottom: -4rem;
+  }
+
   .notched-image .notched-image-content {
     position: relative;
     z-index: 10;
@@ -38,7 +43,7 @@
 
   @media (width >= 900px) {
     .notched-image .notched-image-content .notched-image-content-inner {
-      padding: 4rem 4rem 2rem;
+      padding: 2rem 4rem 4rem;
     }
 
     .notched-image.shadowed .notched-image-content .notched-image-content-inner {
