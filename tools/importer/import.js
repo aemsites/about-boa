@@ -188,16 +188,62 @@ function ensureDesktopImages(main, document) {
   images.forEach((img) => {
     // find source element with widest media query
     let desktopSource = null;
+    let largestValue = -1;
+    let hasMinWidth = false;
     const sources = img.closest('picture').querySelectorAll('source');
+
+    const convertToPixels = (value, unit) => {
+      if (unit === 'rem' || unit === 'em') {
+        return value * 16;
+      }
+      return value;
+    };
+
+    // First pass: collect all sources and check if any have min-width
     sources.forEach((source) => {
-      if (source.media === '(min-width: 48.0625rem)') {
-        desktopSource = source;
+      const { media } = source;
+      if (media && media !== 'all') {
+        const minWidthMatch = media.match(/min-width:\s*([\d.]+)(rem|px|em)/);
+        if (minWidthMatch) {
+          hasMinWidth = true;
+        }
       }
     });
 
+    sources.forEach((source) => {
+      const { media } = source;
+      if (!media || media === 'all') {
+        // No media query means it's the default/smallest
+        return;
+      }
+
+      // Extract min-width value from media query (supports rem, px, em, etc.)
+      const minWidthMatch = media.match(/min-width:\s*([\d.]+)(rem|px|em)/);
+
+      // Prefer min-width queries for desktop (they target larger screens)
+      if (minWidthMatch) {
+        const value = parseFloat(minWidthMatch[1]);
+        const unit = minWidthMatch[2];
+        const pixels = convertToPixels(value, unit);
+
+        if (pixels > largestValue) {
+          largestValue = pixels;
+          desktopSource = source;
+        }
+      }
+      // If only max-width queries exist, the img tag itself is the desktop version
+    });
+
+    // If we found a min-width source, use it
     if (desktopSource) {
       const newImg = document.createElement('img');
       newImg.src = desktopSource.srcset;
+      img.closest('picture').replaceWith(newImg);
+    } else if (hasMinWidth === false && sources.length > 0) {
+      // If only max-width queries exist, the img tag is already the desktop version
+      // Just convert picture to img (using img's existing src)
+      const newImg = document.createElement('img');
+      newImg.src = img.src;
       img.closest('picture').replaceWith(newImg);
     } else {
       console.warn('No desktop source found for image', img.closest('picture'));

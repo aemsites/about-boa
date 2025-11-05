@@ -9,8 +9,7 @@
   /* Image styling */
   .highlight .highlight-image {
     position: relative;
-    max-height: 540px;
-    min-height: 300px;
+    height: clamp(300px, 50vw, 540px);
     width: 100%;
   }
 
@@ -37,8 +36,7 @@
   @media (width >= 900px) {
     /* Image displays at full dimensions on desktop */
     .highlight .highlight-image {
-      max-height: none;
-      min-height: 400px;
+      height: clamp(300px, 50vw, 540px);
     }
 
     .highlight {

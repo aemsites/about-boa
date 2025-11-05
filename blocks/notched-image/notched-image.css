@@ -28,18 +28,13 @@
 
   .notched-image .notched-image-image {
     position: relative;
-    max-height: 540px;
-    min-height: 300px;
+    height: clamp(300px, 50vw, 540px);
     width: 100%;
   }
 
   @media (width >= 900px) {
     .notched-image .notched-image-content .notched-image-content-inner {
       padding: 4rem;
-    }
-
-    .notched-image .notched-image-image {
-      min-height: 400px;
     }
   }
 
