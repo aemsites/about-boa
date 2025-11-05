@@ -62,11 +62,20 @@ function bindEvents(block) {
   });
 
   const slideObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        updateActiveSlide(entry.target);
-      }
-    });
+    // Find all intersecting slides
+    const intersectingSlides = entries
+      .filter((entry) => entry.isIntersecting)
+      .map((entry) => entry.target);
+
+    if (intersectingSlides.length > 0) {
+      // When multiple slides are visible, select the leftmost one
+      const leftmostSlide = intersectingSlides.reduce((leftmost, current) => {
+        const leftmostLeft = leftmost.offsetLeft;
+        const currentLeft = current.offsetLeft;
+        return currentLeft < leftmostLeft ? current : leftmost;
+      });
+      updateActiveSlide(leftmostSlide);
+    }
   }, { threshold: 0.5 });
   block.querySelectorAll('.carousel-slide').forEach((slide) => {
     slideObserver.observe(slide);
@@ -78,6 +87,9 @@ export function updateCarousel(container, slidesPerView = 1) {
   const totalSlides = slides.length;
   const actualSlidesPerView = Math.min(slidesPerView, totalSlides);
   const slidesContainer = container.querySelector('.carousel-slides');
+
+  // Get current active slide index before updating
+  const currentActiveIndex = parseInt(container.dataset.activeSlide || '0', 10);
 
   // Get computed gap value from the slides container
   let gapValue = '0px';
@@ -109,6 +121,29 @@ export function updateCarousel(container, slidesPerView = 1) {
   } else {
     container.classList.remove('carousel-all-slides-visible');
   }
+
+  // After layout recalculation, update scroll position and active slide
+  // Use requestAnimationFrame to ensure layout has updated
+  requestAnimationFrame(() => {
+    if (slidesContainer && slides.length > 0) {
+      // If all slides are visible, scroll to start
+      if (showAllSlides) {
+        slidesContainer.scrollTo({ left: 0, behavior: 'auto' });
+        updateActiveSlide(slides[0]);
+      } else {
+        // Otherwise, maintain the current active slide index
+        const targetIndex = Math.min(currentActiveIndex, slides.length - 1);
+        const targetSlide = slides[targetIndex];
+        if (targetSlide) {
+          slidesContainer.scrollTo({
+            left: targetSlide.offsetLeft,
+            behavior: 'auto',
+          });
+          updateActiveSlide(targetSlide);
+        }
+      }
+    }
+  });
 }
 
 let carouselId = 0;
