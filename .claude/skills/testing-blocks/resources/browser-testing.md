@@ -1,6 +1,6 @@
 # Browser Testing Guide
 
-Browser testing validates that blocks, DOM transformations, and visual elements work correctly in a real browser environment. These are throwaway tests - use them once to validate, capture screenshots, then discard them.
+Browser testing validates that blocks, DOM transformations, and visual elements work correctly in a real browser environment.
 
 ## When to Use Browser Testing
 
@@ -24,7 +24,7 @@ npm install --save-dev playwright
 npx playwright install chromium
 ```
 
-**Example throwaway test script:**
+**Example test script:**
 
 ```javascript
 // test-hero-block.js (DO NOT COMMIT)
@@ -35,7 +35,7 @@ async function testHeroBlock() {
   const page = await browser.newPage();
 
   // Navigate to test content
-  await page.goto('http://localhost:3000/drafts/hero-test');
+  await page.goto('http://localhost:3000/drafts/tmp/hero-test');
 
   // Wait for block decoration
   await page.waitForSelector('.hero');
@@ -72,38 +72,14 @@ testHeroBlock().catch(console.error);
 node test-hero-block.js
 ```
 
-### Option 2: Puppeteer
-
-Similar to Playwright but older. Use if Playwright isn't suitable.
-
-```bash
-npm install --save-dev puppeteer
-```
-
-API is very similar to Playwright. Substitute `puppeteer` for `playwright` in import statements.
-
-### Option 3: Browser MCP
-
-If you have access to a Browser MCP server, use it for interactive browser testing through Claude's tools.
-
-## Browser Testing Workflow
-
-### 1. Ensure dev server is running
-
-```bash
-aem up
-```
-
-Note the port (usually 3000).
-
-### 2. Write throwaway test script
+### 2. Write test script
 
 Create a temporary script file (e.g., `test-my-block.js`) with:
 - Navigation to test content URL
 - Waiting for block decoration
 - Taking screenshots at multiple viewports
 - Validating DOM structure or behavior
-- Testing interactions
+- Testing user interactions
 
 ### 3. Run the script
 
@@ -237,18 +213,15 @@ async function testResponsive() {
 ### DO:
 - ✅ Test all viewport sizes (mobile, tablet, desktop)
 - ✅ Take screenshots for visual validation
-- ✅ Test all block variants in one script
+- ✅ Test all block variants; in one or multiple scripts
 - ✅ Wait for block decoration before capturing state
-- ✅ Test interactive elements (clicks, forms, etc.)
+- ✅ Test interactive elements (clicks, hovers, forms, etc.)
 - ✅ Show screenshots to humans for feedback
 - ✅ Include screenshots in PRs to help reviewers
 
 ### DON'T:
-- ❌ Commit throwaway test scripts to the repository
-- ❌ Try to automate visual regression testing (not worth the maintenance)
-- ❌ Write brittle assertions about specific DOM structure
-- ❌ Spend time making these tests maintainable (they're throwaway)
-- ❌ Test the same thing in both unit tests and browser tests
+- ❌ Commit browser test scripts to the repository
+- ❌ Try to automate full visual regression testing
 
 ## Playwright Tips and Tricks
 
@@ -325,9 +298,9 @@ Even in these cases, keep tests focused on critical functionality only. The cost
 
 After browser testing:
 1. Review all screenshots carefully
-2. Show screenshots to stakeholders if needed
-3. Include key screenshots in your PR
-4. Delete the test script (don't commit it)
+2. Compare to screenshots provided, if applicable and check for key differences/problems
+2. Show screenshots to stakeholders for their validation
+3. Include key screenshots in your PR to prove you tested
 5. Move on to other testing methods (linting, unit tests, etc.)
 
 Remember: Browser tests are a validation tool, not a regression prevention tool. Use them to confirm your implementation works, then move on.
