@@ -26,6 +26,7 @@ export default async function decorate(block) {
 
   if (!imageContainer || !contentContainer || additionalCells) {
     block.classList.add('authoring-error');
+    block.dataset.authorError = 'Notched Image block requires both an image and content.';
     return;
   }
 
