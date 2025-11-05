@@ -31,8 +31,8 @@ This skill should be automatically invoked by the **building-blocks** skill afte
 Copy this checklist and track your progress:
 
 - [ ] Step 1: Perform browser validation, See "Browser Testing" section below and `resources/browser-testing.md`
-- [ ] Step 2: Determine if unit tests are needed. See `resources/testing-philosphy.md`
-- [ ] Step 3: Add unit tests, if neccessary. See "Unit Testing" section below and `resources/unit-testing.md`
+- [ ] Step 2: Determine if unit tests are needed. See `resources/testing-philosophy.md`
+- [ ] Step 3: Add unit tests, if necessary. See "Unit Testing" section below and `resources/unit-testing.md`
 - [ ] Step 4: Verify existing tests and lint checks pass. See "Verification" section below
 - [ ] Step 5: Summarize and report testing results. See "Reporting Results" section below
 

@@ -72,6 +72,10 @@ testHeroBlock().catch(console.error);
 node test-hero-block.js
 ```
 
+### 1. Setup Playwright
+
+If you haven't already installed Playwright (see setup section above), install it now.
+
 ### 2. Write test script
 
 Create a temporary script file (e.g., `test-my-block.js`) with:
@@ -299,8 +303,8 @@ Even in these cases, keep tests focused on critical functionality only. The cost
 After browser testing:
 1. Review all screenshots carefully
 2. Compare to screenshots provided, if applicable and check for key differences/problems
-2. Show screenshots to stakeholders for their validation
-3. Include key screenshots in your PR to prove you tested
+3. Show screenshots to stakeholders for their validation
+4. Include key screenshots in your PR to prove you tested
 5. Move on to other testing methods (linting, unit tests, etc.)
 
 Remember: Browser tests are a validation tool, not a regression prevention tool. Use them to confirm your implementation works, then move on.

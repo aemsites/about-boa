@@ -1,7 +1,8 @@
 import fetchLangPlaceholders from '../../scripts/placeholders.js';
+import { loadCSS } from '../../scripts/aem.js';
 
 function updateActiveSlide(slide) {
-  const block = slide.closest('.carousel');
+  const block = slide.closest('.carousel-slides-container');
   const slideIndex = parseInt(slide.dataset.slideIndex, 10);
   block.dataset.activeSlide = slideIndex;
 
@@ -62,7 +63,9 @@ function bindEvents(block) {
 
   const slideObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) updateActiveSlide(entry.target);
+      if (entry.isIntersecting) {
+        updateActiveSlide(entry.target);
+      }
     });
   }, { threshold: 0.5 });
   block.querySelectorAll('.carousel-slide').forEach((slide) => {
@@ -70,43 +73,63 @@ function bindEvents(block) {
   });
 }
 
-function createSlide(row, slideIndex, carouselId) {
-  const slide = document.createElement('li');
-  slide.dataset.slideIndex = slideIndex;
-  slide.setAttribute('id', `carousel-${carouselId}-slide-${slideIndex}`);
-  slide.classList.add('carousel-slide');
+export function updateCarousel(container, slidesPerView = 1) {
+  const slides = container.querySelectorAll('.carousel-slide');
+  const totalSlides = slides.length;
+  const actualSlidesPerView = Math.min(slidesPerView, totalSlides);
+  const slidesContainer = container.querySelector('.carousel-slides');
 
-  row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
-    column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
-    slide.append(column);
-  });
+  // Get computed gap value from the slides container
+  let gapValue = '0px';
+  if (slidesContainer) {
+    const computedGap = window.getComputedStyle(slidesContainer).gap;
+    // Handle cases where gap might be "normal", empty, or invalid
+    // Parse gap - it might be "row-gap column-gap" format, we want column-gap (horizontal)
+    const gapParts = computedGap.split(' ');
+    const horizontalGap = gapParts[gapParts.length - 1] || computedGap;
 
-  const labeledBy = slide.querySelector('h1, h2, h3, h4, h5, h6');
-  if (labeledBy) {
-    slide.setAttribute('aria-labelledby', labeledBy.getAttribute('id'));
+    // Check if it's a valid length value (contains px, rem, em, %, etc.)
+    if (horizontalGap && horizontalGap !== 'normal' && horizontalGap !== '0') {
+      gapValue = horizontalGap;
+    }
   }
+  container.style.setProperty('--carousel-gap', gapValue);
 
-  return slide;
+  // Calculate number of gaps (slides - 1)
+  const gapsCount = Math.max(0, actualSlidesPerView - 1);
+  container.style.setProperty('--carousel-gaps-count', gapsCount);
+
+  // Set CSS custom property for styling
+  container.style.setProperty('--slides-per-view', actualSlidesPerView);
+
+  // Add class to hide controls when all slides are visible
+  const showAllSlides = actualSlidesPerView >= totalSlides;
+  if (showAllSlides) {
+    container.classList.add('carousel-all-slides-visible');
+  } else {
+    container.classList.remove('carousel-all-slides-visible');
+  }
 }
 
 let carouselId = 0;
-export default async function decorate(block) {
-  carouselId += 1;
-  block.setAttribute('id', `carousel-${carouselId}`);
-  const rows = block.querySelectorAll(':scope > div');
-  const isSingleSlide = rows.length < 2;
-
+export async function buildCarousel(slidesContainer) {
   const placeholders = await fetchLangPlaceholders();
+  loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`);
 
-  block.setAttribute('role', 'region');
-  block.setAttribute('aria-roledescription', placeholders.carousel || 'Carousel');
-
+  carouselId += 1;
+  const id = `carousel-${carouselId}`;
   const container = document.createElement('div');
   container.classList.add('carousel-slides-container');
+  container.setAttribute('id', id);
+  container.setAttribute('role', 'region');
+  container.setAttribute('aria-roledescription', placeholders.carousel || 'Carousel');
 
-  const slidesWrapper = document.createElement('ul');
-  slidesWrapper.classList.add('carousel-slides');
-  block.prepend(slidesWrapper);
+  slidesContainer.classList.add('carousel-slides');
+  slidesContainer.before(container);
+  container.append(slidesContainer);
+
+  const slides = [...slidesContainer.children];
+  const isSingleSlide = slides.length < 2;
 
   let slideIndicators;
   if (!isSingleSlide) {
@@ -128,24 +151,52 @@ export default async function decorate(block) {
     container.append(slideNavButtons);
   }
 
-  rows.forEach((row, idx) => {
-    const slide = createSlide(row, idx, carouselId);
-    slidesWrapper.append(slide);
+  slides.forEach((slide, idx) => {
+    slide.classList.add('carousel-slide');
+    slide.dataset.slideIndex = idx;
+    slide.setAttribute('id', `carousel-${id}-slide-${idx}`);
+
+    const labeledBy = slide.querySelector('h1, h2, h3, h4, h5, h6');
+    if (labeledBy) {
+      slide.setAttribute('aria-labelledby', labeledBy.getAttribute('id'));
+    }
 
     if (slideIndicators) {
       const indicator = document.createElement('li');
       indicator.classList.add('carousel-slide-indicator');
       indicator.dataset.targetSlide = idx;
-      indicator.innerHTML = `<button type="button" aria-label="${placeholders.showSlide || 'Show Slide'} ${idx + 1} ${placeholders.of || 'of'} ${rows.length}"></button>`;
+      indicator.innerHTML = `<button type="button" aria-label="${placeholders.showSlide || 'Show Slide'} ${idx + 1} ${placeholders.of || 'of'} ${slides.length}"></button>`;
       slideIndicators.append(indicator);
     }
-    row.remove();
   });
 
-  container.prepend(slidesWrapper);
-  block.prepend(container);
+  if (!isSingleSlide) bindEvents(container);
 
-  if (!isSingleSlide) {
-    bindEvents(block);
-  }
+  // Initialize slides-per-view to 1 (default)
+  updateCarousel(container, 1);
+
+  return container;
+}
+
+function createSlide(row) {
+  const slide = document.createElement('li');
+
+  row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
+    column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
+    slide.append(column);
+  });
+
+  return slide;
+}
+
+export default async function decorate(block) {
+  const slidesWrapper = document.createElement('ul');
+  const rows = block.querySelectorAll(':scope > div');
+  rows.forEach((row, idx) => {
+    const slide = createSlide(row, idx, carouselId);
+    slidesWrapper.append(slide);
+  });
+  block.replaceChildren(slidesWrapper);
+
+  await buildCarousel(slidesWrapper);
 }

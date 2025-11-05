@@ -1,14 +1,11 @@
-import { createOptimizedPicture, loadCSS } from '../../scripts/aem.js';
-import buildCarousel from '../../scripts/carousel-utils.js';
+import { createOptimizedPicture } from '../../scripts/aem.js';
+import { buildCarousel, updateCarousel } from '../carousel/carousel.js';
 
 /**
  * Decorate the tile block
  * @param {Element} block the block
  */
 export default async function decorate(block) {
-  // Load carousel base styles
-  await loadCSS('/styles/carousel-base.css');
-
   // Transform block structure to ul/li
   const ul = document.createElement('ul');
   ul.classList.add('tile-slides');
@@ -41,11 +38,28 @@ export default async function decorate(block) {
   block.replaceChildren(ul);
 
   // Build carousel on mobile (will be hidden on desktop via CSS)
-  await buildCarousel(block, {
-    slidesSelector: '.tile-item',
-    slidesClass: 'tile-slides',
-    slideClass: 'tile-item',
-    showControls: true,
-    showIndicators: true,
+  const container = await buildCarousel(ul);
+
+  const isDesktop = window.matchMedia('(min-width: 900px)');
+  const isTablet = window.matchMedia('(min-width: 600px)');
+  const isMobile = window.matchMedia('(max-width: 599px)');
+
+  if (isDesktop.matches) {
+    updateCarousel(container, 3);
+  } else if (isTablet.matches) {
+    updateCarousel(container, 2);
+  } else {
+    updateCarousel(container, 1);
+  }
+
+  // Update on resize
+  window.addEventListener('resize', () => {
+    if (isDesktop.matches) {
+      updateCarousel(container, 3);
+    } else if (isTablet.matches) {
+      updateCarousel(container, 2);
+    } else {
+      updateCarousel(container, 1);
+    }
   });
 }
