@@ -29,6 +29,24 @@ export default async function decorate(block) {
     return;
   }
 
+  // Handle image focus positioning
+  [...block.classList].forEach((cls) => {
+    if (cls.startsWith('img-focus-')) {
+      const focusPosition = cls.replace('img-focus-', '');
+      let focusValue;
+      if (focusPosition.match(/^[0-9]+$/)) {
+        focusValue = `${focusPosition}%`;
+      } else if (focusPosition === 'left') {
+        focusValue = '25%';
+      } else if (focusPosition === 'right') {
+        focusValue = '75%';
+      } else {
+        focusValue = 'center';
+      }
+      imageContainer.style.setProperty('--focus-position', focusValue);
+    }
+  });
+
   // Create the structure
   imageContainer.className = 'highlight-image';
   contentContainer.className = 'highlight-box-container';
