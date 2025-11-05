@@ -1,4 +1,4 @@
-import { getMetadata, decorateBlock, loadBlock } from '../../scripts/aem.js';
+import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { toggleAllNavSections } from '../nav-sections/nav-sections.js';
 import { toggleAllNavTools } from '../nav-tools/nav-tools.js';
@@ -28,25 +28,25 @@ function closeOnEscape(e) {
   }
 }
 
-function closeOnFocusLost(e) {
-  const nav = e.currentTarget;
-  if (!nav.contains(e.relatedTarget)) {
-    const navSections = nav.querySelector('.nav-sections');
-    const navTools = nav.querySelector('.nav-tools');
-    const navSectionExpanded = navSections?.querySelector('[aria-expanded="true"]');
-    const navToolsExpanded = navTools?.querySelector('[aria-expanded="true"]');
+// function closeOnFocusLost(e) {
+//   const nav = e.currentTarget;
+//   if (!nav.contains(e.relatedTarget)) {
+//     const navSections = nav.querySelector('.nav-sections');
+//     const navTools = nav.querySelector('.nav-tools');
+//     const navSectionExpanded = navSections?.querySelector('[aria-expanded="true"]');
+//     const navToolsExpanded = navTools?.querySelector('[aria-expanded="true"]');
 
-    if ((navSectionExpanded || navToolsExpanded) && isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(navSections, false);
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavTools(navTools, false);
-    } else if (!isDesktop.matches) {
-      // eslint-disable-next-line no-use-before-define
-      toggleMenu(nav, navSections, false);
-    }
-  }
-}
+//     if ((navSectionExpanded || navToolsExpanded) && isDesktop.matches) {
+//       // eslint-disable-next-line no-use-before-define
+//       toggleAllNavSections(navSections, false);
+//       // eslint-disable-next-line no-use-before-define
+//       toggleAllNavTools(navTools, false);
+//     } else if (!isDesktop.matches) {
+//       // eslint-disable-next-line no-use-before-define
+//       toggleMenu(nav, navSections, false);
+//     }
+//   }
+// }
 
 function openOnKeydown(e) {
   const focused = document.activeElement;
@@ -81,7 +81,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   const button = nav.querySelector('.nav-hamburger button');
   document.body.style.overflowY = (expanded || isDesktop.matches) ? '' : 'hidden';
   nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-  //toggleAllNavSections(navSections, 'false');
+  // toggleAllNavSections(navSections, 'false');
   button?.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
 
   // enable nav dropdown keyboard accessibility
@@ -157,7 +157,6 @@ export default async function decorate(block) {
     navToolsClone.querySelectorAll('.nav-tool-item').forEach((utilityItem) => {
       const sectionItem = document.createElement('div');
       sectionItem.classList.add('nav-section-item', 'nav-drop', 'mobile-only');
-      
       const sectionTitle = document.createElement('div');
       sectionTitle.classList.add('nav-section-title');
       sectionTitle.innerHTML = utilityItem.querySelector('.nav-tool-title')?.innerHTML;
@@ -190,7 +189,7 @@ export default async function decorate(block) {
     });
   }
 
-  if(navUtility) {
+  if (navUtility) {
     const navUtilityClone = navUtility.cloneNode(true);
     navUtilityClone.classList.add('mobile-only');
     navSections?.append(navUtilityClone);
