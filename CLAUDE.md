@@ -78,9 +78,9 @@ CMS authored content is a key part of every AEM Website. The content of a page i
 **For development workflow:** Use the **content-driven-development** skill for all development tasks. This skill ensures you identify or create test content before writing code, following AEM best practices.
 
 **Quick tips:**
-- Inspect page structure: `curl http://localhost:3000/path/to/page`
+- Inspect initial page structure: `curl http://localhost:3000/path/to/page`
 - View source markdown: `curl http://localhost:3000/path/to/page.md`
-- Local test content: Use `--html-folder drafts` flag when starting dev server
+- Local test content: Use `--html-folder drafts` flag when starting dev server. Note: the folder is still part of the path when using this option. Ex: a file at `drafts/test.html` would be accessed at `http://localhost:3000/drafts/test`
 
 ### Blocks
 
@@ -89,7 +89,7 @@ Blocks are the re-usable building blocks of AEM. Blocks add styling and function
 **Key principle:** The initial content structure is the contract between authors and developers. Design this structure before writing any code, and be careful when making changes that could break existing pages.
 
 **For creating or modifying blocks:** Use the **building-blocks** skill which guides you through:
-- Content model design (via content-driven-development)
+- Content model design (via the content-driven-development skill)
 - JavaScript decoration patterns
 - CSS styling conventions
 - Testing and validation
@@ -117,7 +117,7 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 
 ### Local Development
 1. Run `npx -y @adobe/aem-cli up --no-open` to start the AEM Proxy server
-2. Open `http://localhost:3000` in your browser, puppeteer, playwright, or other tools. If none of those are available, instruct the human to open the URL in the browser and give feedback
+2. Open `http://localhost:3000` in your browser, playwright, or other tools. If none of those are available, instruct the human to open the URL in the browser and give feedback
 3. Make changes to files - they will auto-reload
 4. Use browser dev tools to test responsive design
 
@@ -131,7 +131,7 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 
 **For comprehensive testing guidance:** Use the **testing-blocks** skill which covers:
 - Unit testing for logic-heavy utilities
-- Browser testing with Playwright/Puppeteer
+- Browser testing with Playwright
 - Linting and code quality
 - Performance validation
 - PR preparation

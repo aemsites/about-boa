@@ -202,7 +202,7 @@ npm run lint:fix
 
 For other code changes, or for additional testing guidance, invoke the **testing-blocks** skill which provides:
 - Unit testing strategies for logic-heavy utilities
-- Browser testing with Playwright/Puppeteer
+- Browser testing with Playwright
 - Linting and code quality checks
 - Performance validation with GitHub checks
 - Guidance on what to test and how
