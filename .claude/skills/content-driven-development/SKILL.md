@@ -111,7 +111,7 @@ Would you like to:
 - Proceed to Phase 2
 
 **Option 2: Local HTML Files (Temporary)**
-- Create HTML file(s) in `drafts/` folder matching the content model structure
+- Create HTML file(s) in `drafts/tmp/` folder matching the content model structure
 - Reference the [HTML Structure Guide](resources/html-structure.md) for proper file format
 - Remind user: "Restart your dev server with: `aem up --html-folder drafts`"
 - Note: "You will need to create actual CMS content before raising a PR"
@@ -202,10 +202,10 @@ npm run lint:fix
 
 For other code changes, or for additional testing guidance, invoke the **testing-blocks** skill which provides:
 - Unit testing strategies for logic-heavy utilities
-- Browser testing with Playwright/Puppeteer
+- Browser testing with Playwright
 - Linting and code quality checks
 - Performance validation with GitHub checks
-- Guidance on keeper vs throwaway tests
+- Guidance on what to test and how
 
 #### Step 3.4: PR Preparation
 

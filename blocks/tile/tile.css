@@ -12,6 +12,10 @@
     list-style: none;
   }
 
+  main .tile .carousel-slides-container {
+    --carousel-gap: var(--spacing-m);
+  }
+
   /* Tile item styling */
   main .tile .tile-item {
     background-color: var(--background-color);

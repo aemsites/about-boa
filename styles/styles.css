@@ -57,13 +57,13 @@
 
     /* Brand Colors - Blue Shades */
     --color-blue-dark: #001543;
-    --color-blue-primary: #012169;
+    --color-blue-primary: var(--color-brand-blue);
     --color-blue-royal: #0053c2;
     --color-blue-bright: #0073cf;
     --color-blue-light: #cedfff;
 
     /* Brand Colors - Red Shades */
-    --color-red-bright: #e31837;
+    --color-red-bright: var(--color-brand-red);
     --color-red-regal: #c41230;
     --color-red-crimson: #780032;
     --color-red-light: #ffd7d5;
@@ -176,8 +176,7 @@
   ul,
   pre,
   blockquote {
-    margin-top: 0;
-    margin-bottom: 1em;
+    margin-block: 0 1em;
   }
 
   /* Typography */
@@ -187,8 +186,7 @@
   h4,
   h5,
   h6 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
+    margin-block: 0 0.5em;
     scroll-margin: var(--spacing-xxl);
   }
 
@@ -354,11 +352,13 @@
   }
 
   main > .section:first-of-type {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 
   main > .section > div {
-    max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    --max-width-padding: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    
+    max-width: var(--max-width-padding);
     margin: 0 auto;
     padding: 0 var(--default-inline-spacing);
   }
@@ -395,23 +395,52 @@
   .h4,
   .h5,
   .h6 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
+    margin-block: 0 0.5em;
   }
 
   /* Section utilities */
-  main .section.bg-gray {
-    padding-block: var(--spacing-xl);
+  main > .section.margin-small {
+    margin-block: var(--spacing-lg);
+  }
+
+  main > .section.margin-xsmall {
+    margin-block: var(--spacing-md);
+  }
+
+  main > .section.margin-none {
+    margin-block: 0;
+  }
+
+  main > .section.center {
+    text-align: center;
+  }
+
+  main > .section.center > div {
+    max-width: 80ch;
+  }
+
+  main .section.bg-gray,
+  main .section.bg-grey {
+    padding-block: var(--spacing-lg);
     background-color: var(--color-gray-lightest);
   }
 
   main .section.bg-blue {
-    padding-block: var(--spacing-xl);
+    padding-block: var(--spacing-lg);
     background-color: var(--color-brand-blue);
   }
 
   main .section.bg-red {
-    padding-block: var(--spacing-xl);
+    padding-block: var(--spacing-lg);
     background-color: var(--color-brand-red);
+  }
+
+  /* prevent whitespace between sections with background color */
+  main .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey) + .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey) {
+    margin-block-start: 0;
+  }
+
+  main .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey):has(+ .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey)) {
+    margin-block-end: 0;
   }
 }

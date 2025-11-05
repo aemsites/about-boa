@@ -5,11 +5,16 @@
     padding: 0;
   }
 
+  /* Account for content being positioned 4rem higher */
+  .notched-image {
+    margin-bottom: -4rem;
+  }
+
   .notched-image .notched-image-content {
     position: relative;
     z-index: 10;
     top: -4rem;
-    max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    max-width: var(--max-width-padding);
     margin: 0 auto;
     padding: 0 var(--default-inline-spacing);
   }
@@ -26,20 +31,23 @@
     background-color: var(--color-white);
   }
 
+  .notched-image .notched-image-content .notched-image-content-inner > :last-child {
+    margin-block-end: 0;
+  }
+
   .notched-image .notched-image-image {
     position: relative;
-    max-height: 540px;
-    min-height: 300px;
+    height: clamp(300px, 50vw, 540px);
     width: 100%;
   }
 
   @media (width >= 900px) {
     .notched-image .notched-image-content .notched-image-content-inner {
-      padding: 4rem;
+      padding: 2rem 4rem 4rem;
     }
 
-    .notched-image .notched-image-image {
-      min-height: 400px;
+    .notched-image.shadowed .notched-image-content .notched-image-content-inner {
+      padding: 4rem;
     }
   }
 
@@ -65,11 +73,11 @@
   @media (width >= 900px) {
     .notched-image.align-left .notched-image-content .notched-image-content-inner {
       max-width: min(800px, 75%);
-      margin-left: 0;
+      margin-inline-start: 0;
     }
 
     .notched-image.align-right .notched-image-content .notched-image-content-inner {
-      margin-right: 0;
+      margin-inline-end: 0;
       max-width: min(800px, 75%);
     }
   }

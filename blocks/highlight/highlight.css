@@ -1,0 +1,211 @@
+@layer blocks {
+  /* Make the section wrapper full-width for this block */
+  main > .section > div.highlight-wrapper {
+    max-width: unset;
+    padding: 0;
+  }
+
+  /* Image styling */
+  .highlight .highlight-image {
+    position: relative;
+    height: clamp(300px, 50vw, 540px);
+    width: 100%;
+  }
+
+  .highlight .highlight-image picture {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    object-fit: cover;
+  }
+
+  .highlight .highlight-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focus-position, center);
+  }
+
+  .highlight .highlight-box-container {
+    max-width: var(--max-width-padding);
+    margin: 0 auto;
+    padding: var(--spacing-md) var(--default-inline-spacing);
+  }
+
+  @media (width >= 900px) {
+    /* Image displays at full dimensions on desktop */
+    .highlight .highlight-image {
+      height: clamp(300px, 50vw, 540px);
+    }
+
+    .highlight {
+      position: relative;
+      margin-block-start: 5rem;
+
+      --available-width: min(var(--max-content-width), calc(100vw - (var(--default-inline-spacing) * 2)));
+    }
+
+    /* Base positioning - defaults to top-left */
+    .highlight .highlight-box {
+      position: absolute;
+      width: calc(var(--available-width) * 0.6666);
+      max-width: calc(var(--available-width) * 0.6666);
+      top: -3rem;
+      left: max(
+        var(--default-inline-spacing),
+        calc((100vw - var(--max-content-width)) / 2)
+      );
+      right: unset;
+      transform: none;
+    }
+
+    /* Vertical positioning */
+    .highlight.position-top-left,
+    .highlight.position-top-right,
+    .highlight.position-top-center {
+      margin-block: 5rem 0;
+    }
+
+    .highlight.position-top-left .highlight-box,
+    .highlight.position-top-right .highlight-box,
+    .highlight.position-top-center .highlight-box {
+      top: -3rem;
+    }
+
+    .highlight.position-bottom-left,
+    .highlight.position-bottom-right,
+    .highlight.position-bottom-center {
+      margin-block: 0 5rem;
+    }
+
+    .highlight.position-bottom-left .highlight-box,
+    .highlight.position-bottom-right .highlight-box,
+    .highlight.position-bottom-center .highlight-box {
+      top: unset;
+      bottom: -3rem;
+    }
+
+    /* Horizontal positioning */
+    .highlight.position-bottom-left .highlight-box {
+      left: max(
+        var(--default-inline-spacing),
+        calc((100vw - var(--max-content-width)) / 2)
+      );
+      right: unset;
+    }
+
+    .highlight.position-top-right .highlight-box,
+    .highlight.position-bottom-right .highlight-box {
+      left: unset;
+      right: max(
+        var(--default-inline-spacing),
+        calc((100vw - var(--max-content-width)) / 2)
+      );
+    }
+
+    .highlight.position-top-center .highlight-box,
+    .highlight.position-bottom-center .highlight-box {
+      left: 50%;
+      right: unset;
+      transform: translateX(-50%);
+      width: calc(var(--available-width) * 0.8333);
+      max-width: calc(var(--available-width) * 0.8333);
+      text-align: center;
+    }
+  }
+
+  @media (width >= 1200px) {
+    .highlight .highlight-box {
+      width: calc(var(--available-width) * 0.45);
+      max-width: calc(var(--available-width) * 0.45);
+    }
+  }
+
+  /* Color variants */
+  .highlight .highlight-box,
+  .highlight.bg-grey .highlight-box,
+  .highlight.bg-gray .highlight-box  {
+    background: var(--color-gray-light);
+    color: var(--text-color);
+  }
+
+  .highlight.bg-blue .highlight-box {
+    background: var(--color-brand-blue);
+    color: var(--color-white);
+  }
+
+  .highlight.bg-blue .highlight-box h1,
+  .highlight.bg-blue .highlight-box h2,
+  .highlight.bg-blue .highlight-box h3,
+  .highlight.bg-blue .highlight-box h4,
+  .highlight.bg-blue .highlight-box h5,
+  .highlight.bg-blue .highlight-box h6 {
+    color: var(--color-white);
+  }
+
+  .highlight.bg-red .highlight-box {
+    background: var(--color-brand-red);
+    color: var(--color-white);
+  }
+
+  .highlight.bg-red .highlight-box h1,
+  .highlight.bg-red .highlight-box h2,
+  .highlight.bg-red .highlight-box h3,
+  .highlight.bg-red .highlight-box h4,
+  .highlight.bg-red .highlight-box h5,
+  .highlight.bg-red .highlight-box h6 {
+    color: var(--color-white);
+  }
+
+  .highlight.bg-white .highlight-box {
+    background: var(--color-white);
+    color: var(--color-black);
+  }
+
+  .highlight.bg-dark-blue .highlight-box {
+    background: var(--color-blue-dark);
+    color: var(--color-white);
+  }
+
+  .highlight.bg-regal-red .highlight-box {
+    background: var(--color-red-regal);
+    color: var(--color-white);
+  }
+
+  .highlight.bg-red-10 .highlight-box {
+    background: #fff6f4;
+    color: var(--color-black);
+  }
+
+  .highlight.bg-red-30 .highlight-box {
+    background: var(--color-red-light);
+    color: var(--color-black);
+  }
+
+  .highlight.bg-blue-10 .highlight-box {
+    background: #f3f6ff;
+    color: var(--color-black);
+  }
+
+  .highlight.bg-blue-30 .highlight-box {
+    background: var(--color-blue-light);
+    color: var(--color-black);
+  }
+
+  .highlight.bg-blue-90 .highlight-box {
+    background: #1d2ecf;
+    color: var(--color-white);
+  }
+
+  .highlight.bg-blue-100 .highlight-box {
+    background: #0d1ba7;
+    color: var(--color-white);
+  }
+
+  /* Rounded variant */
+  @media (width >= 900px) {
+    .highlight.rounded .highlight-box {
+      border-radius: 2rem;
+    }
+  }
+}

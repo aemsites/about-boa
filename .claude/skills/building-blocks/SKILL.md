@@ -126,12 +126,12 @@ The testing-blocks skill will guide you through:
 - Browser testing to validate block behavior
 - Taking screenshots for validation and PR documentation
 - Running linting and fixing issues
-- Verifying GitHub checks pass
 
 Provide the testing-blocks skill with:
 - Block name being tested
 - Test content URL (from CDD process)
 - Any variants that need testing
+- Screenshots of existing implementation/design/mockup to verify against
 
 Return to this skill after testing is complete to proceed to step 7.
 
