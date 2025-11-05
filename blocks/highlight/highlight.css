@@ -3,15 +3,7 @@
   main > .section > div.highlight-wrapper {
     max-width: unset;
     padding: 0;
-  }
-
-  .highlight {
-    margin-top: 1.875rem;
-    margin-bottom: 1.875rem;
-  }
-
-  .highlight .highlight-container {
-    position: relative;
+    margin-block: 5rem;
   }
 
   /* Image styling */
@@ -26,231 +18,154 @@
     object-fit: cover;
   }
 
-  /* Content box styling */
   .highlight .highlight-box-container {
-    position: relative;
     max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
     margin: 0 auto;
-    padding: 0 var(--default-inline-spacing);
+    padding: var(--spacing-md) var(--default-inline-spacing);
   }
 
-  .highlight .highlight-box {
-    margin: 40px 0 0;
-    width: 100%;
-  }
-
-  .highlight .highlight-box-inner {
-    padding: 2rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* Position variants - desktop only */
   @media (width >= 900px) {
     .highlight {
-      margin-top: 0;
+      position: relative;
     }
 
-    /* Position top variants */
-    .highlight.position-top-left,
-    .highlight.position-top-center,
-    .highlight.position-top-right {
-      margin: 50px 0 0;
-    }
-
-    .highlight.position-top-left .highlight-box-container,
-    .highlight.position-top-center .highlight-box-container,
-    .highlight.position-top-right .highlight-box-container {
+    /* Base positioning - defaults to top-left */
+    .highlight .highlight-box {
       position: absolute;
-      left: 0;
-      top: -50px;
-      width: 100%;
+      max-width: calc(var(--max-content-width) * 0.45);
+      top: -3rem;
+      left: max(
+        var(--default-inline-spacing),
+        calc((100vw - var(--max-content-width)) / 2)
+      );
+      right: unset;
+      transform: none;
     }
 
-    .highlight.position-top-left .highlight-box-container {
-      display: flex;
-      justify-content: flex-start;
+    /* Vertical positioning */
+    .highlight.position-top-right .highlight-box,
+    .highlight.position-top-center .highlight-box {
+      top: -3rem;
     }
 
-    .highlight.position-top-center .highlight-box-container {
-      display: flex;
-      justify-content: center;
+    .highlight.position-bottom-left .highlight-box,
+    .highlight.position-bottom-right .highlight-box,
+    .highlight.position-bottom-center .highlight-box {
+      top: unset;
+      bottom: -3rem;
     }
 
-    .highlight.position-top-right .highlight-box-container {
-      display: flex;
-      justify-content: flex-end;
+    /* Horizontal positioning */
+    .highlight.position-bottom-left .highlight-box {
+      left: max(
+        var(--default-inline-spacing),
+        calc((100vw - var(--max-content-width)) / 2)
+      );
+      right: unset;
     }
 
-    /* Position bottom variants */
-    .highlight.position-bottom-left,
-    .highlight.position-bottom-center,
-    .highlight.position-bottom-right {
-      margin: 0 0 50px;
-      padding-bottom: 50px;
+    .highlight.position-top-right .highlight-box,
+    .highlight.position-bottom-right .highlight-box {
+      left: unset;
+      right: max(
+        var(--default-inline-spacing),
+        calc((100vw - var(--max-content-width)) / 2)
+      );
     }
 
-    .highlight.position-bottom-left .highlight-box-container,
-    .highlight.position-bottom-center .highlight-box-container,
-    .highlight.position-bottom-right .highlight-box-container {
-      position: absolute;
-      left: 0;
-      bottom: -50px;
-      width: 100%;
-    }
-
-    .highlight.position-bottom-left .highlight-box-container {
-      display: flex;
-      justify-content: flex-start;
-    }
-
-    .highlight.position-bottom-center .highlight-box-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    .highlight.position-bottom-right .highlight-box-container {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    /* Sizing for centered variants */
     .highlight.position-top-center .highlight-box,
     .highlight.position-bottom-center .highlight-box {
-      width: 83.3333%;
-      margin: 0;
-    }
-
-    /* Sizing for left/right variants */
-    .highlight.position-top-left .highlight-box,
-    .highlight.position-top-right .highlight-box,
-    .highlight.position-bottom-left .highlight-box,
-    .highlight.position-bottom-right .highlight-box {
-      margin-left: 4.1667%;
-      margin-right: 4.1667%;
-    }
-
-    .highlight .highlight-box-inner {
-      padding: 4rem;
-    }
-
-    /* Center alignment for center variants */
-    .highlight.position-top-center .highlight-box-inner,
-    .highlight.position-bottom-center .highlight-box-inner {
-      text-align: center;
-    }
-
-    .highlight.position-top-center .highlight-box-inner .button-container,
-    .highlight.position-bottom-center .highlight-box-inner .button-container {
-      justify-content: center;
+      left: 50%;
+      right: unset;
+      transform: translateX(-50%);
+      max-width: calc(var(--max-content-width) * 0.8333);
     }
   }
 
   /* Color variants */
-  .highlight.bg-blue {
-    background: #012169;
+  .highlight .highlight-box,
+  .highlight.bg-grey .highlight-box {
+    background: var(--color-gray-light);
+    color: var(--text-color);
   }
 
-  .highlight.bg-blue .highlight-box-inner {
-    background: #012169;
+  .highlight.bg-blue .highlight-box {
+    background: var(--color-blue-primary);
     color: var(--color-white);
   }
 
-  .highlight.bg-blue .highlight-box-inner h1,
-  .highlight.bg-blue .highlight-box-inner h2,
-  .highlight.bg-blue .highlight-box-inner h3,
-  .highlight.bg-blue .highlight-box-inner h4,
-  .highlight.bg-blue .highlight-box-inner h5,
-  .highlight.bg-blue .highlight-box-inner h6 {
+  .highlight.bg-blue .highlight-box h1,
+  .highlight.bg-blue .highlight-box h2,
+  .highlight.bg-blue .highlight-box h3,
+  .highlight.bg-blue .highlight-box h4,
+  .highlight.bg-blue .highlight-box h5,
+  .highlight.bg-blue .highlight-box h6 {
     color: var(--color-white);
   }
 
-  .highlight.bg-red {
-    background: #c41230;
-  }
-
-  .highlight.bg-red .highlight-box-inner {
-    background: #c41230;
+  .highlight.bg-red .highlight-box {
+    background: var(--color-red-regal);
     color: var(--color-white);
   }
 
-  .highlight.bg-red .highlight-box-inner h1,
-  .highlight.bg-red .highlight-box-inner h2,
-  .highlight.bg-red .highlight-box-inner h3,
-  .highlight.bg-red .highlight-box-inner h4,
-  .highlight.bg-red .highlight-box-inner h5,
-  .highlight.bg-red .highlight-box-inner h6 {
+  .highlight.bg-red .highlight-box h1,
+  .highlight.bg-red .highlight-box h2,
+  .highlight.bg-red .highlight-box h3,
+  .highlight.bg-red .highlight-box h4,
+  .highlight.bg-red .highlight-box h5,
+  .highlight.bg-red .highlight-box h6 {
     color: var(--color-white);
   }
 
-  .highlight.bg-grey .highlight-box-inner {
-    background: #ededed;
-    color: #000;
-  }
-
-  .highlight.bg-white .highlight-box-inner {
+  .highlight.bg-white .highlight-box {
     background: var(--color-white);
-    color: #000;
+    color: var(--color-black);
   }
 
-  .highlight.bg-dark-blue .highlight-box-inner {
-    background: #012169;
+  .highlight.bg-dark-blue .highlight-box {
+    background: var(--color-blue-primary);
     color: var(--color-white);
   }
 
-  .highlight.bg-regal-red .highlight-box-inner {
-    background: #c41230;
+  .highlight.bg-regal-red .highlight-box {
+    background: var(--color-red-regal);
     color: var(--color-white);
   }
 
-  .highlight.bg-red-10 .highlight-box-inner {
+  .highlight.bg-red-10 .highlight-box {
     background: #fff6f4;
-    color: #000;
+    color: var(--color-black);
   }
 
-  .highlight.bg-red-30 .highlight-box-inner {
-    background: #ffd7d5;
-    color: #000;
+  .highlight.bg-red-30 .highlight-box {
+    background: var(--color-red-light);
+    color: var(--color-black);
   }
 
-  .highlight.bg-blue-10 .highlight-box-inner {
+  .highlight.bg-blue-10 .highlight-box {
     background: #f3f6ff;
-    color: #000;
+    color: var(--color-black);
   }
 
-  .highlight.bg-blue-30 .highlight-box-inner {
-    background: #cedfff;
-    color: #000;
+  .highlight.bg-blue-30 .highlight-box {
+    background: var(--color-blue-light);
+    color: var(--color-black);
   }
 
-  .highlight.bg-blue-90 .highlight-box-inner {
+  .highlight.bg-blue-90 .highlight-box {
     background: #1d2ecf;
     color: var(--color-white);
   }
 
-  .highlight.bg-blue-100 .highlight-box-inner {
+  .highlight.bg-blue-100 .highlight-box {
     background: #0d1ba7;
     color: var(--color-white);
   }
 
   /* Rounded variant */
   @media (width >= 900px) {
-    .highlight.rounded .highlight-box-inner {
+    .highlight.rounded .highlight-box {
       border-radius: 2rem;
     }
-  }
-
-  /* Authoring error state */
-  .highlight.authoring-error {
-    border: 2px dashed var(--color-brand-red);
-    padding: 2rem;
-  }
-
-  .highlight.authoring-error::before {
-    content: 'Authoring Error: Highlight block requires exactly 2 cells (Image | Content)';
-    display: block;
-    color: var(--color-brand-red);
-    font-weight: bold;
-    margin-bottom: 1rem;
   }
 }
