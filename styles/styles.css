@@ -443,4 +443,10 @@
   main .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey):has(+ .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey)) {
     margin-block-end: 0;
   }
+
+  @media (width >= 900px) {
+    .mobile-only {
+      display: none;
+    }
+  }
 }

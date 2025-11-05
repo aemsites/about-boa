@@ -2,18 +2,18 @@
   /* Mobile: Sections positioned fixed off-screen */
   .nav-sections {
     position: fixed;
-    top: var(--nav-height);
+    top: calc(var(--nav-height) + var(--spacing-xl));
     right: -100vw;
     z-index: 999;
     width: 100%;
     height: calc(100vh - var(--nav-height));
     overflow-y: auto;
     background-color: var(--color-white);
-    transition: right 0.25s ease-in-out;
   }
 
   header nav[aria-expanded='true'] .nav-sections {
     right: 0;
+    transition: right 0.25s ease-in-out;
   }
 
   /* Sections (Mobile Accordion) */
@@ -49,8 +49,13 @@
     margin: 0;
   }
 
+  .nav-sections .nav-section-title .search-text {
+    display: inline-block;
+    padding-left: var(--spacing-s);
+  }
+
   /* Plus icon for mobile accordion */
-  .nav-sections .nav-drop .nav-section-title::after {
+  .nav-sections .nav-drop:not(.has-search) .nav-section-title::after {
     position: absolute;
     top: 50%;
     right: var(--spacing-l);
@@ -72,11 +77,25 @@
     padding-right: var(--spacing-l);
     padding-bottom: var(--spacing-m);
     padding-left: var(--spacing-l);
-    background-color: var(--color-bg-gray);
   }
 
   .nav-sections .nav-drop .nav-section-content {
     display: none;
+  }
+
+  .nav-sections .nav-drop .nav-section-content h2 {
+    padding-inline: var(--spacing-l);
+    font-size: 1.25rem;
+  }
+
+  .nav-sections .nav-drop .nav-section-content ul {
+    list-style: none;
+    padding-inline: var(--spacing-l);
+  }
+
+  .nav-sections .nav-drop .nav-section-content .icon {
+    width: 160px;
+    height: 30px;
   }
 
   .nav-sections .nav-drop[aria-expanded='true'] .nav-section-content {
@@ -92,15 +111,16 @@
     display: block;
     font-size: 1.125rem;
     font-weight: 400;
-    color: var(--color-action-blue);
+    color: var(--color-blue-primary);
     padding: var(--spacing-xs) 0;
   }
 
   /* Hide feature section by default on mobile */
   .nav-sections .nav-section-feature {
-    margin-top: var(--spacing-m);
+    margin-top: 0;
     padding: var(--spacing-m);
     background-color: var(--color-white);
+    width: 50%;
   }
 
   .nav-sections .nav-section-feature img {
@@ -156,7 +176,7 @@
 
     .nav-sections .nav-section-item {
       position: relative;
-      display: inline-block !important;
+      display: inline-block;
       margin-bottom: 0;
       border-bottom: none;
     }
@@ -178,6 +198,11 @@
     /* Remove mobile accordion icon */
     .nav-sections .nav-drop .nav-section-title::after {
       display: none;
+    }
+
+    .nav-sections .nav-section-feature {
+      margin-top: var(--spacing-m);
+      width: auto;
     }
 
     /* Desktop dropdown */
