@@ -394,6 +394,14 @@
     margin-block: 0;
   }
 
+  main > .section.center {
+    text-align: center;
+  }
+
+  main > .section.center > div {
+    max-width: 70ch;
+  }
+
   main .section.bg-gray,
   main .section.bg-grey {
     padding-block: var(--spacing-lg);
