@@ -1,0 +1,45 @@
+.quote {
+  margin: 0 60px;
+}
+
+.quote blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+.quote .quote-text {
+  margin: 0 0 40px;
+  padding-left: 22px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+}
+
+.quote .quote-attribution {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-style: normal;
+}
+
+.quote .quote-name {
+  font-size: 18px;
+  font-weight: 400;
+  color: #000;
+}
+
+.quote .quote-role {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #666;
+  letter-spacing: 0.5px;
+}
+
+/* Mobile adjustments */
+@media (width <= 900px) {
+  .quote {
+    margin: 0 20px;
+  }
+}
