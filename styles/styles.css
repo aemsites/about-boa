@@ -384,6 +384,7 @@
 
   /* Section utilities */
   main .section.bg-gray {
+    padding-block: var(--spacing-xl);
     background-color: var(--color-gray-lightest);
   }
 
