@@ -351,10 +351,6 @@
     margin: 0 auto;
     padding: 0 var(--default-inline-spacing);
   }
-
-  .block {
-    margin-block: var(--spacing-md);
-  }
 }
 
 @layer utilities {
