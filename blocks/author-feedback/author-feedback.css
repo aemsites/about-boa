@@ -4,10 +4,13 @@
 
 .author-feedback.has-errors {
   display: block;
-  position: fixed;
+  position: sticky;
   top: 1rem;
   left: 1rem;
+  align-self: flex-start;
   z-index: 1000;
+  margin: 1rem;
+  width: fit-content;
 }
 
 .author-feedback-button {

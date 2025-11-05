@@ -5,6 +5,10 @@ export async function loadEager() {
 }
 
 export async function loadLazy() {
+  if (document.querySelector('.author-feedback')) {
+    document.querySelector('.author-feedback').remove();
+  }
+
   const authorFeedback = buildBlock('author-feedback', '');
   document.body.appendChild(authorFeedback);
 
