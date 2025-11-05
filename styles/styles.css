@@ -385,18 +385,27 @@
   }
 
   /* Section utilities */
-  main .section.bg-gray {
-    padding-block: var(--spacing-xl);
+  main .section.bg-gray,
+  main .section.bg-grey {
+    padding-block: var(--spacing-lg);
     background-color: var(--color-gray-lightest);
   }
 
   main .section.bg-blue {
-    padding-block: var(--spacing-xl);
+    padding-block: var(--spacing-lg);
     background-color: var(--color-brand-blue);
   }
 
   main .section.bg-red {
-    padding-block: var(--spacing-xl);
+    padding-block: var(--spacing-lg);
     background-color: var(--color-brand-red);
+  }
+
+  main .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey) + .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey) {
+    margin-block-start: 0;
+  }
+
+  main .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey):has(+ .section:is(.bg-blue, .bg-red, .bg-gray, .bg-grey)) {
+    margin-block-end: 0;
   }
 }

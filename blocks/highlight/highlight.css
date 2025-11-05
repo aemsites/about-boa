@@ -2,7 +2,7 @@
   /* Make the section wrapper full-width for this block */
   main > .section > div.highlight-wrapper {
     max-width: unset;
-    padding: 5rem 0;
+    padding: 0;
   }
 
   /* Image styling */
@@ -40,6 +40,7 @@
 
     .highlight {
       position: relative;
+      margin-top: 5rem;
 
       --available-width: min(var(--max-content-width), calc(100vw - (var(--default-inline-spacing) * 2)));
     }
@@ -47,8 +48,8 @@
     /* Base positioning - defaults to top-left */
     .highlight .highlight-box {
       position: absolute;
-      width: calc(var(--available-width) * 0.45);
-      max-width: calc(var(--available-width) * 0.45);
+      width: calc(var(--available-width) * 0.6666);
+      max-width: calc(var(--available-width) * 0.6666);
       top: -3rem;
       left: max(
         var(--default-inline-spacing),
@@ -59,9 +60,22 @@
     }
 
     /* Vertical positioning */
+    .highlight.position-top-left,
+    .highlight.position-top-right,
+    .highlight.position-top-center {
+      margin-block: 5rem 0;
+    }
+
+    .highlight.position-top-left .highlight-box,
     .highlight.position-top-right .highlight-box,
     .highlight.position-top-center .highlight-box {
       top: -3rem;
+    }
+
+    .highlight.position-bottom-left,
+    .highlight.position-bottom-right,
+    .highlight.position-bottom-center {
+      margin-block: 0 5rem;
     }
 
     .highlight.position-bottom-left .highlight-box,
@@ -100,9 +114,17 @@
     }
   }
 
+  @media (width >= 1200px) {
+    .highlight .highlight-box {
+      width: calc(var(--available-width) * 0.45);
+      max-width: calc(var(--available-width) * 0.45);
+    }
+  }
+
   /* Color variants */
   .highlight .highlight-box,
-  .highlight.bg-grey .highlight-box {
+  .highlight.bg-grey .highlight-box,
+  .highlight.bg-gray .highlight-box  {
     background: var(--color-gray-light);
     color: var(--text-color);
   }
