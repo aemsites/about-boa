@@ -11,12 +11,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f59e0b;
-  color: var(--color-white);
+  background-color: rgb(239 68 68 / 75%);
+  backdrop-filter: blur(8px);
+  color: #fafafa;
   font-weight: 700;
   font-size: 1.5rem;
   text-align: center;
-  border: 3px solid #d97706;
+  border: 3px solid #dc2626;
   border-radius: 0.5rem;
   padding: 1rem;
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
