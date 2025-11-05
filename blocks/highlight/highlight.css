@@ -19,7 +19,7 @@
   }
 
   .highlight .highlight-box-container {
-    max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    max-width: var(--max-width-padding);
     margin: 0 auto;
     padding: var(--spacing-md) var(--default-inline-spacing);
   }
