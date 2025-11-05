@@ -34,6 +34,10 @@
 
   @media (width >= 900px) {
     .notched-image .notched-image-content .notched-image-content-inner {
+      padding: 4rem 4rem 2rem;
+    }
+
+    .notched-image.shadowed .notched-image-content .notched-image-content-inner {
       padding: 4rem;
     }
   }
