@@ -1,16 +1,19 @@
+/* Fixed container that stays in viewport */
+.author-feedback-container {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  pointer-events: none;
+}
+
 .author-feedback {
   display: none;
+  pointer-events: auto;
 }
 
 .author-feedback.has-errors {
   display: block;
-  position: sticky;
-  top: 1rem;
-  left: 1rem;
-  align-self: flex-start;
-  z-index: 1000;
-  margin: 1rem;
-  width: fit-content;
 }
 
 .author-feedback-button {
@@ -57,7 +60,7 @@
 }
 
 @media (width <= 600px) {
-  .author-feedback.has-errors {
+  .author-feedback-container {
     top: 0.5rem;
     left: 0.5rem;
   }

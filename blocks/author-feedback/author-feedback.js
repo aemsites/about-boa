@@ -4,6 +4,19 @@ export default async function decorate(block) {
     return;
   }
 
+  // Create or get the fixed container
+  let container = document.querySelector('.author-feedback-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.className = 'author-feedback-container';
+    document.body.appendChild(container);
+  }
+
+  // Move block into container
+  if (block.parentElement !== container) {
+    container.appendChild(block);
+  }
+
   block.classList.add('has-errors');
 
   const errorCount = errorBlocks.length;
