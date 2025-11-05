@@ -10,6 +10,7 @@ import {
   loadSections,
   loadCSS,
   getMetadata,
+  buildBlock,
 } from './aem.js';
 import { rewriteLinkUrl, linkTextIncludesHref } from './utils.js';
 import { replacePlaceholders } from './placeholders.js';
@@ -54,6 +55,16 @@ function loadFragments(main) {
 function buildAutoBlocks(main) {
   try {
     loadFragments(main);
+
+    const isFragment = !window.document.contains(main);
+
+    if (!isFragment) {
+      const backToTopSection = document.createElement('div');
+      const backToTopBlock = buildBlock('back-to-top', '');
+      backToTopSection.classList.add('back-to-top-section');
+      backToTopSection.appendChild(backToTopBlock);
+      main.appendChild(backToTopSection);
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

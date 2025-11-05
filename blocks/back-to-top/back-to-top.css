@@ -1,0 +1,51 @@
+@layer blocks {
+  .back-to-top {
+    display: none;
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: 1rem;
+    z-index: 1030;
+  }
+
+  .back-to-top.visible {
+    display: block;
+  }
+
+  .back-to-top-button {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-xs);
+    background-color: var(--color-white);
+    color: var(--color-blue-royal);
+    border: 1px solid var(--color-gray-light);
+    font-size: var(--body-font-size-xs);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .back-to-top-button:hover,
+  .back-to-top-button:active,
+  .back-to-top-button:focus {
+    border-color: var(--color-brand-blue);
+    color: var(--color-brand-blue);
+  }
+
+  .back-to-top-text {
+    position: relative;
+    font-weight: 500;
+    padding-inline-end: var(--spacing-md);
+  }
+
+  .back-to-top-text::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 0.4em solid transparent;
+    border-right: 0.4em solid transparent;
+    border-bottom: 0.5em solid currentcolor;
+  }
+}
+
