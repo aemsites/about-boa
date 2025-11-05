@@ -31,22 +31,11 @@ export default async function decorate(block) {
 
   // Create the structure
   imageContainer.className = 'highlight-image';
-  contentContainer.className = 'highlight-box';
-
-  // Wrap the content in an inner container for styling
-  const contentInner = document.createElement('div');
-  contentInner.className = 'highlight-box-inner';
-  contentInner.append(...contentContainer.children);
-  contentContainer.replaceChildren(contentInner);
-
-  // Create a container wrapper for positioning
-  const container = document.createElement('div');
-  container.className = 'highlight-container';
+  contentContainer.className = 'highlight-box-container';
 
   const boxContainer = document.createElement('div');
-  boxContainer.className = 'highlight-box-container';
+  boxContainer.className = 'highlight-box';
   boxContainer.append(contentContainer);
 
-  container.append(imageContainer, boxContainer);
-  block.replaceChildren(container);
+  block.replaceChildren(imageContainer, boxContainer);
 }
