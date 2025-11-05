@@ -1,0 +1,31 @@
+@layer blocks {
+  .quote {
+    padding: var(--spacing-l) 0;
+  }
+
+  .quote .quote-text {
+    margin: 0 0 var(--spacing-m);
+    font-size: var(--body-font-size-xl);
+    line-height: 1.5;
+    font-weight: 300;
+    quotes: '"' '"';
+  }
+
+  .quote .quote-text::before {
+    content: open-quote;
+  }
+
+  .quote .quote-attribution {
+    margin: 0 0 var(--spacing-xs);
+    font-size: var(--body-font-size-m);
+    font-weight: 400;
+  }
+
+  .quote .quote-role {
+    margin: 0;
+    font-size: var(--body-font-size-s);
+    color: #6b6b6b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
