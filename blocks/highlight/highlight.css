@@ -109,7 +109,7 @@
   }
 
   .highlight.bg-blue .highlight-box {
-    background: var(--color-blue-primary);
+    background: var(--color-brand-blue);
     color: var(--color-white);
   }
 
@@ -123,7 +123,7 @@
   }
 
   .highlight.bg-red .highlight-box {
-    background: var(--color-red-regal);
+    background: var(--color-brand-red);
     color: var(--color-white);
   }
 
@@ -142,7 +142,7 @@
   }
 
   .highlight.bg-dark-blue .highlight-box {
-    background: var(--color-blue-primary);
+    background: var(--color-blue-dark);
     color: var(--color-white);
   }
 
