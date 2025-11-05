@@ -2,8 +2,7 @@
   /* Make the section wrapper full-width for this block */
   main > .section > div.highlight-wrapper {
     max-width: unset;
-    padding: 0;
-    margin-block: 5rem;
+    padding: 5rem 0;
   }
 
   /* Image styling */
