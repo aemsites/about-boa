@@ -11,11 +11,13 @@ import {
   loadCSS,
   getMetadata,
   buildBlock,
+  toClassName,
 } from './aem.js';
 import { rewriteLinkUrl, linkTextIncludesHref } from './utils.js';
 import { replacePlaceholders } from './placeholders.js';
 
 const { searchParams, origin } = new URL(window.location.href);
+
 /**
  * load fonts.css and set a session storage flag
  */
@@ -140,6 +142,31 @@ export function decorateMain(main) {
   replacePlaceholders(main);
 }
 
+let templateModule = {
+  loadEager: () => Promise.resolve(),
+  loadLazy: () => Promise.resolve(),
+  loadDelayed: () => Promise.resolve(),
+};
+async function loadTemplateModule(template) {
+  if (!template || ![].includes(template)) {
+    // not a known template
+    return;
+  }
+
+  try {
+    templateModule = await import(`../templates/${template}/${template}.js`);
+    loadCSS(`${window.hlx.codeBasePath}/templates/${template}.css`);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(`failed to load template module for ${template}`, error);
+    templateModule = {
+      loadEager: () => Promise.resolve(),
+      loadLazy: () => Promise.resolve(),
+      loadDelayed: () => Promise.resolve(),
+    };
+  }
+}
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
@@ -147,9 +174,14 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   doc.documentElement.lang = getMetadata('language') || 'en';
   decorateTemplateAndTheme();
+  if (getMetadata('template')) {
+    await loadTemplateModule(toClassName(getMetadata('template')));
+  }
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    await templateModule.loadEager(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
@@ -171,6 +203,7 @@ async function loadEager(doc) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await loadSections(main);
+  await templateModule.loadLazy(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -190,7 +223,10 @@ async function loadLazy(doc) {
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  window.setTimeout(() => {
+    import('./delayed.js');
+    templateModule.loadDelayed();
+  }, 3000);
   // load anything that can be postponed to the latest here
 }
 
@@ -211,6 +247,7 @@ export const NX_ORIGIN = branch === 'local' || origin.includes('localhost') ? 'h
   if (searchParams.get('dapreview')) {
     import('https://da.live/scripts/dapreview.js')
       .then(({ default: daPreview }) => daPreview(loadPage));
+    document.body.classList.add('da-preview');
   }
   if (searchParams.get('daexperiment')) {
     import(`${NX_ORIGIN}/public/plugins/exp/exp.js`);
