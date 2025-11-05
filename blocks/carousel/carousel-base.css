@@ -125,14 +125,12 @@
     }
   
     .carousel-slides-container:not(.carousel-all-slides-visible) .carousel-slides {
-      margin-left: 4rem;
-      margin-right: 4rem;
+      margin-inline: 4rem;
       width: calc(100% - 8rem);
     }
 
     .carousel-slides-container.carousel-all-slides-visible .carousel-slides {
-      margin-left: 0;
-      margin-right: 0;
+      margin-inline: 0;
       width: 100%;
     }
   }

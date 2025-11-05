@@ -165,8 +165,7 @@
   ul,
   pre,
   blockquote {
-    margin-top: 0;
-    margin-bottom: 1em;
+    margin-block: 0 1em;
   }
 
   /* Typography */
@@ -176,8 +175,7 @@
   h4,
   h5,
   h6 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
+    margin-block: 0 0.5em;
     scroll-margin: var(--spacing-xxl);
   }
 
@@ -343,7 +341,7 @@
   }
 
   main > .section:first-of-type {
-    margin-top: 0;
+    margin-block-start: 0;
   }
 
   main > .section > div {
@@ -380,11 +378,14 @@
   .h4,
   .h5,
   .h6 {
-    margin-top: 0;
-    margin-bottom: 0.5em;
+    margin-block: 0 0.5em;
   }
 
   /* Section utilities */
+  main > .section.small-margin {
+    margin-block: var(--spacing-lg);
+  }
+
   main .section.bg-gray,
   main .section.bg-grey {
     padding-block: var(--spacing-lg);
