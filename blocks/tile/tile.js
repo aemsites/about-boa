@@ -42,7 +42,6 @@ export default async function decorate(block) {
 
   const isDesktop = window.matchMedia('(min-width: 900px)');
   const isTablet = window.matchMedia('(min-width: 600px)');
-  const isMobile = window.matchMedia('(max-width: 599px)');
 
   if (isDesktop.matches) {
     updateCarousel(container, 3);
