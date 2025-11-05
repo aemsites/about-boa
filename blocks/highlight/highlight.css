@@ -28,12 +28,15 @@
   @media (width >= 900px) {
     .highlight {
       position: relative;
+
+      --available-width: min(var(--max-content-width), calc(100vw - (var(--default-inline-spacing) * 2)));
     }
 
     /* Base positioning - defaults to top-left */
     .highlight .highlight-box {
       position: absolute;
-      max-width: calc(var(--max-content-width) * 0.45);
+      width: calc(var(--available-width) * 0.45);
+      max-width: calc(var(--available-width) * 0.45);
       top: -3rem;
       left: max(
         var(--default-inline-spacing),
@@ -79,7 +82,8 @@
       left: 50%;
       right: unset;
       transform: translateX(-50%);
-      max-width: calc(var(--max-content-width) * 0.8333);
+      width: calc(var(--available-width) * 0.8333);
+      max-width: calc(var(--available-width) * 0.8333);
     }
   }
 
