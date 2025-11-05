@@ -347,7 +347,9 @@
   }
 
   main > .section > div {
-    max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    --max-width-padding: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+    
+    max-width: var(--max-width-padding);
     margin: 0 auto;
     padding: 0 var(--default-inline-spacing);
   }
