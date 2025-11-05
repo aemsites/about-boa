@@ -74,6 +74,16 @@
     --color-gray-light: #ededed;
     --color-gray-lightest: #f5f5f5;
 
+    /* Borders */
+    --color-border: #e0e0e0;
+    --color-border-light: #e5e5e5;
+
+    /* Backgrounds */
+    --color-bg-gray: #f8f8f8;
+
+    /* Actions */
+    --color-action-blue: #0070ba;
+
     /* Semantic Colors */
     --background-color: var(--color-white);
     --light-color: var(--color-gray-lightest);
@@ -153,6 +163,7 @@
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: 'liga';
     text-rendering: optimizelegibility;
+    padding-top: calc(var(--nav-height) + var(--spacing-m));
   }
 
   body.appear {
@@ -354,6 +365,12 @@
 
   .block {
     margin-block: var(--spacing-md);
+  }
+
+  @media (width < 900px) {
+    body {
+      padding-top: var(--nav-height);
+    }
   }
 }
 

@@ -1,0 +1,251 @@
+@layer blocks {
+  /* Mobile: Sections positioned fixed off-screen */
+  .nav-sections {
+    position: fixed;
+    top: var(--nav-height);
+    right: -100vw;
+    z-index: 999;
+    width: 100%;
+    height: calc(100vh - var(--nav-height));
+    overflow-y: auto;
+    background-color: var(--color-white);
+    transition: right 0.25s ease-in-out;
+  }
+
+  header nav[aria-expanded='true'] .nav-sections {
+    right: 0;
+  }
+
+  /* Sections (Mobile Accordion) */
+  .nav-sections .nav-section-item {
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .nav-sections .nav-section-title {
+    position: relative;
+    margin-bottom: 0;
+    padding: var(--spacing-md) var(--spacing-l);
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--color-brand-blue);
+    cursor: pointer;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .nav-sections .nav-section-title a {
+    display: block;
+    font-weight: 400;
+    color: var(--color-brand-blue);
+    text-decoration: none;
+    pointer-events: none;
+  }
+
+  .nav-sections .nav-section-title a:hover {
+    text-decoration: underline;
+  }
+
+  .nav-sections .nav-section-title p {
+    margin: 0;
+  }
+
+  /* Plus icon for mobile accordion */
+  .nav-sections .nav-drop .nav-section-title::after {
+    position: absolute;
+    top: 50%;
+    right: var(--spacing-l);
+    font-size: 2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--color-brand-blue);
+    content: '+';
+    transform: translateY(-50%);
+  }
+
+  .nav-sections .nav-drop[aria-expanded='true'] .nav-section-title::after {
+    font-size: 2.5rem;
+    content: '−';
+  }
+
+  /* Hide sub-content by default on mobile */
+  .nav-sections .nav-section-links {
+    padding-right: var(--spacing-l);
+    padding-bottom: var(--spacing-m);
+    padding-left: var(--spacing-l);
+    background-color: var(--color-bg-gray);
+  }
+
+  .nav-sections .nav-drop .nav-section-content {
+    display: none;
+  }
+
+  .nav-sections .nav-drop[aria-expanded='true'] .nav-section-content {
+    display: block;
+  }
+
+  .nav-sections .nav-section-links p {
+    margin: var(--spacing-xs) 0;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .nav-sections .nav-section-links a {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--color-action-blue);
+    padding: var(--spacing-xs) 0;
+  }
+
+  /* Hide feature section by default on mobile */
+  .nav-sections .nav-section-feature {
+    margin-top: var(--spacing-m);
+    padding: var(--spacing-m);
+    background-color: var(--color-white);
+  }
+
+  .nav-sections .nav-section-feature img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: var(--spacing-xs);
+    border-radius: 4px;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .nav-sections .nav-section-feature a {
+    font-size: 0.875rem;
+    color: var(--color-brand-blue);
+  }
+
+  /* Show utility navigation at the bottom of mobile menu */
+  header nav[aria-expanded='true'] .nav-sections::after {
+    display: block;
+    margin-top: auto;
+    content: '';
+    border-top: 1px solid var(--color-border-light);
+  }
+
+  @media (width >= 900px) {
+    /* Desktop Mega Menu */
+    .nav-sections {
+      position: static;
+      top: auto;
+      right: auto;
+      z-index: auto;
+      display: flex !important;
+      flex: 1 1 auto;
+      flex-direction: row !important;
+      gap: var(--spacing-xl);
+      align-items: center;
+      width: auto;
+      height: auto;
+      overflow-y: visible;
+      visibility: visible;
+      white-space: nowrap;
+      background-color: transparent;
+      transition: none;
+    }
+
+    header nav[aria-expanded='true'] .nav-sections {
+      align-self: unset;
+      padding: 0;
+    }
+
+    header nav[aria-expanded='true'] .nav-sections::after {
+      display: none;
+    }
+
+    .nav-sections .nav-section-item {
+      position: relative;
+      display: inline-block !important;
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .nav-sections .nav-section-title {
+      display: inline-block;
+      margin-bottom: 0;
+      padding: var(--spacing-md) 0;
+      font-size: 1.125rem;
+      cursor: pointer;
+      color: var(--color-brand-blue);
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .nav-sections .nav-section-title a {
+      pointer-events: auto;
+    }
+
+    /* Remove mobile accordion icon */
+    .nav-sections .nav-drop .nav-section-title::after {
+      display: none;
+    }
+
+    /* Desktop dropdown */
+    .nav-sections .nav-section-content {
+      display: none;
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true'] {
+      position: relative;
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true'] .nav-section-content {
+      position: absolute;
+      top: calc(100% - var(--spacing-xs));
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      margin-top: 8px;
+      padding: var(--spacing-sm) var(--spacing-md);
+      white-space: normal;
+      background-color: var(--color-white);
+      border-radius: 0;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 15%), 0 0 1px rgb(0 0 0 / 10%);
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true'] .nav-section-content > p {
+      display: flex;
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true'] .nav-section-content .nav-section-links {
+      min-width: 200px;
+      max-width: 350px;
+      margin-top: 8px;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background-color: transparent;
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true'] .nav-section-content .nav-section-links p {
+      margin: var(--spacing-xs) 0;
+      padding-left: 0;
+      line-height: 1.4;
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true'] .nav-section-feature {
+      min-width: 200px;
+      max-width: 350px;
+      margin-top: 8px;
+      padding: var(--spacing-sm) var(--spacing-md);
+      background-color: transparent;
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true'] .nav-section-feature img {
+      border-radius: 4px;
+    }
+
+    /* Multi-column mega menu for sections with both links and feature */
+    .nav-sections .nav-drop[aria-expanded='true']:has(.nav-section-feature) .nav-section-content .nav-section-links {
+      right: 50%;
+      left: auto;
+      margin-right: var(--spacing-xs);
+      transform: none;
+    }
+
+    .nav-sections .nav-drop[aria-expanded='true']:has(.nav-section-feature) .nav-section-content .nav-section-feature {
+      left: 50%;
+      margin-left: var(--spacing-xs);
+      transform: none;
+    }
+  }
+}
+
