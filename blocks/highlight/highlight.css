@@ -8,8 +8,17 @@
 
   /* Image styling */
   .highlight .highlight-image {
-    max-height: 600px;
-    overflow: hidden;
+    position: relative;
+    max-height: 540px;
+    min-height: 300px;
+    width: 100%;
+  }
+
+  .highlight .highlight-image picture {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    object-fit: cover;
   }
 
   .highlight .highlight-image img {
@@ -26,6 +35,12 @@
   }
 
   @media (width >= 900px) {
+    /* Image displays at full dimensions on desktop */
+    .highlight .highlight-image {
+      max-height: none;
+      min-height: 400px;
+    }
+
     .highlight {
       position: relative;
 
@@ -84,6 +99,7 @@
       transform: translateX(-50%);
       width: calc(var(--available-width) * 0.8333);
       max-width: calc(var(--available-width) * 0.8333);
+      text-align: center;
     }
   }
 
