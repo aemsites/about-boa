@@ -34,13 +34,13 @@ export default async function decorate(block) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          block.style.display = 'block';
+          block.classList.add('visible');
         } else {
-          block.style.display = 'none';
+          block.classList.remove('visible');
         }
       });
     }, {
-      rootMargin: '500px',
+      rootMargin: '300px',
     });
     observer.observe(footer);
   }
