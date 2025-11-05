@@ -128,18 +128,13 @@ export function updateCarousel(container, slidesPerView = 1) {
     if (slidesContainer && slides.length > 0) {
       // If all slides are visible, scroll to start
       if (showAllSlides) {
-        slidesContainer.scrollTo({ left: 0, behavior: 'auto' });
-        updateActiveSlide(slides[0]);
+        showSlide(container, 0);
       } else {
         // Otherwise, maintain the current active slide index
         const targetIndex = Math.min(currentActiveIndex, slides.length - 1);
         const targetSlide = slides[targetIndex];
         if (targetSlide) {
-          slidesContainer.scrollTo({
-            left: targetSlide.offsetLeft,
-            behavior: 'auto',
-          });
-          updateActiveSlide(targetSlide);
+          showSlide(container, targetIndex);
         }
       }
     }
@@ -147,7 +142,7 @@ export function updateCarousel(container, slidesPerView = 1) {
 }
 
 let carouselId = 0;
-export async function buildCarousel(slidesContainer) {
+export async function buildCarousel(slidesContainer, slidesPerView = 1) {
   const placeholders = await fetchLangPlaceholders();
   loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`);
 
@@ -208,7 +203,7 @@ export async function buildCarousel(slidesContainer) {
   if (!isSingleSlide) bindEvents(container);
 
   // Initialize slides-per-view to 1 (default)
-  updateCarousel(container, 1);
+  updateCarousel(container, slidesPerView);
 
   return container;
 }
