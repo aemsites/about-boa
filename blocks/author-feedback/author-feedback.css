@@ -1,15 +1,9 @@
-/* Fixed container that stays in viewport */
-.author-feedback-container {
+.author-feedback {
+  display: none;
   position: fixed;
   top: 1rem;
   left: 1rem;
   z-index: 1000;
-  pointer-events: none;
-}
-
-.author-feedback {
-  display: none;
-  pointer-events: auto;
 }
 
 .author-feedback.has-errors {
@@ -60,7 +54,7 @@
 }
 
 @media (width <= 600px) {
-  .author-feedback-container {
+  .author-feedback {
     top: 0.5rem;
     left: 0.5rem;
   }

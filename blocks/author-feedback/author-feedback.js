@@ -1,23 +1,74 @@
+/**
+ * Keep the button block visible in the parent window's viewport
+ * when the page is in an iframe that's taller than the viewport
+ * @param {HTMLElement} block The block element
+ */
+function keepButtonInView(block) {
+  function updatePosition() {
+    const iframe = window.frameElement;
+    if (!iframe) return;
+
+    // Get iframe's position in parent window
+    const iframeRect = iframe.getBoundingClientRect();
+
+    // Calculate where button should be positioned
+    // Default: 1rem from top of iframe
+    const defaultOffset = 16; // 1rem in pixels
+    let topOffset = defaultOffset;
+
+    // If iframe top is above viewport, adjust button to stay visible
+    if (iframeRect.top < 0) {
+      // Iframe is scrolled up, show button at top of visible area
+      topOffset = Math.max(defaultOffset, -iframeRect.top + defaultOffset);
+    }
+
+    // Clamp to ensure button stays within iframe bounds
+    const maxTop = iframeRect.height - 100; // Leave room for button
+    topOffset = Math.min(topOffset, maxTop);
+
+    block.style.top = `${topOffset}px`;
+  }
+
+  // Update on parent window scroll
+  const parentWindow = window.parent;
+  if (parentWindow) {
+    parentWindow.addEventListener('scroll', updatePosition, { passive: true });
+    parentWindow.addEventListener('resize', updatePosition, { passive: true });
+  }
+
+  // Update on iframe resize
+  const resizeObserver = new ResizeObserver(updatePosition);
+  resizeObserver.observe(document.body);
+
+  // Initial update
+  updatePosition();
+
+  // Update periodically to catch any layout changes
+  const interval = setInterval(updatePosition, 100);
+
+  // Clean up on page unload
+  window.addEventListener('beforeunload', () => {
+    if (parentWindow) {
+      parentWindow.removeEventListener('scroll', updatePosition);
+      parentWindow.removeEventListener('resize', updatePosition);
+    }
+    resizeObserver.disconnect();
+    clearInterval(interval);
+  });
+}
+
 export default async function decorate(block) {
   const errorBlocks = document.querySelectorAll('.block.authoring-error');
   if (errorBlocks.length === 0) {
     return;
   }
 
-  // Create or get the fixed container
-  let container = document.querySelector('.author-feedback-container');
-  if (!container) {
-    container = document.createElement('div');
-    container.className = 'author-feedback-container';
-    document.body.appendChild(container);
-  }
-
-  // Move block into container
-  if (block.parentElement !== container) {
-    container.appendChild(block);
-  }
-
   block.classList.add('has-errors');
+
+  // Keep button visible in parent viewport if in iframe
+  if (window.self !== window.top) {
+    keepButtonInView(block);
+  }
 
   const errorCount = errorBlocks.length;
   const countText = errorCount === 1 ? 'error' : 'errors';
