@@ -24,8 +24,6 @@ export default function decorate(block) {
     section.classList.add('nav-section-item');
     const divs = Array.from(section.children);
 
-    if (divs.length === 0 || section.querySelector('.nav-section-content')) return;
-
     // Create content wrapper only for dropdowns
     const sectionContent = document.createElement('div');
     sectionContent.classList.add('nav-section-content');
@@ -61,7 +59,8 @@ export default function decorate(block) {
         btn.classList.remove('button');
       });
 
-      // Store timeout reference for delayed closing
+      // Store timeout reference for this specific section (closure scope)
+      // Each section gets its own timeout variable, preventing race conditions
       let closeTimeout;
 
       // Add hover handlers for desktop
@@ -88,6 +87,9 @@ export default function decorate(block) {
       // Add click handler for mobile
       section.addEventListener('click', (e) => {
         if (!isDesktop.matches) {
+          if (e.target.closest('a')) {
+            return;
+          }
           e.stopPropagation();
           const expanded = section.getAttribute('aria-expanded') === 'true';
           section.setAttribute('aria-expanded', expanded ? 'false' : 'true');

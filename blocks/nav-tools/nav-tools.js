@@ -46,12 +46,28 @@ export default function decorate(block) {
         btn.classList.remove('button');
       });
 
-      // Click-outside handler
-      const handleClickOutside = (e) => {
-        if (!tool.contains(e.target)) {
-          tool.setAttribute('aria-expanded', 'false');
-          document.removeEventListener('click', handleClickOutside);
+      // Store click-outside handler reference for proper cleanup
+      // This prevents memory leaks if the tool is removed from DOM
+      let clickOutsideHandler = null;
+
+      const attachClickOutside = () => {
+        // Remove any existing handler first to prevent duplicates
+        if (clickOutsideHandler) {
+          document.removeEventListener('click', clickOutsideHandler);
         }
+
+        clickOutsideHandler = (e) => {
+          if (!tool.contains(e.target)) {
+            tool.setAttribute('aria-expanded', 'false');
+            document.removeEventListener('click', clickOutsideHandler);
+            clickOutsideHandler = null;
+          }
+        };
+
+        // Use setTimeout to avoid immediate triggering on the same click
+        setTimeout(() => {
+          document.addEventListener('click', clickOutsideHandler);
+        }, 0);
       };
 
       // Add click handler for both desktop and mobile
@@ -65,12 +81,10 @@ export default function decorate(block) {
 
           // Add click-outside listener when opened
           if (newState === 'true') {
-            // Use setTimeout to avoid immediate triggering
-            setTimeout(() => {
-              document.addEventListener('click', handleClickOutside);
-            }, 0);
-          } else {
-            document.removeEventListener('click', handleClickOutside);
+            attachClickOutside();
+          } else if (clickOutsideHandler) {
+            document.removeEventListener('click', clickOutsideHandler);
+            clickOutsideHandler = null;
           }
         }
       });
