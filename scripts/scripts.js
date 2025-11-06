@@ -13,7 +13,7 @@ import {
   buildBlock,
   toClassName,
 } from './aem.js';
-import { rewriteLinkUrl, linkTextIncludesHref } from './utils.js';
+import { rewriteLinkUrl } from './utils.js';
 import { replacePlaceholders } from './placeholders.js';
 
 const { searchParams, origin } = new URL(window.location.href);
@@ -36,15 +36,13 @@ function loadFragments(main) {
     // eslint-disable-next-line import/no-cycle
     import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
       fragments.forEach(async (fragment) => {
-        if (linkTextIncludesHref(fragment)) {
-          try {
-            const { pathname } = new URL(fragment.href);
-            const frag = await loadFragment(pathname);
-            fragment.parentElement.replaceWith(frag.firstElementChild);
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Fragment loading failed', error);
-          }
+        try {
+          const { pathname } = new URL(fragment.href);
+          const frag = await loadFragment(pathname);
+          fragment.parentElement.replaceWith(frag.firstElementChild);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.error('Fragment loading failed', error);
         }
       });
     });
