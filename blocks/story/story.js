@@ -1,7 +1,7 @@
 /**
  * Decorates the story block
  * A flexible content block that displays a story with image and content
- * Supports variants: bg-blue, bg-red, bg-white, align-left, align-right
+ * Supports variants: bg-blue, bg-red, bg-white, bg-gray, align-left, align-right
  * @param {Element} block The story block element
  */
 export default function decorate(block) {
