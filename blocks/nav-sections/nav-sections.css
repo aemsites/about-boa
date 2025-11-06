@@ -2,7 +2,7 @@
   /* Mobile: Sections positioned fixed off-screen */
   .nav-sections {
     position: fixed;
-    top: calc(var(--nav-height) + var(--spacing-xl));
+    top: calc(var(--nav-height) + var(--spacing-m));
     right: -100vw;
     z-index: 999;
     width: 100%;
