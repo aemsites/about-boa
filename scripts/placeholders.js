@@ -48,13 +48,22 @@ export default async function fetchLangPlaceholders() {
 }
 
 export async function replacePlaceholders(el) {
-  const placeholders = await fetchLangPlaceholders();
   const treeWalker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+  const nodesToProcess = [];
 
   while (treeWalker.nextNode()) {
     const textNode = treeWalker.currentNode;
-    const text = textNode.textContent;
-    const replacedText = text.replace(/{{(.*?)}}/g, (match, p1) => placeholders[p1] || match);
-    textNode.textContent = replacedText;
+    if (textNode.textContent.match(/{{.*?}}/g)) {
+      nodesToProcess.push(textNode);
+    }
+  }
+
+  if (nodesToProcess.length > 0) {
+    const placeholders = await fetchLangPlaceholders();
+    nodesToProcess.forEach((textNode) => {
+      const text = textNode.textContent;
+      const replacedText = text.replace(/{{(.*?)}}/g, (match, p1) => placeholders[p1] || match);
+      textNode.textContent = replacedText;
+    });
   }
 }
