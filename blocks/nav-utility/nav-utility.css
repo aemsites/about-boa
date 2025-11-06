@@ -1,0 +1,100 @@
+@layer blocks {
+  .nav-utility-wrapper {
+    display: none;
+    background-color: var(--light-color);
+  }
+
+  .nav-utility {
+    margin: 0 auto;
+    padding: 0 var(--spacing-l);
+  }
+
+  .nav-utility ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-utility li {
+    padding: var(--spacing-xs) 0;
+  }
+
+  .nav-utility a {
+    font-size: 0.813rem;
+    font-weight: 400;
+    color: var(--color-blue-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-utility a:hover {
+    color: var(--color-action-blue);
+    text-decoration: underline;
+  }
+
+  /* Show utility nav in mobile expanded menu */
+  header nav[aria-expanded='true'] .nav-utility {
+    background-color: var(--color-gray-lightest);
+    border-top: 1px solid var(--color-border-light);
+    padding: 0;
+  }
+
+  header nav[aria-expanded='true'] .nav-utility ul {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  header nav[aria-expanded='true'] .nav-utility li {
+    padding: var(--spacing-xs) var(--spacing-l);
+  }
+
+  header nav[aria-expanded='true'] .nav-utility li:last-child {
+    border-bottom: none;
+  }
+
+  header nav[aria-expanded='true'] .nav-utility a {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--color-brand-blue);
+  }
+
+  @media (width >= 900px) {
+    .nav-utility-wrapper {
+      display: block;
+    }
+
+    .nav-utility {
+      padding: 0 var(--spacing-xl);
+    }
+
+    header nav[aria-expanded='true'] .nav-utility-wrapper {
+      position: static;
+      background-color: var(--light-color);
+      border-top: none;
+      transform: none;
+      transition: none;
+    }
+
+    header nav[aria-expanded='true'] .nav-utility {
+      padding: 0 var(--spacing-xl);
+    }
+
+    header nav[aria-expanded='true'] .nav-utility ul {
+      flex-direction: row;
+      gap: var(--spacing-xxl);
+    }
+
+    header nav[aria-expanded='true'] .nav-utility li {
+      padding: var(--spacing-xs) 0;
+      border-bottom: none;
+    }
+
+    header nav[aria-expanded='true'] .nav-utility a {
+      font-size: 0.85rem;
+    }
+  }
+}
+

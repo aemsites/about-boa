@@ -1,0 +1,43 @@
+@layer blocks {
+  .nav-brand {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .nav-brand img {
+    width: 160px;
+    height: auto;
+  }
+
+  .nav-brand p {
+    margin: 0;
+  }
+
+  .nav-brand-link {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-md) 0;
+  }
+
+  @media (width >= 600px) {
+    .nav-brand img {
+      width: 200px;
+    }
+  }
+
+  @media (width >= 900px) {
+    .nav-brand {
+      flex: 0 0 auto;
+      margin-right: var(--spacing-md);
+    }
+
+    .nav-brand img {
+      width: 265px;
+    }
+  }
+}
+
