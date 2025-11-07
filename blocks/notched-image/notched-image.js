@@ -7,7 +7,7 @@ export default async function decorate(block) {
   let imageContainer;
   let contentContainer;
   let additionalCells = false;
-  const hasNoImage = block.classList.contains('no-image');
+  let hasNoImage = false;
 
   [...block.children].forEach((row) => {
     [...row.children].forEach((cell) => {
@@ -24,6 +24,11 @@ export default async function decorate(block) {
       }
     });
   });
+
+  if (block.classList.contains('masthead') && !imageContainer) {
+    hasNoImage = true;
+    block.classList.add('no-image');
+  }
 
   if ((!hasNoImage && !imageContainer) || !contentContainer || additionalCells) {
     block.classList.add('authoring-error');

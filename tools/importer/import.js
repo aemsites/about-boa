@@ -337,11 +337,6 @@ function transformArticleMasthead(main, document) {
       if (masthead.classList.contains('article-masthead--small-image')) {
         variants.push('small-image');
       }
-
-      // Check if it's a no-image variant
-      if (masthead.classList.contains('article-masthead--no-image')) {
-        variants.push('no-image');
-      }
     }
 
     // Check if image exists
