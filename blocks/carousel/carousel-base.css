@@ -134,4 +134,87 @@
       width: 100%;
     }
   }
+
+  /* Masthead variation - adjust navigation controls */
+
+  /* Position dots below content area (in the blue section) */
+  .carousel.masthead .carousel-slide-indicators-nav {
+    bottom: var(--spacing-lg);
+    left: var(--default-inline-spacing);
+    right: auto;
+  }
+
+  .carousel.masthead .carousel-slide-indicator button {
+    background-color: rgb(255 255 255 / 40%);
+    width: 16px;
+    height: 16px;
+  }
+
+  .carousel.masthead .carousel-navigation-buttons button {
+    background-color: rgb(0 0 0 / 30%);
+    width: 56px;
+    height: 56px;
+  }
+
+  .carousel.masthead .carousel-slide-indicator button:disabled,
+  .carousel.masthead .carousel-slide-indicator button:hover,
+  .carousel.masthead .carousel-slide-indicator button:focus-visible {
+    background-color: var(--color-white);
+  }
+
+  /* Navigation arrows on the edges */
+  .carousel.masthead .carousel-navigation-buttons {
+    left: 0;
+    right: 0;
+    bottom: 50%;
+    transform: translateY(50%);
+  }
+
+  .carousel.masthead .carousel-navigation-buttons button:hover,
+  .carousel.masthead .carousel-navigation-buttons button:focus-visible {
+    background-color: rgb(0 0 0 / 60%);
+  }
+
+  .carousel.masthead .carousel-navigation-buttons button::after {
+    border-color: var(--color-white);
+    border-width: 3px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .carousel.masthead .carousel-navigation-buttons button.slide-prev {
+    margin-left: 0;
+  }
+
+  .carousel.masthead .carousel-navigation-buttons button.slide-next {
+    margin-right: 0;
+  }
+
+  /* No side margins for masthead carousel - full width */
+  .carousel.masthead .carousel-slides-container:not(.carousel-all-slides-visible) .carousel-slides {
+    margin-inline: 0;
+    width: 100%;
+  }
+
+  @media (width >= 900px) {
+    /* Dots remain at bottom left in the blue content area */
+    .carousel.masthead .carousel-slide-indicators-nav {
+      left: var(--spacing-xxxl);
+      bottom: var(--spacing-xl);
+    }
+
+    /* Navigation buttons stay on far edges, vertically centered */
+    .carousel.masthead .carousel-navigation-buttons button {
+      width: 64px;
+      height: 64px;
+    }
+
+    .carousel.masthead .carousel-navigation-buttons button.slide-prev {
+      margin-left: var(--spacing-sm);
+    }
+
+    .carousel.masthead .carousel-navigation-buttons button.slide-next {
+      margin-right: var(--spacing-sm);
+    }
+  }
 }

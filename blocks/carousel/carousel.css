@@ -41,4 +41,151 @@
       padding: 32px;
     }
   }
+
+  /* Masthead variation - full-width split layout */
+  .carousel.masthead {
+    margin-inline: calc(var(--default-inline-spacing) * -1);
+  }
+
+  .carousel.masthead .carousel-slides {
+    padding-bottom: var(--spacing-xxxl);
+  }
+
+  .carousel.masthead .carousel-slide {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 600px;
+  }
+
+  /* Image section - top on mobile, full width */
+  .carousel.masthead .carousel-slide .carousel-slide-image {
+    flex: 0 0 auto;
+    height: 300px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-image picture {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-image picture > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Content section - bottom on mobile with solid blue background */
+  .carousel.masthead .carousel-slide .carousel-slide-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--spacing-xxl) var(--default-inline-spacing);
+    background-color: var(--color-brand-blue);
+    color: var(--color-white);
+    min-height: 300px;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content h2,
+  .carousel.masthead .carousel-slide .carousel-slide-content h3 {
+    font-size: var(--heading-font-size-xl);
+    line-height: 1.2;
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-white);
+    font-weight: 300;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content p {
+    font-size: var(--body-font-size-m);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-white);
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content a {
+    color: var(--color-white);
+    text-decoration: none;
+    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content a::after {
+    content: '›';
+    font-size: 1.5em;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content a:hover {
+    text-decoration: underline;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content a:hover::after {
+    transform: translateX(4px);
+  }
+
+  @media (width >= 600px) {
+    .carousel.masthead .carousel-slide {
+      min-height: 500px;
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-image {
+      height: 250px;
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-content {
+      padding: var(--spacing-xxl) var(--default-inline-spacing);
+      min-height: 250px;
+    }
+  }
+
+  @media (width >= 900px) {
+    .carousel.masthead .carousel-slide {
+      flex-direction: row-reverse;
+      min-height: 500px;
+    }
+
+    /* Image on RIGHT side - takes up 40% */
+    .carousel.masthead .carousel-slide .carousel-slide-image {
+      flex: 0 0 40%;
+      height: auto;
+      min-height: 500px;
+    }
+
+    /* Content on LEFT side - takes up 60% */
+    .carousel.masthead .carousel-slide .carousel-slide-content {
+      flex: 0 0 60%;
+      padding: var(--spacing-xxxl) var(--spacing-xxl);
+      min-height: 500px;
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-content h2,
+    .carousel.masthead .carousel-slide .carousel-slide-content h3 {
+      font-size: var(--heading-font-size-xxl);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-content p {
+      font-size: var(--body-font-size-m);
+      line-height: 1.7;
+      margin-bottom: var(--spacing-md);
+    }
+  }
+
+  @media (width >= 1200px) {
+    .carousel.masthead .carousel-slide .carousel-slide-content {
+      padding: var(--spacing-xxl) 100px;
+    }
+  }
 }
