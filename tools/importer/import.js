@@ -363,8 +363,7 @@ function transformArticleMasthead(main, document) {
 }
 
 function transformSections(main, document) {
-  const sectionBreak = document.createElement('div');
-  sectionBreak.innerHTML = '<p>---</p>';
+  const sectionBreak = document.createElement('hr');
 
   [...main.children].forEach((sectionEl) => {
     if (sectionEl.textContent.trim() === '') {
