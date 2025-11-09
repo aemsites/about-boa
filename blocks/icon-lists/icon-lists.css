@@ -1,0 +1,86 @@
+/* Icon Lists Block */
+main .icon-lists {
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+main .icon-lists ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--spacing-xxl);
+
+  /* Auto-fit grid with 300px minimum column width */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+main .icon-lists li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+/* Icon container */
+main .icon-lists .icon-lists-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main .icon-lists .icon-lists-icon .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}
+
+main .icon-lists .icon-lists-icon img {
+  width: 100px;
+  height: 100px;
+}
+
+/* Content container */
+main .icon-lists .icon-lists-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+main .icon-lists .icon-lists-content p {
+  margin: 0;
+}
+
+main .icon-lists .icon-lists-content a {
+  display: block;
+  color: var(--link-color);
+  text-decoration: none;
+  font-size: var(--body-font-size-s);
+}
+
+main .icon-lists .icon-lists-content a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* Desktop spacing */
+@media (width >= 900px) {
+  main .icon-lists {
+    padding: var(--spacing-xxl) var(--spacing-xl);
+  }
+
+  main .icon-lists ul {
+    gap: var(--spacing-xxxl) var(--spacing-xxl);
+  }
+
+  main .icon-lists .icon-lists-icon .icon {
+    width: 120px;
+    height: 120px;
+  }
+
+  main .icon-lists .icon-lists-icon img {
+    width: 120px;
+    height: 120px;
+  }
+}
