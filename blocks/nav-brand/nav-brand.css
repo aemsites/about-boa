@@ -36,6 +36,12 @@
     }
 
     .nav-brand img {
+      width: 220px;
+    }
+  }
+
+  @media (width >= 1200px) {
+    .nav-brand img {
       width: 265px;
     }
   }

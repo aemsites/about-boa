@@ -118,8 +118,8 @@
 
   @media (width >= 900px) {
     header .nav-main {
-      gap: var(--spacing-xxl);
-      padding: 0 var(--spacing-xl);
+      gap: var(--spacing-l);
+      padding: 0 var(--spacing-m);
       border-bottom: none;
     }
 
@@ -132,6 +132,13 @@
     header .nav-hamburger {
       display: none;
       visibility: hidden;
+    }
+  }
+
+  @media (width >= 1200px) {
+    header .nav-main {
+      gap: var(--spacing-xxl);
+      padding: 0 var(--spacing-xl);
     }
   }
 }
