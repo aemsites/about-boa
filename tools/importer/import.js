@@ -361,11 +361,21 @@ function transformTile(main, document) {
 
     const cells = [];
     items.forEach((item) => {
-      cells.push(createRowFromSelectors(
-        item,
-        '.tile__top-section img',
-        '.tile__short-section',
-      ));
+      // Check if this is an imageless tile
+      const isImageless = item.querySelector('.tile--imageless');
+
+      if (isImageless) {
+        // For imageless tiles, only include content in a single cell
+        const content = item.querySelector('.tile__short-section');
+        cells.push([content]);
+      } else {
+        // Standard tile with image
+        cells.push(createRowFromSelectors(
+          item,
+          '.tile__top-section img',
+          '.tile__short-section',
+        ));
+      }
     });
 
     const block = WebImporter.Blocks.createBlock(document, {
@@ -546,6 +556,39 @@ function transformIconList(main, document) {
   });
 }
 
+function transformLinkList(main, document) {
+  main.querySelectorAll('.aem-wrap--linklist').forEach((el) => {
+    const items = el.querySelectorAll('.linklist__item');
+
+    const cells = [];
+    items.forEach((item) => {
+      // Get main CTA for first column
+      const mainCta = item.querySelector('.linklist__item-main-cta');
+
+      // Get text and secondary CTA for second column
+      const secondColumn = document.createElement('div');
+      const text = item.querySelector('.linklist__item-text');
+      const secondaryCta = item.querySelector('.linklist__item-secondary-cta');
+
+      if (text) {
+        secondColumn.append(text.cloneNode(true));
+      }
+      if (secondaryCta) {
+        secondColumn.append(secondaryCta.cloneNode(true));
+      }
+
+      cells.push([mainCta, secondColumn]);
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'linklist',
+      cells,
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 function transformBreadcrumb(main, document) {
   const bc = main.querySelector('.aem-wrap--breadcrumb');
   if (bc && bc.textContent.trim() !== '') {
@@ -603,6 +646,7 @@ export default {
       transformStoryBlock,
       transformTile,
       transformIconList,
+      transformLinkList,
       // more block transformations here
       createMetadata,
     ];
