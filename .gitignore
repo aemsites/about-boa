@@ -15,3 +15,4 @@ tools/importer/screenshots/
 test/tmp/
 drafts/tmp/
 .cache/
+.playwright-mcp/
