@@ -14,5 +14,7 @@ tools/importer/screenshots/
 # Temporary test files (throwaway tests and test content)
 test/tmp/
 drafts/tmp/
-.cache/
 .playwright-mcp/
+
+# skills caches
+.cache/
