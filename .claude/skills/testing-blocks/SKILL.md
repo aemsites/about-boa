@@ -149,7 +149,7 @@ Testing is not just a pass/fail activity. When you have completed testing and al
 
 - What you tested in a browser and the results of those tests
 - The paths to screenshots you took during your browser testing, and what each shows
-- How those screenshots to compare to the expected design, especially if provided with screenshots of existing implementation, mockups, etc.
+- How those screenshots compare to the expected design, especially if provided with screenshots of existing implementation, mockups, etc.
 - Any issues encountered during browser testing
 - The unit tests you added (if any)
 - Any issues encountered during verification, especially changes made to existing tests
