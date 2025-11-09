@@ -40,16 +40,19 @@ async function testHeroBlock() {
   // Wait for block decoration
   await page.waitForSelector('.hero');
 
-  // Take screenshot for validation
-  await page.screenshot({ path: 'hero-desktop.png', fullPage: true });
+  // Take screenshots - BOTH block-specific and full-page
+  await page.locator('.hero').screenshot({ path: 'hero-block-desktop.png' });
+  await page.screenshot({ path: 'hero-page-desktop.png', fullPage: true });
 
   // Test mobile viewport
   await page.setViewportSize({ width: 375, height: 667 });
-  await page.screenshot({ path: 'hero-mobile.png', fullPage: true });
+  await page.locator('.hero').screenshot({ path: 'hero-block-mobile.png' });
+  await page.screenshot({ path: 'hero-page-mobile.png', fullPage: true });
 
   // Test tablet viewport
   await page.setViewportSize({ width: 768, height: 1024 });
-  await page.screenshot({ path: 'hero-tablet.png', fullPage: true });
+  await page.locator('.hero').screenshot({ path: 'hero-block-tablet.png' });
+  await page.screenshot({ path: 'hero-page-tablet.png', fullPage: true });
 
   // Validate DOM structure
   const heroTitle = await page.textContent('.hero h1');
@@ -91,10 +94,22 @@ Create a temporary script file (e.g., `test-my-block.js`) with:
 node test-my-block.js
 ```
 
-### 4. Review screenshots
+### 4. Review screenshots critically
 
-- Examine screenshots visually to validate appearance
-- Show screenshots to the user for feedback if needed
+**Don't just glance - actually analyze each screenshot:**
+
+- **Check layout**: Are elements positioned correctly? Any overlapping or misalignment?
+- **Verify content**: Is all expected content visible? Any truncated text or missing images?
+- **Examine spacing**: Do margins and padding look balanced and intentional?
+- **Test responsiveness**: Does each viewport (mobile/tablet/desktop) look appropriate for that size? Test near breakpoints (e.g., 599px, 600px, 601px for a 600px breakpoint) to ensure content flows properly across transitions
+- **Compare to expectations**: If you have reference screenshots or mockups, compare side-by-side for differences
+- **Look for red flags**: Broken images, cut-off text, elements in wrong positions, poor spacing
+
+**Report findings specifically, not generically:**
+- ❌ BAD: "Everything looks fine"
+- ✅ GOOD: "Desktop screenshot shows proper layout with 20px spacing between elements. Mobile correctly stacks content. Found issue: button text is truncated on mobile at 375px width."
+
+- Show screenshots to the user for feedback when needed
 - Include screenshots in PR description to aid review
 
 ### 5. Clean up
@@ -244,20 +259,24 @@ await page.waitForLoadState('networkidle');
 
 ### Taking targeted screenshots
 
+**IMPORTANT: Always take block-specific screenshots in addition to full-page screenshots.**
+
 ```javascript
-// Screenshot of specific element
-await page.locator('.hero').screenshot({ path: 'hero-only.png' });
+// PREFERRED: Screenshot of specific block element
+await page.locator('.hero').screenshot({ path: 'hero-block-only.png' });
 
-// Full page screenshot
-await page.screenshot({ path: 'full-page.png', fullPage: true });
+// Full page screenshot (for context)
+await page.screenshot({ path: 'hero-full-page.png', fullPage: true });
 
-// Screenshot with specific viewport
-await page.screenshot({
-  path: 'mobile.png',
-  fullPage: true,
-  clip: { x: 0, y: 0, width: 375, height: 812 }
-});
+// Best practice: Take both
+await page.waitForSelector('.hero');
+await page.locator('.hero').screenshot({ path: 'hero-block.png' });
+await page.screenshot({ path: 'hero-context.png', fullPage: true });
 ```
+
+**Screenshot strategy:**
+- **Block-specific screenshot** (required): Shows just the block being tested - easier to review and spot issues
+- **Full-page screenshot** (optional): Provides context of how the block fits on the page
 
 ### Debugging
 
@@ -301,10 +320,11 @@ Even in these cases, keep tests focused on critical functionality only. The cost
 ## Next Steps
 
 After browser testing:
-1. Review all screenshots carefully
-2. Compare to screenshots provided, if applicable and check for key differences/problems
-3. Show screenshots to stakeholders for their validation
-4. Include key screenshots in your PR to prove you tested
-5. Move on to other testing methods (linting, unit tests, etc.)
+1. Review all screenshots critically (see "Review screenshots critically" in workflow above)
+2. Document any issues found with specific details (viewport, what's wrong, expected behavior)
+3. Fix issues before proceeding
+4. Show screenshots to stakeholders for validation when appropriate
+5. Include key screenshots in your PR description
+6. Move on to other testing methods (linting, unit tests, etc.)
 
 Remember: Browser tests are a validation tool, not a regression prevention tool. Use them to confirm your implementation works, then move on.
