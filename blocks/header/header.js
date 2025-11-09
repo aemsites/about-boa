@@ -98,7 +98,7 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
  */
 function handleStickyNav(navWrapper, navNotification, navUtility) {
   let lastScrollY = window.scrollY;
-  const stickyClass = 'nav-wrapper--sticky';
+  const stickyClass = 'nav-wrapper-sticky';
 
   // Calculate the height of elements that should scroll away
   const getScrollThreshold = () => {
@@ -113,7 +113,7 @@ function handleStickyNav(navWrapper, navNotification, navUtility) {
   };
 
   const updateStickyState = () => {
-    const scrollY = window.scrollY;
+    const { scrollY } = window;
     const threshold = getScrollThreshold();
 
     if (scrollY > threshold && scrollY > lastScrollY) {

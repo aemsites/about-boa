@@ -7,7 +7,7 @@
   }
 
   /* Sticky state for main navigation */
-  header .nav-wrapper--sticky {
+  header .nav-wrapper-sticky {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,8 +16,8 @@
   }
 
   /* Hide notification and utility sections when sticky */
-  header .nav-wrapper--sticky .nav-notification-wrapper,
-  header .nav-wrapper--sticky .nav-utility-wrapper:not(.mobile-only) {
+  header .nav-wrapper-sticky .nav-notification-wrapper,
+  header .nav-wrapper-sticky .nav-utility-wrapper:not(.mobile-only) {
     display: none;
   }
 
