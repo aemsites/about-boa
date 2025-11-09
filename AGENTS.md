@@ -63,8 +63,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 ## Setup Commands
 
 - Install dependencies: `npm install`
-- Start local development: `npx -y @adobe/aem-cli up --no-open --forward-browser-logs` (run in background, if possible)
-  - Install the AEM CLI globally by running `npm install -g @adobe/aem-cli` then `aem up` is equivalent to the command above
+- Start local dev server, See "Local development" below
 - Run linting: `npm run lint`
 - Fix linting issues: `npm run lint:fix`
 
@@ -157,7 +156,11 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 3. Validation and testing (invokes testing-blocks skill)
 
 ### Local Development
-1. Run `npx -y @adobe/aem-cli up --no-open` to start the AEM Proxy server
+1. Run `aem up --no-open --forward-browser-logs` to start the AEM Proxy server
+  - Run in background if possible
+  - Requires AEM CLI installed globally: `npm install -g @adobe/aem-cli`
+  - Alternative: `npx -y @adobe/aem-cli up --no-open --forward-browser-logs
+  - **IMPORTANT for agents:** Starting the dev server in a sandbox will likely fail, use `dangerouslyDisableSandbox: true` or equivlent to run this outside the sandbox
 2. Open `http://localhost:3000` in your browser, playwright, or other tools. If none of those are available, instruct the human to open the URL in the browser and give feedback
 3. Make changes to files - they will auto-reload
 4. Use browser dev tools to test responsive design
