@@ -322,9 +322,48 @@ function transformStoryBlock(main, document) {
   });
 }
 
+/**
+ * Transform article-masthead blocks to notched-image with masthead variant
+ * Article masthead is essentially a notched-image with a hero layout
+ */
+function transformArticleMasthead(main, document) {
+  main.querySelectorAll('.aem-wrap--article-masthead').forEach((el) => {
+    const variants = ['masthead'];
+
+    // Check for variant classes
+    const masthead = el.querySelector('.article-masthead');
+    if (masthead) {
+      // Check if it's a small-image variant
+      if (masthead.classList.contains('article-masthead--small-image')) {
+        variants.push('small-image');
+      }
+    }
+
+    // Check if image exists
+    const hasImage = el.querySelector('.article-masthead .image img, .article-masthead__image img');
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'notched-image',
+      variants,
+      cells: [
+        hasImage
+          ? createRowFromSelectors(
+            el,
+            '.article-masthead .image img, .article-masthead__image img',
+            '.article-masthead__col-left, .article-masthead__content',
+          )
+          : [
+            el.querySelector('.article-masthead__col-left, .article-masthead__content'),
+          ],
+      ],
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 function transformSections(main, document) {
-  const sectionBreak = document.createElement('div');
-  sectionBreak.innerHTML = '<p>---</p>';
+  const sectionBreak = document.createElement('hr');
 
   [...main.children].forEach((sectionEl) => {
     if (sectionEl.textContent.trim() === '') {
@@ -641,6 +680,7 @@ export default {
       transformBreadcrumb,
       transformSections,
       transformNotchedImage,
+      transformArticleMasthead,
       transformCarousels,
       transformHighlightBlock,
       transformStoryBlock,
