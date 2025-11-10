@@ -216,7 +216,7 @@ function createSlide(row) {
   const slide = document.createElement('li');
 
   row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
-    column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
+    column.classList.add(`carousel-slide-${ column.querySelector('picture > img') ? 'image' : 'content'}`);
     slide.append(column);
   });
 
