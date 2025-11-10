@@ -1,5 +1,6 @@
-# Your Project's Title...
-Your project's description...
+# Bank of America About Site - AEM Edge Delivery Services
+
+This project is migrating the Bank of America "About" site (https://about.bankofamerica.com/en) to Adobe Experience Manager (AEM) Edge Delivery Services. The migration recreates the site's blocks, components, and functionality using AEM's modern, performance-first web architecture.
 
 ## Environments
 - Preview: https://main--about-boa--aemsites.aem.page/
