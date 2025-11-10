@@ -25,6 +25,31 @@
     flex: 1 1 auto;
     padding: 16px;
   }
+
+  .carousel .carousel-slide .carousel-slide-content a::after {
+    content: '';
+    display: inline-block;
+    margin-inline-start: var(--spacing-xs);
+    width: 10px;
+    height: 10px;
+    border-right: 1px solid var(--link-color);
+    border-bottom: 1px solid var(--link-color);
+    transform: rotate(-45deg);
+    vertical-align: middle;
+  }
+
+  .carousel.masthead .carousel-slide .carousel-slide-content a::after {
+    border-color: var(--color-white);
+  }
+
+  .carousel.img-align-right h3,
+  .carousel.img-align-right h4 {
+    color: var(--color-red-regal);
+  }
+
+  .carousel-wrapper:has(.carousel.img-align-right) {
+    padding-inline: 0;
+  }
   
   @media (width >= 900px) {  
     .carousel .carousel-slide {
@@ -40,15 +65,20 @@
       flex: 1 1 50%;
       padding: 32px;
     }
+
+    .carousel.img-align-right .carousel-slide {
+      flex-direction: row-reverse;
+    }
+
+    .carousel.img-align-right .carousel-slide-image {
+      padding-inline: 8.33% 0;
+    }
   }
 
   /* Masthead variation - full-width split layout */
-  .carousel.masthead {
-    margin-inline: calc(var(--default-inline-spacing) * -1);
-  }
-
-  .carousel.masthead .carousel-slides {
-    padding-bottom: var(--spacing-xxxl);
+  .carousel-wrapper:has(.carousel.masthead) {
+    max-width: 100rem;
+    padding-inline: 0;
   }
 
   .carousel.masthead .carousel-slide {
@@ -84,8 +114,7 @@
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: var(--spacing-xxl) var(--default-inline-spacing);
+    padding: var(--spacing-xxl) var(--default-inline-spacing) 80px;
     background-color: var(--color-brand-blue);
     color: var(--color-white);
     min-height: 300px;
@@ -118,13 +147,6 @@
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
-  }
-
-  .carousel.masthead .carousel-slide .carousel-slide-content a::after {
-    content: '›';
-    font-size: 1.5em;
-    line-height: 1;
-    transition: transform 0.2s;
   }
 
   .carousel.masthead .carousel-slide .carousel-slide-content a:hover {

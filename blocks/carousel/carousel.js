@@ -11,6 +11,8 @@ function updateActiveSlide(slide) {
   slides.forEach((aSlide, idx) => {
     aSlide.setAttribute('aria-hidden', idx !== slideIndex);
     aSlide.querySelectorAll('a').forEach((link) => {
+      // Remove button class from links
+      link.classList.remove('button');
       if (idx !== slideIndex) {
         link.setAttribute('tabindex', '-1');
       } else {
@@ -169,7 +171,6 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
     slideIndicators = document.createElement('ol');
     slideIndicators.classList.add('carousel-slide-indicators');
     slideIndicatorsNav.append(slideIndicators);
-    container.append(slideIndicatorsNav);
 
     const slideNavButtons = document.createElement('div');
     slideNavButtons.classList.add('carousel-navigation-buttons');
@@ -177,6 +178,9 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
       <button type="button" class= "slide-prev" aria-label="${placeholders.previousSlide || 'Previous Slide'}"></button>
       <button type="button" class="slide-next" aria-label="${placeholders.nextSlide || 'Next Slide'}"></button>
     `;
+
+    // Insert the slide indicators nav after the previous button
+    slideNavButtons.querySelector('.slide-prev')?.insertAdjacentElement('afterend', slideIndicatorsNav);
 
     container.append(slideNavButtons);
   }

@@ -15,8 +15,12 @@
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     overflow: auto hidden;
-    padding-bottom: 4rem;
+    padding-bottom: 2rem;
     width: 100%;
+  }
+
+  .carousel.masthead .carousel-slides {
+    padding-bottom: 0;
   }
   
   .carousel-slides::-webkit-scrollbar {
@@ -29,14 +33,6 @@
     min-width: 0;
     box-sizing: border-box;
   }
-
-  .carousel-slide-indicators-nav {
-    position: absolute;
-    bottom: .25rem;
-    left: 6rem;
-    right: 6rem;
-    z-index: 10;
-  }
   
   .carousel-slide-indicators {
     display: flex;
@@ -48,30 +44,37 @@
   }
 
   .carousel-slide-indicator button {
-    width: 24px;
-    height: 24px;
+    width: 12px;
+    height: 12px;
     margin: 0;
     padding: 0;
     border-radius: 50%;
-    background-color: #dadada;
+    border: 1px solid var(--text-color);
+    background-color: transparent;
     transition: background-color 0.2s;
   }
-  
+
   .carousel-slide-indicator button:disabled,
   .carousel-slide-indicator button:hover,
   .carousel-slide-indicator button:focus-visible {
     background-color: var(--text-color);
   }
 
+  .carousel.masthead .carousel-slide-indicator button {
+    border-color: var(--color-white);
+  }
+  
+  .carousel.masthead .carousel-slide-indicator button:disabled,
+  .carousel.masthead .carousel-slide-indicator button:hover,
+  .carousel.masthead .carousel-slide-indicator button:focus-visible {
+    background-color: var(--color-white);
+  }
 
+  /* stylelint-disable no-descending-specificity -- navigation and indicator buttons are in separate contexts */
   .carousel-navigation-buttons {
-    position: absolute;
-    bottom: .5rem;
-    left: var(--spacing-s);
-    right: var(--spacing-s);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     z-index: 1;
   }
 
@@ -80,24 +83,18 @@
     display: none;
   }
   
-  /* stylelint-disable-next-line no-descending-specificity */
-  .carousel-navigation-buttons button {
+  .carousel-navigation-buttons > button {
     position: relative;
     width: 44px;
     height: 44px;
     margin: 0;
     border-radius: 50%;
     padding: 0;
-    background-color: rgb(19 19 19 / 25%);
+    background-color: transparent;
     transition: background-color 0.2s;
   }
   
-  .carousel-navigation-buttons button:hover,
-  .carousel .carousel-navigation-buttons button:focus-visible {
-    background-color: rgb(19 19 19 / 75%);
-  }
-  
-  .carousel-navigation-buttons button::after {
+  .carousel-navigation-buttons > button::after {
     display: block;
     content: '';
     border: 2px solid;
@@ -109,19 +106,56 @@
     top: 50%;
     left: calc(50% + 2px);
     transform: translate(-50%, -50%) rotate(-135deg);
+    color: var(--text-color);
   }
-  
+
   .carousel-navigation-buttons button.slide-next::after {
     transform: translate(-50%, -50%) rotate(45deg);
     left: calc(50% - 2px);
   }
 
+  .carousel-navigation-buttons button:hover,
+  .carousel .carousel-navigation-buttons button:focus-visible {
+    border-color: var(--text-color);
+  }
+
+  .carousel.masthead .carousel-navigation-buttons {
+    position: absolute;
+    bottom: .5rem;
+    left: var(--spacing-s);
+    right: var(--spacing-s);
+  }
+
+  .carousel.masthead .carousel-navigation-buttons button::after {
+    color: var(--color-white);
+  }
+
+  .carousel.masthead .carousel-navigation-buttons button:hover,
+  .carousel.masthead .carousel-navigation-buttons button:focus-visible {
+    border-color: var(--color-white);
+  }
+
+  /* No side margins for masthead carousel - full width */
+  .carousel.masthead .carousel-slides-container:not(.carousel-all-slides-visible) .carousel-slides {
+    margin-inline: 0;
+    width: 100%;
+  }
+
+  /* stylelint-enable no-descending-specificity */
+
   @media (width >= 900px) {
-    .carousel-navigation-buttons {
+    .carousel.masthead .carousel-navigation-buttons {
       left: 0;
       right: 0;
       bottom: 50%;
       transform: translateY(50%);
+      justify-content: space-between;
+    }
+
+    .carousel.masthead .carousel-slide-indicators-nav {
+      position: absolute;
+      left: 88px;
+      top: 200px;
     }
   
     .carousel-slides-container:not(.carousel-all-slides-visible) .carousel-slides {
@@ -135,86 +169,17 @@
     }
   }
 
-  /* Masthead variation - adjust navigation controls */
-
-  /* Position dots below content area (in the blue section) */
-  .carousel.masthead .carousel-slide-indicators-nav {
-    bottom: var(--spacing-lg);
-    left: var(--default-inline-spacing);
-    right: auto;
-  }
-
-  .carousel.masthead .carousel-slide-indicator button {
-    background-color: rgb(255 255 255 / 40%);
-    width: 16px;
-    height: 16px;
-  }
-
-  .carousel.masthead .carousel-navigation-buttons button {
-    background-color: rgb(0 0 0 / 30%);
-    width: 56px;
-    height: 56px;
-  }
-
-  .carousel.masthead .carousel-slide-indicator button:disabled,
-  .carousel.masthead .carousel-slide-indicator button:hover,
-  .carousel.masthead .carousel-slide-indicator button:focus-visible {
-    background-color: var(--color-white);
-  }
-
-  /* Navigation arrows on the edges */
-  .carousel.masthead .carousel-navigation-buttons {
-    left: 0;
-    right: 0;
-    bottom: 50%;
-    transform: translateY(50%);
-  }
-
-  .carousel.masthead .carousel-navigation-buttons button:hover,
-  .carousel.masthead .carousel-navigation-buttons button:focus-visible {
-    background-color: rgb(0 0 0 / 60%);
-  }
-
-  .carousel.masthead .carousel-navigation-buttons button::after {
-    border-color: var(--color-white);
-    border-width: 3px;
-    width: 14px;
-    height: 14px;
-  }
-
-  .carousel.masthead .carousel-navigation-buttons button.slide-prev {
-    margin-left: 0;
-  }
-
-  .carousel.masthead .carousel-navigation-buttons button.slide-next {
-    margin-right: 0;
-  }
-
-  /* No side margins for masthead carousel - full width */
-  .carousel.masthead .carousel-slides-container:not(.carousel-all-slides-visible) .carousel-slides {
-    margin-inline: 0;
-    width: 100%;
-  }
-
-  @media (width >= 900px) {
-    /* Dots remain at bottom left in the blue content area */
-    .carousel.masthead .carousel-slide-indicators-nav {
-      left: var(--spacing-xxxl);
-      bottom: var(--spacing-xl);
+  @media (width >= 1200px) {
+    .carousel-navigation-buttons > button {
+      position: absolute;
+      bottom: 50%;
+      left: 10px;
+      transform: translateY(50%);
     }
 
-    /* Navigation buttons stay on far edges, vertically centered */
-    .carousel.masthead .carousel-navigation-buttons button {
-      width: 64px;
-      height: 64px;
-    }
-
-    .carousel.masthead .carousel-navigation-buttons button.slide-prev {
-      margin-left: var(--spacing-sm);
-    }
-
-    .carousel.masthead .carousel-navigation-buttons button.slide-next {
-      margin-right: var(--spacing-sm);
+    .carousel-navigation-buttons > button:last-child {
+      left: auto;
+      right: 10px;
     }
   }
 }
