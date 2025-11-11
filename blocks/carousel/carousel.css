@@ -60,6 +60,57 @@
     padding-inline: 0;
   }
   
+  /* Modal variant styling */
+  .carousel.modal .carousel-slide {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--color-white);
+  }
+
+  .carousel.modal .carousel-slide:hover {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  }
+
+  .carousel.modal .carousel-slide .carousel-slide-image {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .carousel.modal .carousel-slide .carousel-slide-image picture {
+    display: block;
+    width: 100%;
+  }
+
+  .carousel.modal .carousel-slide .carousel-slide-image picture > img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--color-border);
+  }
+
+  .carousel.modal .carousel-slide .carousel-slide-content {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+  }
+
+  .carousel.modal .carousel-slide h3 {
+    margin: 0;
+    font-size: var(--heading-font-size-s);
+    color: var(--text-color);
+    text-align: center;
+  }
+
+  @media (width >= 600px) {
+    .carousel.modal .carousel-slide h3 {
+      font-size: var(--heading-font-size-m);
+    }
+  }
+
   @media (width >= 900px) {  
     .carousel .carousel-slide {
       flex-direction: row;
@@ -201,18 +252,6 @@
       min-height: 500px;
     }
 
-    .carousel.masthead .carousel-slide .carousel-slide-content h2,
-    .carousel.masthead .carousel-slide .carousel-slide-content h3 {
-      font-size: var(--heading-font-size-xxl);
-      margin-bottom: var(--spacing-xl);
-    }
-
-    .carousel.masthead .carousel-slide .carousel-slide-content p {
-      font-size: var(--body-font-size-m);
-      line-height: 1.7;
-      margin-bottom: var(--spacing-md);
-    }
-
     .carousel.quote h3,
     .carousel.quote h4,
     .carousel.img-align-right h3,
@@ -227,6 +266,18 @@
 
     .carousel.quote .carousel-slide .carousel-slide-content {
       padding-inline: var(--spacing-xxl);
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-content h2,
+    .carousel.masthead .carousel-slide .carousel-slide-content h3 {
+      font-size: var(--heading-font-size-xxl);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-content p {
+      font-size: var(--body-font-size-m);
+      line-height: 1.7;
+      margin-bottom: var(--spacing-md);
     }
   }
 

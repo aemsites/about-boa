@@ -1,0 +1,127 @@
+@layer blocks {
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgb(0 0 0 / 80%);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+  }
+
+  .modal-overlay.is-open {
+    opacity: 1;
+  }
+
+  /* Modal Content Container */
+  .modal-content {
+    position: relative;
+    background-color: var(--color-white);
+    border-radius: 8px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 30%);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+
+  .modal-overlay.is-open .modal-content {
+    transform: scale(1);
+  }
+
+  /* Close Button */
+  .modal-close {
+    position: sticky;
+    top: 0;
+    right: 0;
+    float: right;
+    width: 44px;
+    height: 44px;
+    margin: 1rem 1rem 0 0;
+    background-color: var(--color-white);
+    border: 1px solid var(--text-color);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--text-color);
+    z-index: 1;
+    transition: background-color 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .modal-close:hover,
+  .modal-close:focus-visible {
+    background-color: var(--text-color);
+    color: var(--color-white);
+  }
+
+  /* Modal Body */
+  .modal-body {
+    padding: 2rem;
+    clear: both;
+  }
+
+  /* Prevent body scroll when modal is open */
+  body.modal-open {
+    overflow: hidden;
+  }
+
+  /* Modal Trigger Button (when modal block is used standalone) */
+  .modal-trigger-button {
+    padding: 12px 24px;
+    font-size: var(--body-font-size-m);
+    background-color: var(--link-color);
+    color: var(--color-white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .modal-trigger-button:hover,
+  .modal-trigger-button:focus-visible {
+    background-color: var(--link-hover-color);
+  }
+
+  /* Responsive Styles */
+  @media (width >= 900px) {
+    .modal-content {
+      max-width: 1200px;
+    }
+
+    .modal-body {
+      padding: 3rem;
+    }
+
+    .modal-close {
+      margin: 1.5rem 1.5rem 0 0;
+    }
+  }
+
+  /* Support for smaller viewports */
+  @media (width < 600px) {
+    .modal-overlay {
+      padding: 0.5rem;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-close {
+      width: 40px;
+      height: 40px;
+      margin: 0.75rem 0.75rem 0 0;
+    }
+  }
+}
+
