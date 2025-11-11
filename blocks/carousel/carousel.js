@@ -5,10 +5,10 @@ import { openModal } from '../modal/modal.js';
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel-slides-container');
   const slideIndex = parseInt(slide.dataset.slideIndex, 10);
-  
+
   // Get the real slide count (excluding clones)
   const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
-  
+
   // Calculate the logical index (0 to realSlideCount-1) for indicators
   let logicalIndex = slideIndex;
   if (slide.classList.contains('clone')) {
@@ -20,10 +20,10 @@ function updateActiveSlide(slide) {
       logicalIndex = slideIndex < 0 ? realSlideCount - 1 : slideIndex % realSlideCount;
     }
   }
-  
+
   // Store the logical index (0 to realSlideCount-1) for navigation
   block.dataset.activeSlide = logicalIndex;
-  
+
   // Find the actual DOM position of this slide
   const allSlides = block.querySelectorAll('.carousel-slide');
   const domIndex = Array.from(allSlides).indexOf(slide);
@@ -60,17 +60,17 @@ function repositionIfNeeded(block) {
   const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
   const slides = block.querySelectorAll('.carousel-slide');
   const currentSlide = slides[domIndex];
-  
+
   if (currentSlide && currentSlide.classList.contains('clone') && realSlideCount > 0) {
     const slidesContainer = block.querySelector('.carousel-slides');
     const allSlides = block.querySelectorAll('.carousel-slide');
-    
+
     // Find the real slide with the same logical index
     const realSlide = Array.from(allSlides).find((s) => {
       const slideIdx = parseInt(s.dataset.slideIndex, 10);
       return slideIdx === logicalIndex && !s.classList.contains('clone');
     });
-    
+
     if (realSlide) {
       // Instantly reposition to the real slide
       slidesContainer.style.scrollBehavior = 'auto';
@@ -82,10 +82,10 @@ function repositionIfNeeded(block) {
       // Update DOM index
       const newDomIndex = Array.from(allSlides).indexOf(realSlide);
       block.dataset.activeDomIndex = newDomIndex;
-      
+
       // Manually update the active slide to ensure indicators are correct
       updateActiveSlide(realSlide);
-      
+
       requestAnimationFrame(() => {
         slidesContainer.style.scrollBehavior = '';
       });
@@ -100,10 +100,10 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
   if (block.dataset.isScrolling === 'true' && !immediate) {
     return;
   }
-  
+
   const hasInfiniteScroll = block.classList.contains('carousel-infinite-scroll');
   const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
-  
+
   // Before navigating, check if we're on a clone and reposition if needed
   if (hasInfiniteScroll && !immediate) {
     const repositioned = repositionIfNeeded(block);
@@ -116,10 +116,10 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
       return;
     }
   }
-  
+
   const slides = block.querySelectorAll('.carousel-slide');
   let targetSlide = null;
-  
+
   // Handle wrapping for infinite scroll
   if (hasInfiniteScroll && realSlideCount > 0) {
     // If going before first slide (prev from slide 0)
@@ -131,14 +131,14 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
       // This means we want the first slide's clone at the end
       const targetLogicalIndex = logicalIndex % realSlideCount;
       targetSlide = Array.from(slides).find(
-        (s) => s.classList.contains('clone-after') && 
-               parseInt(s.dataset.realIndex, 10) === targetLogicalIndex
+        (s) => s.classList.contains('clone-after')
+               && parseInt(s.dataset.realIndex, 10) === targetLogicalIndex,
       );
     } else {
       // Normal real slide - find it by logical index
       targetSlide = Array.from(slides).find(
-        (s) => parseInt(s.dataset.slideIndex, 10) === logicalIndex && 
-               !s.classList.contains('clone')
+        (s) => parseInt(s.dataset.slideIndex, 10) === logicalIndex
+               && !s.classList.contains('clone'),
       );
     }
   } else {
@@ -148,26 +148,25 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
     if (logicalIndex >= slides.length) wrappedIndex = 0;
     targetSlide = slides[wrappedIndex];
   }
-  
+
   if (!targetSlide) {
-    console.warn('Could not find target slide for index:', logicalIndex);
     return;
   }
 
   const slidesContainer = block.querySelector('.carousel-slides');
 
   targetSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
-  
+
   // Set flags to prevent interference and duplicate navigations
   block.dataset.programmaticScroll = 'true';
   block.dataset.isScrolling = 'true';
-  
+
   slidesContainer.scrollTo({
     top: 0,
     left: targetSlide.offsetLeft,
     behavior: immediate ? 'auto' : 'smooth',
   });
-  
+
   // Immediately update the active slide to reflect the navigation
   // This ensures indicators update correctly before the scroll completes
   if (immediate) {
@@ -180,7 +179,7 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
     setTimeout(() => {
       updateActiveSlide(targetSlide);
     }, 100);
-    
+
     // Clear the flags after scroll completes
     setTimeout(() => {
       delete block.dataset.programmaticScroll;
@@ -213,7 +212,7 @@ function bindEvents(block) {
     if (block.dataset.programmaticScroll === 'true') {
       return;
     }
-    
+
     // Find all intersecting slides
     const intersectingSlides = entries
       .filter((entry) => entry.isIntersecting)
@@ -295,7 +294,7 @@ export function updateCarousel(container, slidesPerView = 1) {
 }
 
 let carouselId = 0;
-export async function buildCarousel(slidesContainer, slidesPerView = 1, enableInfiniteScroll = true) {
+export async function buildCarousel(slidesContainer, slidesPerView = 1, infiniteScroll = true) {
   const placeholders = await fetchLangPlaceholders();
   loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`);
 
@@ -313,7 +312,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, enableIn
 
   const slides = [...slidesContainer.children];
   const isSingleSlide = slides.length < 2;
-  
+
   // Store the real slide count for infinite scroll
   container.dataset.realSlideCount = slides.length;
 
@@ -359,9 +358,9 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, enableIn
   });
 
   // Add cloned slides for infinite scroll
-  if (!isSingleSlide && enableInfiniteScroll && slides.length > 1) {
+  if (!isSingleSlide && infiniteScroll && slides.length > 1) {
     container.classList.add('carousel-infinite-scroll');
-    
+
     // Clone last slide and prepend to the beginning for backward infinite scrolling
     const lastSlideClone = slides[slides.length - 1].cloneNode(true);
     lastSlideClone.classList.add('clone', 'clone-before');
@@ -372,7 +371,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, enableIn
     // Remove button class from links in clones
     lastSlideClone.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
     slidesContainer.prepend(lastSlideClone);
-    
+
     // Clone all slides and append to the end for forward infinite scrolling
     slides.forEach((slide, idx) => {
       const clone = slide.cloneNode(true);
@@ -394,7 +393,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, enableIn
 
   // If infinite scroll is enabled, start at the first real slide (index 0)
   // This accounts for the prepended clone
-  if (!isSingleSlide && enableInfiniteScroll && slides.length > 1) {
+  if (!isSingleSlide && infiniteScroll && slides.length > 1) {
     container.dataset.activeSlide = 0;
     // Instantly position to the first real slide
     requestAnimationFrame(() => {
@@ -404,7 +403,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, enableIn
         const slidesContainerEl = container.querySelector('.carousel-slides');
         const domIndex = Array.from(allSlides).indexOf(firstRealSlide);
         container.dataset.activeDomIndex = domIndex;
-        
+
         slidesContainerEl.style.scrollBehavior = 'auto';
         slidesContainerEl.scrollTo({
           top: 0,
@@ -465,10 +464,10 @@ export default async function decorate(block) {
       const { modalPath } = slide.dataset;
       if (modalPath) {
         const isClone = slide.classList.contains('clone');
-        
+
         // Make the entire slide clickable
         slide.style.cursor = 'pointer';
-        
+
         // Only set ARIA attributes on real slides, not clones
         if (!isClone) {
           slide.setAttribute('role', 'button');

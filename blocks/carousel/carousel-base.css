@@ -43,6 +43,7 @@
   .carousel-slide.clone * {
     pointer-events: none;
     user-select: none;
+    scroll-snap-align: start;
   }
 
   /* Infinite scroll specific behavior */
@@ -51,9 +52,6 @@
   }
 
   /* Clone slides should still snap to ensure smooth scrolling */
-  .carousel-slide.clone {
-    scroll-snap-align: start;
-  }
   
   .carousel-slide-indicators {
     display: flex;
@@ -232,16 +230,16 @@
   }
 
   @media (width >= 1200px) {
+    .carousel-navigation-buttons > button:last-child {
+      left: auto;
+      right: 10px;
+    }
+
     .carousel:not(.modal).carousel-navigation-buttons > button {
       position: absolute;
       bottom: 50%;
       left: 10px;
       transform: translateY(50%);
-    }
-
-    .carousel-navigation-buttons > button:last-child {
-      left: auto;
-      right: 10px;
     }
   }
 }

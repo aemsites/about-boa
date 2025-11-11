@@ -59,6 +59,19 @@
   .carousel-wrapper:has(.carousel.img-align-right) {
     padding-inline: 0;
   }
+
+  /* Masthead variation - full-width split layout */
+  .carousel-wrapper:has(.carousel.masthead) {
+    max-width: 100rem;
+    padding-inline: 0;
+  }
+
+  .carousel.masthead .carousel-slide {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 600px;
+  }
   
   /* Modal variant styling */
   .carousel.modal .carousel-slide {
@@ -76,6 +89,7 @@
   .carousel.modal .carousel-slide .carousel-slide-image {
     flex: 0 0 auto;
     width: 100%;
+    position: relative;
   }
 
   .carousel.modal .carousel-slide .carousel-slide-image picture {
@@ -89,11 +103,6 @@
     aspect-ratio: 4 / 3;
     object-fit: cover;
     border: 1px solid var(--color-border);
-  }
-
-  /* Plus icon on top right of modal carousel images */
-  .carousel.modal .carousel-slide .carousel-slide-image {
-    position: relative;
   }
 
   .carousel.modal .carousel-slide .carousel-slide-image::after {
@@ -141,43 +150,6 @@
     .carousel.modal .carousel-slide h3 {
       font-size: var(--heading-font-size-l);
     }
-  }
-
-  @media (width >= 900px) {  
-    .carousel .carousel-slide {
-      flex-direction: row;
-      gap: 32px;
-    }
-  
-    .carousel .carousel-slide .carousel-slide-image {
-      flex: 0 0 50%;
-    }
-  
-    .carousel .carousel-slide .carousel-slide-content {
-      flex: 1 1 50%;
-      padding: 32px;
-    }
-
-    .carousel.img-align-right .carousel-slide {
-      flex-direction: row-reverse;
-    }
-
-    .carousel.img-align-right .carousel-slide-image {
-      padding-inline: 8.33% 0;
-    }
-  }
-
-  /* Masthead variation - full-width split layout */
-  .carousel-wrapper:has(.carousel.masthead) {
-    max-width: 100rem;
-    padding-inline: 0;
-  }
-
-  .carousel.masthead .carousel-slide {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    min-height: 600px;
   }
 
   /* Image section - top on mobile, full width */
@@ -249,22 +221,45 @@
     transform: translateX(4px);
   }
 
-  @media (width >= 600px) {
-    .carousel.masthead .carousel-slide {
-      min-height: 500px;
+  @media (width >= 900px) {  
+    .carousel .carousel-slide {
+      flex-direction: row;
+      gap: 32px;
+    }
+  
+    .carousel .carousel-slide .carousel-slide-image {
+      flex: 0 0 50%;
+    }
+  
+    .carousel .carousel-slide .carousel-slide-content {
+      flex: 1 1 50%;
+      padding: 32px;
     }
 
-    .carousel.masthead .carousel-slide .carousel-slide-image {
-      height: 250px;
+    .carousel.img-align-right .carousel-slide {
+      flex-direction: row-reverse;
     }
 
-    .carousel.masthead .carousel-slide .carousel-slide-content {
-      padding: var(--spacing-xxl) var(--default-inline-spacing);
-      min-height: 250px;
+    .carousel.img-align-right .carousel-slide-image {
+      padding-inline: 8.33% 0;
     }
-  }
 
-  @media (width >= 900px) {
+    .carousel.quote h3,
+    .carousel.quote h4,
+    .carousel.img-align-right h3,
+    .carousel.img-align-right h4 {
+      font-size: 2rem;
+    }
+
+    .carousel.quote .carousel-slide .carousel-slide-image {
+      flex: 0 0 40%;
+      padding-inline: var(--spacing-xxl);
+    }
+
+    .carousel.quote .carousel-slide .carousel-slide-content {
+      padding-inline: var(--spacing-xxl);
+    }
+
     .carousel.masthead .carousel-slide {
       flex-direction: row-reverse;
       min-height: 500px;
@@ -284,22 +279,6 @@
       min-height: 500px;
     }
 
-    .carousel.quote h3,
-    .carousel.quote h4,
-    .carousel.img-align-right h3,
-    .carousel.img-align-right h4 {
-      font-size: 2rem;
-    }
-
-    .carousel.quote .carousel-slide .carousel-slide-image {
-      flex: 0 0 40%;
-      padding-inline: var(--spacing-xxl);
-    }
-
-    .carousel.quote .carousel-slide .carousel-slide-content {
-      padding-inline: var(--spacing-xxl);
-    }
-
     .carousel.masthead .carousel-slide .carousel-slide-content h2,
     .carousel.masthead .carousel-slide .carousel-slide-content h3 {
       font-size: var(--heading-font-size-xxl);
@@ -310,6 +289,21 @@
       font-size: var(--body-font-size-m);
       line-height: 1.7;
       margin-bottom: var(--spacing-md);
+    }
+  }
+
+  @media (width >= 600px) {
+    .carousel.masthead .carousel-slide {
+      min-height: 500px;
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-image {
+      height: 250px;
+    }
+
+    .carousel.masthead .carousel-slide .carousel-slide-content {
+      padding: var(--spacing-xxl) var(--default-inline-spacing);
+      min-height: 250px;
     }
   }
 
