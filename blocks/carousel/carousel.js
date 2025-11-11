@@ -459,15 +459,21 @@ export default async function decorate(block) {
 
   // Set up modal functionality if this is a modal variant
   if (isModal) {
-    // Only attach click handlers to real slides, not clones
-    const slides = block.querySelectorAll('.carousel-slide:not(.clone)');
+    // Attach click handlers to all slides (including clones)
+    const slides = block.querySelectorAll('.carousel-slide');
     slides.forEach((slide) => {
       const { modalPath } = slide.dataset;
       if (modalPath) {
+        const isClone = slide.classList.contains('clone');
+        
         // Make the entire slide clickable
         slide.style.cursor = 'pointer';
-        slide.setAttribute('role', 'button');
-        slide.setAttribute('tabindex', '0');
+        
+        // Only set ARIA attributes on real slides, not clones
+        if (!isClone) {
+          slide.setAttribute('role', 'button');
+          slide.setAttribute('tabindex', '0');
+        }
 
         // Click handler
         const handleClick = (e) => {
@@ -480,13 +486,15 @@ export default async function decorate(block) {
 
         slide.addEventListener('click', handleClick);
 
-        // Keyboard handler for accessibility
-        slide.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleClick(e);
-          }
-        });
+        // Keyboard handler for accessibility (only on real slides)
+        if (!isClone) {
+          slide.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleClick(e);
+            }
+          });
+        }
       }
     });
   }

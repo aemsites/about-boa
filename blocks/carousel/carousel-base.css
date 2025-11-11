@@ -36,10 +36,10 @@
 
   /* Clone slides for infinite scrolling */
   .carousel-slide.clone {
-    pointer-events: none;
     user-select: none;
   }
 
+  /* Prevent interaction with content inside clones, but allow hover on the slide itself */
   .carousel-slide.clone * {
     pointer-events: none;
     user-select: none;
@@ -173,8 +173,7 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .carousel.modal .carousel-slide:not(.clone):hover {
-    transform: translateY(-4px);
+  .carousel.modal .carousel-slide:hover {
     box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
   }
 
