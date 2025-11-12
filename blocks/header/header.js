@@ -91,6 +91,49 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 }
 
 /**
+ * Handle scroll behavior for sticky navigation
+ * @param {Element} navWrapper The nav wrapper element
+ * @param {Element} navNotification The notification banner element
+ * @param {Element} navUtility The utility nav element
+ */
+function handleStickyNav(navWrapper, navNotification, navUtility) {
+  let lastScrollY = window.scrollY;
+  const stickyClass = 'nav-wrapper-sticky';
+
+  // Calculate the height of elements that should scroll away
+  const getScrollThreshold = () => {
+    let threshold = 0;
+    if (navNotification) {
+      threshold += navNotification.offsetHeight;
+    }
+    if (navUtility) {
+      threshold += navUtility.offsetHeight;
+    }
+    return threshold;
+  };
+
+  const updateStickyState = () => {
+    const { scrollY } = window;
+    const threshold = getScrollThreshold();
+
+    if (scrollY > threshold && scrollY > lastScrollY) {
+      // Scrolling down past threshold - make sticky
+      navWrapper.classList.add(stickyClass);
+    } else if (scrollY <= threshold) {
+      // Scrolled back to top - remove sticky
+      navWrapper.classList.remove(stickyClass);
+    }
+
+    lastScrollY = scrollY;
+  };
+
+  window.addEventListener('scroll', updateStickyState, { passive: true });
+
+  // Check initial state
+  updateStickyState();
+}
+
+/**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
@@ -204,4 +247,9 @@ export default async function decorate(block) {
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
   block.append(navWrapper);
+
+  // Initialize sticky navigation behavior
+  const navNotification = nav.querySelector('.nav-notification');
+  const navUtilityElement = nav.querySelector('.nav-utility:not(.mobile-only)');
+  handleStickyNav(navWrapper, navNotification, navUtilityElement);
 }

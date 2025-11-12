@@ -400,11 +400,21 @@ function transformTile(main, document) {
 
     const cells = [];
     items.forEach((item) => {
-      cells.push(createRowFromSelectors(
-        item,
-        '.tile__top-section img',
-        '.tile__short-section',
-      ));
+      // Check if this is an imageless tile
+      const isImageless = item.querySelector('.tile--imageless');
+
+      if (isImageless) {
+        // For imageless tiles, only include content in a single cell
+        const content = item.querySelector('.tile__short-section');
+        cells.push([content]);
+      } else {
+        // Standard tile with image
+        cells.push(createRowFromSelectors(
+          item,
+          '.tile__top-section img',
+          '.tile__short-section',
+        ));
+      }
     });
 
     const block = WebImporter.Blocks.createBlock(document, {
@@ -415,6 +425,204 @@ function transformTile(main, document) {
     if (heading) {
       el.parentNode.insertBefore(heading, el);
     }
+
+    el.replaceWith(block);
+  });
+
+  // Handle manual tiles (same block, different source structure)
+  main.querySelectorAll('.aem-wrap--manual-tile').forEach((el) => {
+    const items = el.querySelectorAll('.manual-tile__item');
+
+    const cells = [];
+    items.forEach((item) => {
+      const img = item.querySelector('.manual-tile__image');
+      const link = item.querySelector('.manual-tile__link');
+
+      // Create content cell with link wrapped around heading
+      const contentCell = document.createElement('div');
+
+      if (link) {
+        const heading = link.querySelector('.header__heading');
+
+        // Clone all children from the link
+        [...link.childNodes].forEach((child) => {
+          contentCell.append(child.cloneNode(true));
+        });
+
+        // Wrap the heading with the link
+        if (heading) {
+          const headingInContent = contentCell.querySelector('.header__heading');
+          if (headingInContent) {
+            const wrappedLink = document.createElement('a');
+            wrappedLink.href = link.href;
+            // Move heading content into the link
+            while (headingInContent.firstChild) {
+              wrappedLink.append(headingInContent.firstChild);
+            }
+            // Replace heading with the wrapped link
+            headingInContent.replaceWith(wrappedLink);
+          }
+        }
+      }
+
+      cells.push([img, contentCell]);
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'tile',
+      cells,
+    });
+
+    el.replaceWith(block);
+  });
+}
+
+function transformIconList(main, document) {
+  // Handle .aem-wrap--icon-list
+  main.querySelectorAll('.aem-wrap--icon-list').forEach((el) => {
+    const items = el.querySelectorAll('.component-icon__item');
+
+    const cells = [];
+    items.forEach((item) => {
+      // Get the icon column (header-top + image/icon)
+      const iconColumn = document.createElement('div');
+      const headerTop = item.querySelector('.component-icon__header-top');
+
+      // Check for image first
+      let icon = item.querySelector('.component-icon__img img');
+
+      // If no image, check for icon reference
+      if (!icon) {
+        const iconContainer = item.querySelector('.component-icon__ico');
+        if (iconContainer) {
+          const unityIcon = iconContainer.querySelector('.unity-icon');
+          if (unityIcon) {
+            // Extract icon name from class like 'unity-icon-finance-spending'
+            const iconClass = Array.from(unityIcon.classList)
+              .find((cls) => cls.startsWith('unity-icon-') && cls !== 'unity-icon');
+
+            if (iconClass) {
+              const iconName = iconClass.replace('unity-icon-', '');
+              // Create span with icon reference syntax (same as convertIcons rule)
+              icon = document.createElement('span');
+              icon.innerHTML = `:${iconName}:`;
+            }
+          }
+        }
+      }
+
+      if (headerTop) {
+        iconColumn.append(headerTop.cloneNode(true));
+      }
+      if (icon) {
+        iconColumn.append(icon);
+      }
+
+      // Get the content column (header + optional CTA)
+      const contentColumn = document.createElement('div');
+      const header = item.querySelector('.component-icon__header');
+      const cta = item.querySelector('.component-icon__cta');
+
+      if (header) {
+        contentColumn.append(header.cloneNode(true));
+      }
+      if (cta) {
+        contentColumn.append(cta.cloneNode(true));
+      }
+
+      cells.push([iconColumn, contentColumn]);
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'icon-list',
+      cells,
+    });
+
+    el.replaceWith(block);
+  });
+
+  // Handle uc-icon-grid
+  main.querySelectorAll('uc-icon-grid').forEach((el) => {
+    const items = el.querySelectorAll('.uc-icon-grid-item');
+
+    const cells = [];
+    items.forEach((item) => {
+      // Get the graphic (image or icon)
+      const graphic = item.querySelector('.uc-icon-grid-item__graphic');
+      let icon = graphic ? graphic.querySelector('img') : null;
+
+      // If no image, check for icon reference
+      if (!icon && graphic) {
+        const ucIcon = graphic.querySelector('.uc-icon');
+        if (ucIcon) {
+          const iconSpan = ucIcon.querySelector('span[class^="uc-icon-"]');
+          if (iconSpan) {
+            // Extract icon name from class like 'uc-icon-people-team'
+            const iconClass = Array.from(iconSpan.classList)
+              .find((cls) => cls.startsWith('uc-icon-'));
+
+            if (iconClass) {
+              const iconName = iconClass.replace('uc-icon-', '');
+              // Create span with icon reference syntax (same as convertIcons rule)
+              icon = document.createElement('span');
+              icon.innerHTML = `:${iconName}:`;
+            }
+          }
+        }
+      }
+
+      // Get the content (heading + action)
+      const contentColumn = document.createElement('div');
+      const heading = item.querySelector('.uc-icon-grid-item__heading');
+      const action = item.querySelector('.uc-icon-grid-item__action');
+
+      if (heading) {
+        contentColumn.append(heading.cloneNode(true));
+      }
+      if (action) {
+        contentColumn.append(action.cloneNode(true));
+      }
+
+      cells.push([icon, contentColumn]);
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'icon-list',
+      cells,
+    });
+
+    el.replaceWith(block);
+  });
+}
+
+function transformLinkList(main, document) {
+  main.querySelectorAll('.aem-wrap--linklist').forEach((el) => {
+    const items = el.querySelectorAll('.linklist__item');
+
+    const cells = [];
+    items.forEach((item) => {
+      // Get main CTA for first column
+      const mainCta = item.querySelector('.linklist__item-main-cta');
+
+      // Get text and secondary CTA for second column
+      const secondColumn = document.createElement('div');
+      const text = item.querySelector('.linklist__item-text');
+      const secondaryCta = item.querySelector('.linklist__item-secondary-cta');
+
+      if (text) {
+        secondColumn.append(text.cloneNode(true));
+      }
+      if (secondaryCta) {
+        secondColumn.append(secondaryCta.cloneNode(true));
+      }
+
+      cells.push([mainCta, secondColumn]);
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'linklist',
+      cells,
+    });
 
     el.replaceWith(block);
   });
@@ -477,6 +685,8 @@ export default {
       transformHighlightBlock,
       transformStoryBlock,
       transformTile,
+      transformIconList,
+      transformLinkList,
       // more block transformations here
       createMetadata,
     ];

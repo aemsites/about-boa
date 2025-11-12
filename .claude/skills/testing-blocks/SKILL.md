@@ -40,52 +40,13 @@ Copy this checklist and track your progress:
 
 **What to test:** Block decoration, visual validation, DOM structure, responsive design, and more **MUST** be validated in a real browser
 
-**Organization:**
-- Test scripts: `test/tmp/test-{block}-browser.js`
-- Test content: `drafts/tmp/{block}.html`
-- Screenshots: `test/tmp/screenshots/`
-- Both `test/tmp/` and `drafts/tmp/` should be gitignored
-
 **Quick start:**
-```bash
-# Install Playwright
-npm install --save-dev playwright
-npx playwright install chromium
 
-# Create test content
-# drafts/tmp/my-block.html (copy head.html content, add test markup)
+Use one of three options to test in a real browser environment.
 
-# Start dev server with drafts folder
-aem up --html-folder drafts
-
-# Create temporary test script in test/tmp/
-# test/tmp/test-my-block.js
-import { chromium } from 'playwright';
-import { mkdir } from 'fs/promises';
-
-async function test() {
-  await mkdir('./test/tmp/screenshots', { recursive: true });
-  const browser = await chromium.launch({ headless: false });
-  const page = await browser.newPage();
-
-  await page.goto('http://localhost:3000/drafts/tmp/my-block');
-  await page.waitForSelector('.my-block');
-  await page.screenshot({ 
-    path: './test/tmp/screenshots/my-block.png',
-    fullPage: true 
-  });
-
-  await browser.close();
-}
-
-test().catch(console.error);
-
-# Run the test
-node test/tmp/test-my-block.js
-
-# Clean up when done (optional - gitignored either way)
-rm -rf test/tmp/*
-```
+1. **Playwright MCP** (Recommended) - Use MCP tools directly, no scripts needed
+2. **Playwright Scripts** - Write Node.js automation scripts for full control
+3. **Browser MCP** - Use basic MCP browser tools if available
 
 **Detailed guide:** See `resources/browser-testing.md`
 
@@ -149,7 +110,7 @@ Testing is not just a pass/fail activity. When you have completed testing and al
 
 - What you tested in a browser and the results of those tests
 - The paths to screenshots you took during your browser testing, and what each shows
-- How those screenshots to compare to the expected design, especially if provided with screenshots of existing implementation, mockups, etc.
+- How those screenshots compare to the expected design, especially if provided with screenshots of existing implementation, mockups, etc.
 - Any issues encountered during browser testing
 - The unit tests you added (if any)
 - Any issues encountered during verification, especially changes made to existing tests
