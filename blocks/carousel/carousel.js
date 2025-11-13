@@ -155,7 +155,11 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
 
   const slidesContainer = block.querySelector('.carousel-slides');
 
-  targetSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
+  // Only make links focusable if this is NOT a clone slide
+  // Clones should remain non-interactive (tabindex="-1")
+  if (!targetSlide.classList.contains('clone')) {
+    targetSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
+  }
 
   // Set flags to prevent interference and duplicate navigations
   block.dataset.programmaticScroll = 'true';
@@ -370,6 +374,8 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
     lastSlideClone.setAttribute('aria-hidden', 'true');
     // Remove button class from links in clones
     lastSlideClone.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
+    // Make clone non-interactive for accessibility
+    makeCloneNonInteractive(lastSlideClone);
     slidesContainer.prepend(lastSlideClone);
 
     // Clone all slides and append to the end for forward infinite scrolling
@@ -382,6 +388,8 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
       clone.setAttribute('aria-hidden', 'true');
       // Remove button class from links in clones
       clone.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
+      // Make clone non-interactive for accessibility
+      makeCloneNonInteractive(clone);
       slidesContainer.append(clone);
     });
   }
@@ -418,6 +426,20 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
   }
 
   return container;
+}
+
+/**
+ * Makes all focusable elements in a cloned slide non-focusable for accessibility
+ * @param {HTMLElement} clonedSlide - The cloned slide element
+ */
+function makeCloneNonInteractive(clonedSlide) {
+  // Set tabindex="-1" on all focusable elements
+  const focusableElements = clonedSlide.querySelectorAll(
+    'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
+  );
+  focusableElements.forEach((element) => {
+    element.setAttribute('tabindex', '-1');
+  });
 }
 
 function createSlide(row, isModal = false) {
@@ -458,21 +480,16 @@ export default async function decorate(block) {
 
   // Set up modal functionality if this is a modal variant
   if (isModal) {
-    // Attach click handlers to all slides (including clones)
-    const slides = block.querySelectorAll('.carousel-slide');
+    // Attach click handlers only to real slides (not clones)
+    // Clones are aria-hidden and should not be interactive
+    const slides = block.querySelectorAll('.carousel-slide:not(.clone)');
     slides.forEach((slide) => {
       const { modalPath } = slide.dataset;
       if (modalPath) {
-        const isClone = slide.classList.contains('clone');
-
         // Make the entire slide clickable
         slide.style.cursor = 'pointer';
-
-        // Only set ARIA attributes on real slides, not clones
-        if (!isClone) {
-          slide.setAttribute('role', 'button');
-          slide.setAttribute('tabindex', '0');
-        }
+        slide.setAttribute('role', 'button');
+        slide.setAttribute('tabindex', '0');
 
         // Click handler
         const handleClick = (e) => {
@@ -485,15 +502,13 @@ export default async function decorate(block) {
 
         slide.addEventListener('click', handleClick);
 
-        // Keyboard handler for accessibility (only on real slides)
-        if (!isClone) {
-          slide.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              handleClick(e);
-            }
-          });
-        }
+        // Keyboard handler for accessibility
+        slide.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleClick(e);
+          }
+        });
       }
     });
   }
