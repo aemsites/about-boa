@@ -1,6 +1,5 @@
 import fetchLangPlaceholders from '../../scripts/placeholders.js';
 import { loadCSS } from '../../scripts/aem.js';
-import { openModal } from '../modal/modal.js';
 
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel-slides-container');
@@ -497,7 +496,7 @@ export default async function decorate(block) {
           if (e.target.closest('.carousel-navigation-buttons, .carousel-slide-indicators')) {
             return;
           }
-          openModal(modalPath, { placeholders });
+          // openModal(modalPath, { placeholders });
         };
 
         slide.addEventListener('click', handleClick);
