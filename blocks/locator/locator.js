@@ -49,6 +49,5 @@ export default function decorate(block) {
   wrapper.append(contentContainer);
 
   // Clear block and add wrapper
-  block.textContent = '';
-  block.append(wrapper);
+  block.replaceChildren(wrapper);
 }
