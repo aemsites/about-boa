@@ -236,6 +236,20 @@ function bindEvents(block) {
   });
 }
 
+/**
+ * Makes all focusable elements in a cloned slide non-focusable for accessibility
+ * @param {HTMLElement} clonedSlide - The cloned slide element
+ */
+function makeCloneNonInteractive(clonedSlide) {
+  // Set tabindex="-1" on all focusable elements
+  const focusableElements = clonedSlide.querySelectorAll(
+    'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
+  );
+  focusableElements.forEach((element) => {
+    element.setAttribute('tabindex', '-1');
+  });
+}
+
 export function updateCarousel(container, slidesPerView = 1) {
   const realSlides = container.querySelectorAll('.carousel-slide:not(.clone)');
   const totalSlides = realSlides.length;
@@ -427,20 +441,6 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
   return container;
 }
 
-/**
- * Makes all focusable elements in a cloned slide non-focusable for accessibility
- * @param {HTMLElement} clonedSlide - The cloned slide element
- */
-function makeCloneNonInteractive(clonedSlide) {
-  // Set tabindex="-1" on all focusable elements
-  const focusableElements = clonedSlide.querySelectorAll(
-    'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
-  );
-  focusableElements.forEach((element) => {
-    element.setAttribute('tabindex', '-1');
-  });
-}
-
 function createSlide(row, isModal = false) {
   const slide = document.createElement('li');
 
@@ -465,7 +465,6 @@ function createSlide(row, isModal = false) {
 
 export default async function decorate(block) {
   const isModal = block.classList.contains('modal');
-  const placeholders = await fetchLangPlaceholders();
 
   const slidesWrapper = document.createElement('ul');
   const rows = block.querySelectorAll(':scope > div');
@@ -494,9 +493,10 @@ export default async function decorate(block) {
         const handleClick = (e) => {
           // Don't open modal if clicking on navigation buttons or indicators
           if (e.target.closest('.carousel-navigation-buttons, .carousel-slide-indicators')) {
+            // eslint-disable-next-line no-useless-return
             return;
           }
-          // openModal(modalPath, { placeholders });
+          // openModal(modalPath);
         };
 
         slide.addEventListener('click', handleClick);
