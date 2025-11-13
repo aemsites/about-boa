@@ -1,0 +1,80 @@
+/* Locator block - location finder with image and content */
+.locator {
+  --locator-gap: var(--spacing-xl);
+  --locator-content-width: 50%;
+  --locator-image-width: 41.66%;
+}
+
+.locator .locator-image img {
+  width: 100%;
+}
+
+/* Container */
+.locator .locator-inner-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--locator-gap);
+  align-items: center;
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+}
+
+/* Content container */
+.locator .locator-content {
+  width: 100%;
+  padding: var(--spacing-m) 0;
+}
+
+.locator .locator-content h2,
+.locator .locator-content h3,
+.locator .locator-content h4 {
+  margin-block-start: 0;
+  color: var(--color-brand-red);
+}
+
+/* Desktop layout - side by side */
+@media (width >= 900px) {
+  .locator {
+    --locator-gap: 8.34%; /* Remaining space between image and content */
+  }
+
+  .locator .locator-inner-wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  /* Image on left by default */
+  .locator .locator-image {
+    flex: 0 0 var(--locator-image-width);
+    width: var(--locator-image-width);
+    order: 1;
+  }
+
+  .locator .locator-content {
+    flex: 0 0 var(--locator-content-width);
+    width: var(--locator-content-width);
+    order: 2;
+  }
+
+  /* Image right alignment variant */
+  .locator.img-right-align .locator-image {
+    order: 2;
+  }
+
+  .locator.img-right-align .locator-content {
+    order: 1;
+  }
+}
+
+/* Tablet specific adjustments */
+@media (width >= 600px) and (width < 900px) {
+  .locator .locator-image {
+    width: 100%;
+  }
+
+  .locator .locator-content {
+    padding: var(--spacing-l) 0;
+  }
+}
+

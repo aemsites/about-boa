@@ -628,6 +628,43 @@ function transformLinkList(main, document) {
   });
 }
 
+function transformLocator(main, document) {
+  main.querySelectorAll('.aem-wrap--locator-block').forEach((el) => {
+    const variants = [];
+
+    // Check for alignment variant
+    const locatorBlock = el.querySelector('.locator-block');
+    if (locatorBlock && locatorBlock.classList.contains('locator-block--align-right')) {
+      variants.push('img-right-align');
+    }
+
+    // Get image
+    const img = el.querySelector('.locator-block__img img');
+
+    // Get container content but exclude the form
+    const container = el.querySelector('.locator-block__container');
+    if (container) {
+      const form = container.querySelector('form');
+      if (form) {
+        const link = document.createElement('a');
+        link.href = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        link.textContent = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        form.replaceWith(link);
+      }
+    }
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'locator',
+      variants,
+      cells: [
+        [img, container || ''],
+      ],
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 function transformBreadcrumb(main, document) {
   const bc = main.querySelector('.aem-wrap--breadcrumb');
   if (bc && bc.textContent.trim() !== '') {
@@ -687,6 +724,7 @@ export default {
       transformTile,
       transformIconList,
       transformLinkList,
+      transformLocator,
       // more block transformations here
       createMetadata,
     ];
