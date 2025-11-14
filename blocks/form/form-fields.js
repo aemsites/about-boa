@@ -139,6 +139,16 @@ const createSubmit = (fd, form) => {
     form.classList.add('inline');
   }
 
+  if (fd.Method) {
+    form.method = fd.Method.toUpperCase();
+    form.dataset.method = fd.Method.toUpperCase();
+  }
+
+  if (fd.Action) {
+    form.action = fd.Action;
+    form.dataset.action = fd.Action;
+  }
+
   const fieldWrapper = createFieldWrapper(fd);
   fieldWrapper.append(button);
   return { field: button, fieldWrapper };

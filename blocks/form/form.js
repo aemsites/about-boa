@@ -1,12 +1,11 @@
 import createField from './form-fields.js';
 
-async function createForm(formHref, submitHref) {
+async function createForm(formHref) {
   const { pathname } = new URL(formHref);
   const resp = await fetch(pathname);
   const json = await resp.json();
 
   const form = document.createElement('form');
-  form.dataset.action = submitHref;
 
   const fields = await Promise.all(json.data.map((fd) => createField(fd, form)));
   fields.forEach((field) => {
@@ -47,29 +46,6 @@ function generatePayload(form) {
   return payload;
 }
 
-async function handleSubmitRedirect(form) {
-  if (form.getAttribute('data-submitting') === 'true') return;
-
-  const submit = form.querySelector('button[type="submit"]');
-  try {
-    form.setAttribute('data-submitting', 'true');
-    submit.disabled = true;
-
-    // Get the first text/email/tel input value for redirect
-    const payload = generatePayload(form);
-    const firstValue = Object.values(payload)[0] || '';
-
-    // Redirect to action URL with the value appended
-    const actionUrl = form.dataset.action;
-    window.location.href = actionUrl + encodeURIComponent(firstValue);
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-    form.setAttribute('data-submitting', 'false');
-    submit.disabled = false;
-  }
-}
-
 async function handleSubmit(form) {
   if (form.getAttribute('data-submitting') === 'true') return;
 
@@ -80,6 +56,12 @@ async function handleSubmit(form) {
 
     // create payload
     const payload = generatePayload(form);
+
+    if (form.getAttribute('method') === 'GET') {
+      window.location.href = form.action + '?' + new URLSearchParams(payload).toString();
+      return;
+    }
+
     const response = await fetch(form.dataset.action, {
       method: 'POST',
       body: JSON.stringify({ data: payload }),
@@ -107,26 +89,16 @@ async function handleSubmit(form) {
 export default async function decorate(block) {
   const links = [...block.querySelectorAll('a')].map((a) => a.href);
   const formLink = links.find((link) => link.startsWith(window.location.origin) && link.endsWith('.json'));
-  const submitLink = links.find((link) => link !== formLink);
-  if (!formLink || !submitLink) return;
+  if (!formLink) return;
 
-  const form = await createForm(formLink, submitLink);
+  const form = await createForm(formLink);
   block.replaceChildren(form);
-
-  // Detect if this should be a redirect form
-  // Check if block has "redirect" variant class OR if action URL ends with query param
-  const isRedirect = block.classList.contains('redirect')
-    || /[?&][^=]+=?$/.test(form.dataset.action);
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const valid = form.checkValidity();
     if (valid) {
-      if (isRedirect) {
-        handleSubmitRedirect(form);
-      } else {
-        handleSubmit(form);
-      }
+      handleSubmit(form);
     } else {
       const firstInvalidEl = form.querySelector(':invalid:not(fieldset)');
       if (firstInvalidEl) {

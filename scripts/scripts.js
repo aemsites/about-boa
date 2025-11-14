@@ -31,25 +31,6 @@ async function loadFonts() {
   }
 }
 
-// function loadFragments(main) {
-//   const fragments = main.querySelectorAll('a[href*="/fragments/"]');
-//   if (fragments.length > 0) {
-//     // eslint-disable-next-line import/no-cycle
-//     import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
-//       fragments.forEach(async (fragment) => {
-//         try {
-//           const { pathname } = new URL(fragment.href);
-//           const frag = await loadFragment(pathname);
-//           fragment.parentElement.replaceWith(frag.firstElementChild);
-//         } catch (error) {
-//           // eslint-disable-next-line no-console
-//           console.error('Fragment loading failed', error);
-//         }
-//       });
-//     });
-//   }
-// }
-
 /**
  * Builds a fragment block from a link element
  * @param {Element} link The link element
