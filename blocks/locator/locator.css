@@ -32,6 +32,17 @@
   color: var(--color-brand-red);
 }
 
+/* Mobile only layout */
+@media (width < 900px) {
+  .locator .locator-image {
+    order: 1;
+  }
+
+  .locator .locator-content {
+    order: 2;
+  }
+}
+
 /* Desktop layout - side by side */
 @media (width >= 900px) {
   .locator {
@@ -48,22 +59,11 @@
   .locator .locator-image {
     flex: 0 0 var(--locator-image-width);
     width: var(--locator-image-width);
-    order: 1;
   }
 
   .locator .locator-content {
     flex: 0 0 var(--locator-content-width);
     width: var(--locator-content-width);
-    order: 2;
-  }
-
-  /* Image right alignment variant */
-  .locator.img-right-align .locator-image {
-    order: 2;
-  }
-
-  .locator.img-right-align .locator-content {
-    order: 1;
   }
 }
 

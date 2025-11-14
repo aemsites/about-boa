@@ -630,16 +630,7 @@ function transformLinkList(main, document) {
 
 function transformLocator(main, document) {
   main.querySelectorAll('.aem-wrap--locator-block').forEach((el) => {
-    const variants = [];
-
-    // Check for alignment variant
-    const locatorBlock = el.querySelector('.locator-block');
-    if (locatorBlock && locatorBlock.classList.contains('locator-block--align-right')) {
-      variants.push('img-right-align');
-    }
-
-    // Get image
-    const img = el.querySelector('.locator-block__img img');
+    const cells = [];
 
     // Get container content but exclude the form
     const container = el.querySelector('.locator-block__container');
@@ -653,12 +644,23 @@ function transformLocator(main, document) {
       }
     }
 
+    const contentCells = [...el.querySelector('.locator-block .row')?.children || []];
+    if (contentCells.length > 0) {
+      const cellsWrapper = [];
+      contentCells.forEach((cell) => {
+        const img = cell.querySelector('.locator-block__img img');
+        if (img) {
+          cellsWrapper.push(img);
+        } else {
+          cellsWrapper.push(cell);
+        }
+      });
+      cells.push(cellsWrapper);
+    }
+
     const block = WebImporter.Blocks.createBlock(document, {
       name: 'locator',
-      variants,
-      cells: [
-        [img, container || ''],
-      ],
+      cells,
     });
 
     el.replaceWith(block);

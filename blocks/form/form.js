@@ -58,7 +58,7 @@ async function handleSubmit(form) {
     const payload = generatePayload(form);
 
     if (form.getAttribute('method') === 'GET') {
-      window.location.href = form.action + '?' + new URLSearchParams(payload).toString();
+      window.location.href = `${form.action}?${new URLSearchParams(payload).toString()}`;
       return;
     }
 
