@@ -441,7 +441,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
   return container;
 }
 
-function createSlide(row, isModal = false) {
+function createSlide(row) {
   const slide = document.createElement('li');
 
   row.querySelectorAll(':scope > div').forEach((column) => {
@@ -449,66 +449,17 @@ function createSlide(row, isModal = false) {
     slide.append(column);
   });
 
-  // For modal variant, extract and store the modal path, then remove the link
-  if (isModal) {
-    const link = slide.querySelector('a');
-    if (link) {
-      const url = new URL(link.href);
-      slide.dataset.modalPath = url.pathname;
-      // Remove the link element but keep the slide structure
-      link.parentElement.remove();
-    }
-  }
-
   return slide;
 }
 
 export default async function decorate(block) {
-  const isModal = block.classList.contains('modal');
-
   const slidesWrapper = document.createElement('ul');
   const rows = block.querySelectorAll(':scope > div');
   rows.forEach((row) => {
-    const slide = createSlide(row, isModal);
+    const slide = createSlide(row);
     slidesWrapper.append(slide);
   });
   block.replaceChildren(slidesWrapper);
 
   await buildCarousel(slidesWrapper);
-
-  // Set up modal functionality if this is a modal variant
-  if (isModal) {
-    // Attach click handlers only to real slides (not clones)
-    // Clones are aria-hidden and should not be interactive
-    const slides = block.querySelectorAll('.carousel-slide:not(.clone)');
-    slides.forEach((slide) => {
-      const { modalPath } = slide.dataset;
-      if (modalPath) {
-        // Make the entire slide clickable
-        slide.style.cursor = 'pointer';
-        slide.setAttribute('role', 'button');
-        slide.setAttribute('tabindex', '0');
-
-        // Click handler
-        const handleClick = (e) => {
-          // Don't open modal if clicking on navigation buttons or indicators
-          if (e.target.closest('.carousel-navigation-buttons, .carousel-slide-indicators')) {
-            // eslint-disable-next-line no-useless-return
-            return;
-          }
-          // openModal(modalPath);
-        };
-
-        slide.addEventListener('click', handleClick);
-
-        // Keyboard handler for accessibility
-        slide.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleClick(e);
-          }
-        });
-      }
-    });
-  }
 }
