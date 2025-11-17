@@ -19,6 +19,38 @@ function getShareUrl(platform, pageUrl, pageTitle) {
   return shareUrls[platform] || '#';
 }
 
+function handleShareClick(link, shareUrl) {
+  const interstitialModal = 'https://main--about-boa--aemsites.aem.page/en/modals/interstitial';
+
+  link.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+
+    // Open the interstitial modal and get its reference
+    const modal = await openModal(interstitialModal);
+
+    // Wait for modal to be rendered, then attach button handlers
+    setTimeout(() => {
+      const modalDialog = document.querySelector('dialog[open]');
+      if (!modalDialog) return;
+
+      const buttons = modalDialog.querySelectorAll('.button-wrapper a, a.button');
+
+      // Optimize by reducing repetition and handling both button counts together
+      buttons.forEach((button, idx) => {
+        button.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (idx === 0) {
+            window.open(shareUrl, '_blank', 'noopener,noreferrer');
+          }
+          modal.closeModal();
+        });
+      });
+    });
+  });
+}
+
 /**
  * Decorates the social share block
  * @param {Element} block The social share block element
@@ -60,6 +92,8 @@ export default function decorate(block) {
     // Move the icon into the link and add sr-only text
     link.appendChild(iconSpan);
     link.appendChild(srOnly);
+
+    handleShareClick(link, shareUrl);
 
     // Replace the list item content with the link
     li.innerHTML = '';
