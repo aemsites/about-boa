@@ -643,6 +643,28 @@ function transformBreadcrumb(main, document) {
   }
 }
 
+function transformSocialShare(main, document) {
+  main.querySelectorAll('.aem-wrap--social-share').forEach((el) => {
+    el.querySelectorAll('.social-share ul li').forEach((item) => {
+      const shareType = item.querySelector('.icon--social')?.dataset?.share;
+      if (shareType) {
+        item.textContent = `:${shareType}:`;
+      }
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'social-share',
+      cells: [
+        [
+          el.cloneNode(true),
+        ],
+      ],
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 /**
  * Main transformation function
  */
@@ -687,6 +709,7 @@ export default {
       transformTile,
       transformIconList,
       transformLinkList,
+      transformSocialShare,
       // more block transformations here
       createMetadata,
     ];
