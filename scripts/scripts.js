@@ -30,6 +30,17 @@ async function loadFonts() {
   }
 }
 
+function autolinkModals(doc) {
+  doc.addEventListener('click', async (e) => {
+    const link = e.target.closest('a');
+    if (link && link.href && link.href.includes('/modals/')) {
+      e.preventDefault();
+      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+      openModal(link.href);
+    }
+  });
+}
+
 function loadFragments(main) {
   const fragments = main.querySelectorAll('a[href*="/fragments/"]');
   if (fragments.length > 0) {
@@ -200,6 +211,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   loadHeader(doc.querySelector('header'));
+  autolinkModals(doc);
 
   const main = doc.querySelector('main');
   await loadSections(main);
