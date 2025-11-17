@@ -33,11 +33,11 @@ export async function createModal(contentNodes) {
   const buttons = dialog.querySelectorAll('.button-wrapper a, .button');
   buttons.forEach((button, index) => {
     if (buttons.length > 1) {
-      if(index === buttons.length - 1) {
+      if (index === buttons.length - 1) {
         button.classList.add('tertiary');
       }
     }
-  });  
+  });
 
   // close on click outside the dialog
   dialog.addEventListener('click', (e) => {
@@ -80,7 +80,7 @@ export async function openModal(fragmentUrl) {
   const fragment = await loadFragment(path);
   const modal = await createModal(fragment.childNodes);
   modal.showModal();
-  
+
   // Return the modal reference so it can be closed directly
   return modal;
 }

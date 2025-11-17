@@ -284,11 +284,6 @@
     transition: background-color 0.2s ease;
   }
 
-  a.button:any-link:not(:last-of-type),
-  button:not(:last-of-type) {
-    margin-inline-end: var(--spacing-sm);
-  }
-
   a.button:hover,
   a.button:focus,
   button:hover,
@@ -296,6 +291,11 @@
     background-color: var(--color-blue-primary);
     text-decoration: none;
     cursor: pointer;
+  }
+
+  a.button:any-link:not(:last-of-type),
+  button:not(:last-of-type) {
+    margin-inline-end: var(--spacing-sm);
   }
 
   button:disabled,
