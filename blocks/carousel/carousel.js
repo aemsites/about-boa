@@ -1,6 +1,5 @@
 import fetchLangPlaceholders from '../../scripts/placeholders.js';
 import { loadCSS } from '../../scripts/aem.js';
-import { buildContentCard } from '../content-card/content-card.js';
 
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel-slides-container');
@@ -209,8 +208,9 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
   return container;
 }
 
-function createSlide(row, isContentCard = false) {
+async function createSlide(row, isContentCard = false) {
   if (isContentCard) {
+    const { buildContentCard } = await import('../content-card/content-card.js');
     // Use content-card builder for content-card carousel variant
     const contentCard = buildContentCard(row);
     contentCard.classList.add('carousel-slide');
@@ -235,8 +235,8 @@ export default async function decorate(block) {
   // Check if this is a content-card carousel variant
   const isContentCard = block.classList.contains('content-card');
 
-  rows.forEach((row, idx) => {
-    const slide = createSlide(row, isContentCard, idx, carouselId);
+  rows.forEach(async (row, idx) => {
+    const slide = await createSlide(row, isContentCard, idx, carouselId);
     slidesWrapper.append(slide);
   });
   block.replaceChildren(slidesWrapper);
