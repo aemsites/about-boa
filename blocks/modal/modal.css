@@ -16,6 +16,18 @@ body.modal-open {
   border: 1px solid var(--color-border);
 }
 
+.modal dialog.narrow {
+  max-width: 600px;
+}
+
+.modal dialog.wide {
+  max-width: 1200px;
+}
+
+.modal dialog.full {
+  max-width: calc(100vw - var(--spacing-xxxl));
+}
+
 .modal dialog .modal-content {
   box-sizing: border-box;
   overflow-y: auto;

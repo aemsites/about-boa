@@ -3,16 +3,21 @@ import {
   buildBlock, decorateBlock, loadBlock, loadCSS,
 } from '../../scripts/aem.js';
 
+const MODAL_WIDTH = ['narrow', 'wide', 'full'];
+
 /*
   This is not a traditional block, so there is no decorate function.
   Instead, links to a /modals/ path are automatically transformed into a modal.
   Other blocks can also use the createModal() and openModal() functions.
 */
 
-export async function createModal(contentNodes) {
+export async function createModal(contentNodes, modalWidth = 'default') {
   await loadCSS(`${window.hlx.codeBasePath}/blocks/modal/modal.css`);
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
+  if (MODAL_WIDTH.includes(modalWidth)) {
+    dialog.classList.add(modalWidth);
+  }
   dialogContent.classList.add('modal-content');
   dialogContent.append(...contentNodes);
   dialog.append(dialogContent);
@@ -60,12 +65,12 @@ export async function createModal(contentNodes) {
   };
 }
 
-export async function openModal(fragmentUrl) {
+export async function openModal(fragmentUrl, modalWidth = 'default') {
   const path = fragmentUrl.startsWith('http')
     ? new URL(fragmentUrl, window.location).pathname
     : fragmentUrl;
 
   const fragment = await loadFragment(path);
-  const { showModal } = await createModal(fragment.childNodes);
+  const { showModal } = await createModal(fragment.childNodes, modalWidth);
   showModal();
 }
