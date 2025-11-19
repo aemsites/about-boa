@@ -1,6 +1,11 @@
 import { createOptimizedPicture, loadCSS } from '../../scripts/aem.js';
 import { openModal } from '../modal/modal.js';
 
+const BG_CLASSES = [
+  'dark',
+  'light',
+];
+
 /**
  * Get modal width class based on block variant
  * @param {Element} block - The content-card block element
@@ -8,10 +13,10 @@ import { openModal } from '../modal/modal.js';
  */
 function getModalWidthClass(block) {
   const blockClasses = Array.from(block.classList);
-  if (blockClasses.includes('small')) return 'modal-small';
-  if (blockClasses.includes('large')) return 'modal-large';
-  if (blockClasses.includes('full')) return 'modal-full';
-  return 'modal-default';
+  if (blockClasses.includes('narrow-modal')) return 'narrow';
+  if (blockClasses.includes('wide-modal')) return 'wide';
+  if (blockClasses.includes('full-modal')) return 'full';
+  return 'default';
 }
 
 /**
@@ -19,12 +24,16 @@ function getModalWidthClass(block) {
  * @param {Element} row - The row element containing card data
  * @returns {Element} The card list item element
  */
-export function buildContentCard(row, modalWidth = 'default') {
+export function buildContentCard(row, modalWidth = 'default', bg = 'dark') {
   // Load content-card base CSS for use in other contexts (e.g., carousel)
   loadCSS(`${window.hlx.codeBasePath}/blocks/content-card/content-card-base.css`);
 
   const li = document.createElement('li');
   li.classList.add('content-card-item');
+
+  if (BG_CLASSES.includes(bg)) {
+    li.classList.add(bg);
+  }
 
   // Extract cells from row
   const cells = Array.from(row.children);
@@ -104,13 +113,13 @@ export function buildContentCard(row, modalWidth = 'default') {
  */
 export default function decorate(block) {
   const modalWidthClass = getModalWidthClass(block);
-
+  const bg = block.classList.contains('light') ? 'light' : 'dark';
   // Convert rows to list items
   const ul = document.createElement('ul');
   ul.classList.add('content-card-list');
 
   [...block.children].forEach((row) => {
-    const li = buildContentCard(row, modalWidthClass);
+    const li = buildContentCard(row, modalWidthClass, bg);
     ul.append(li);
   });
 

@@ -212,7 +212,7 @@ async function createSlide(row, isContentCard = false) {
   if (isContentCard) {
     const { buildContentCard } = await import('../content-card/content-card.js');
     // Use content-card builder for content-card carousel variant
-    const contentCard = buildContentCard(row);
+    const contentCard = buildContentCard(row, 'default', 'light');
     contentCard.classList.add('carousel-slide');
     return contentCard;
   }
