@@ -35,6 +35,15 @@ export async function createModal(contentNodes, modalWidth = 'default') {
   decorateBlock(block);
   await loadBlock(block);
 
+  const buttons = dialog.querySelectorAll('.button-wrapper a, .button');
+  buttons.forEach((button, index) => {
+    if (buttons.length > 1) {
+      if (index === buttons.length - 1) {
+        button.classList.add('tertiary');
+      }
+    }
+  });
+
   // close on click outside the dialog
   dialog.addEventListener('click', (e) => {
     const {
@@ -62,6 +71,9 @@ export async function createModal(contentNodes, modalWidth = 'default') {
       setTimeout(() => { dialogContent.scrollTop = 0; }, 0);
       document.body.classList.add('modal-open');
     },
+    closeModal: () => {
+      dialog.close();
+    },
   };
 }
 
@@ -71,6 +83,9 @@ export async function openModal(fragmentUrl, modalWidth = 'default') {
     : fragmentUrl;
 
   const fragment = await loadFragment(path);
-  const { showModal } = await createModal(fragment.childNodes, modalWidth);
-  showModal();
+  const modal = await createModal(fragment.childNodes, modalWidth);
+  modal.showModal();
+
+  // Return the modal reference so it can be closed directly
+  return modal;
 }

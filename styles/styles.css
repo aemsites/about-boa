@@ -295,6 +295,11 @@
     cursor: pointer;
   }
 
+  a.button:any-link:not(:last-of-type),
+  button:not(:last-of-type) {
+    margin-inline-end: var(--spacing-sm);
+  }
+
   button:disabled,
   button:disabled:hover {
     background-color: var(--color-gray-light);
@@ -315,6 +320,20 @@
   button.secondary:focus {
     background-color: var(--color-blue-royal);
     color: var(--color-white);
+  }
+
+  a.button.tertiary,
+  button.tertiary {
+    background-color: transparent;
+    color: var(--color-blue-royal);
+    padding-inline: 0;
+  }
+
+  a.button.tertiary:hover,
+  a.button.tertiary:focus,
+  button.tertiary:hover,
+  button.tertiary:focus {
+    text-decoration: underline;
   }
 
   /* Icons */

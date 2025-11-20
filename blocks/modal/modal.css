@@ -39,16 +39,8 @@ body.modal-open {
   margin-top: 44px;
 }
 
-@media (width >= 900px) {
-  .modal dialog {
-    width: calc(100vw - var(--spacing-xxxl));
-  }
-  
-  .modal dialog .modal-content {
-    max-height: calc(100dvh - (2 * var(--nav-height)) - var(--spacing-xxxl));
-    padding: var(--spacing-xl);
-    padding-top: 0;
-  }
+.modal dialog .section {
+  padding: 0;
 }
 
 .modal .close-button {
@@ -91,6 +83,31 @@ body.modal-open {
   transform: translate(-50%, -50%) rotate(-45deg)
 }
 
-.modal dialog .section {
-  padding: 0;
+.modal dialog:has(.interstitial-modal) .close-button {
+  color: var(--color-brand-red);
+}
+
+.modal dialog .interstitial-modal .button:not(.tertiary) {
+  background-color: var(--color-brand-red);
+  color: var(--color-white);
+}
+
+.modal dialog .interstitial-modal h1 {
+  margin-block-end: 0;
+}
+
+.modal dialog .interstitial-modal h3 {
+  margin-block-end: 1.25rem;
+}
+
+@media (width >= 900px) {
+  .modal dialog {
+    width: calc(100vw - var(--spacing-xxxl));
+  }
+  
+  .modal dialog .modal-content {
+    max-height: calc(100dvh - (2 * var(--nav-height)) - var(--spacing-xxxl));
+    padding: var(--spacing-xl);
+    padding-top: 0;
+  }
 }

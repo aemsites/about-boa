@@ -628,6 +628,45 @@ function transformLinkList(main, document) {
   });
 }
 
+function transformLocator(main, document) {
+  main.querySelectorAll('.aem-wrap--locator-block').forEach((el) => {
+    const cells = [];
+
+    // Get container content but exclude the form
+    const container = el.querySelector('.locator-block__container');
+    if (container) {
+      const form = container.querySelector('form');
+      if (form) {
+        const link = document.createElement('a');
+        link.href = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        link.textContent = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        form.replaceWith(link);
+      }
+    }
+
+    const contentCells = [...el.querySelector('.locator-block .row')?.children || []];
+    if (contentCells.length > 0) {
+      const cellsWrapper = [];
+      contentCells.forEach((cell) => {
+        const img = cell.querySelector('.locator-block__img img');
+        if (img) {
+          cellsWrapper.push(img);
+        } else {
+          cellsWrapper.push(cell);
+        }
+      });
+      cells.push(cellsWrapper);
+    }
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'locator',
+      cells,
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 function transformBreadcrumb(main, document) {
   const bc = main.querySelector('.aem-wrap--breadcrumb');
   if (bc && bc.textContent.trim() !== '') {
@@ -709,6 +748,7 @@ export default {
       transformTile,
       transformIconList,
       transformLinkList,
+      transformLocator,
       transformSocialShare,
       // more block transformations here
       createMetadata,
