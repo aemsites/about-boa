@@ -22,7 +22,22 @@
     overflow: hidden;
   }
 
+  .content-card.filter ul > li {
+    background-color: var(--color-blue-magnolia);
+    border-radius: var(--spacing-xl);
+    overflow: hidden;
+  }
+
   .content-card.grid ul > li h3{
+    font-size: var(--heading-font-size-xl);
+  }
+
+  .content-card.filter ul > li p {
+    color: var(--color-red-regal);
+    text-transform: uppercase;
+  }
+
+  .content-card.filter ul > li h3 {
     font-size: var(--heading-font-size-xl);
   }
 

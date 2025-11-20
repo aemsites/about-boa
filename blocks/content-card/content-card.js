@@ -39,9 +39,13 @@ export function buildContentCard(row, modalWidth = 'default', bg = 'dark') {
   const cells = Array.from(row.children);
   let imageCell = null;
   let contentCell = null;
+  let categoryCell = null;
 
   // Determine which cell contains what based on structure
-  if (cells.length === 2) {
+  if (cells.length === 3) {
+    // Three columns: image, content, and category
+    [imageCell, contentCell, categoryCell] = cells;
+  } else if (cells.length === 2) {
     // Two columns: image (optional) and content
     [imageCell, contentCell] = cells;
   } else if (cells.length === 1) {
@@ -104,6 +108,15 @@ export function buildContentCard(row, modalWidth = 'default', bg = 'dark') {
     }
   }
 
+  // Store category data attribute if present (for filtering)
+  // Third column is treated as metadata and not displayed
+  if (categoryCell) {
+    const categoryText = categoryCell.textContent.trim();
+    if (categoryText) {
+      li.dataset.category = categoryText;
+    }
+  }
+
   return li;
 }
 
@@ -114,6 +127,14 @@ export function buildContentCard(row, modalWidth = 'default', bg = 'dark') {
 export default function decorate(block) {
   const modalWidthClass = getModalWidthClass(block);
   const bg = block.classList.contains('light') ? 'light' : 'dark';
+
+  // Check if any row has 3 columns (filterable variant)
+  const hasFilterColumn = [...block.children].some((row) => row.children.length === 3);
+  // Add filter class if block has filterable content
+  if (hasFilterColumn) {
+    block.classList.add('filter');
+  }
+
   // Convert rows to list items
   const ul = document.createElement('ul');
   ul.classList.add('content-card-list');
