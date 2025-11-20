@@ -31,6 +31,17 @@ async function loadFonts() {
   }
 }
 
+function autolinkModals(doc) {
+  doc.addEventListener('click', async (e) => {
+    const link = e.target.closest('a');
+    if (link && link.href && link.href.includes('/modals/')) {
+      e.preventDefault();
+      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+      openModal(link.href);
+    }
+  });
+}
+
 /**
  * Builds a fragment block from a link element
  * @param {Element} link The link element
@@ -52,8 +63,6 @@ export function buildFragment(link) {
  */
 function buildAutoBlocks(main) {
   try {
-    // loadFragments(main);
-
     const fragments = main.querySelectorAll('a[href*="/fragments/"]');
     if (fragments.length > 0) {
       fragments.forEach((fragment) => {
@@ -204,6 +213,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   loadHeader(doc.querySelector('header'));
+  autolinkModals(doc);
 
   const main = doc.querySelector('main');
   await loadSections(main);
