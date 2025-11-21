@@ -1,3 +1,8 @@
+const ALL_CAUSES_LABEL = 'All Causes';
+const MAX_VISIBLE_CARDS = 6;
+const DEFAULT_LABEL = 'Filter by category';
+const DEFAULT_PLACEHOLDER = 'Select a category';
+
 /**
  * Extract unique categories from content-card blocks
  * @param {Element} contentCardBlock - The content-card block element
@@ -49,7 +54,7 @@ function extractCategories(contentCardBlock) {
 function filterContentCards(
   contentCardBlock,
   selectedCategory,
-  maxVisible = 6,
+  maxVisible = MAX_VISIBLE_CARDS,
   viewAllButton = null,
 ) {
   const cardList = contentCardBlock.querySelector('.content-card-list');
@@ -62,7 +67,7 @@ function filterContentCards(
 
     cards.forEach((card) => {
       const { category } = card.dataset;
-      const shouldShow = selectedCategory === 'All Causes' || selectedCategory === '' || category === selectedCategory;
+      const shouldShow = selectedCategory === ALL_CAUSES_LABEL || selectedCategory === '' || category === selectedCategory;
 
       if (shouldShow) {
         visibleCount += 1;
@@ -99,7 +104,7 @@ function filterContentCards(
       if (cells.length >= 3) {
         const categoryCell = cells[2];
         const categoryText = categoryCell.textContent.trim();
-        const shouldShow = selectedCategory === 'All Causes' || selectedCategory === '' || categoryText === selectedCategory;
+        const shouldShow = selectedCategory === ALL_CAUSES_LABEL || selectedCategory === '' || categoryText === selectedCategory;
 
         if (shouldShow) {
           visibleCount += 1;
@@ -243,9 +248,9 @@ export default async function decorate(block) {
 
   // Load form definition
   const formDef = await loadFormDefinition(formUrl);
-  let label = 'Filter by category';
-  let placeholder = 'Select a category';
-  let allCauseLabel = 'All Causes';
+  let label = DEFAULT_LABEL;
+  let placeholder = DEFAULT_PLACEHOLDER;
+  let allCauseLabel = ALL_CAUSES_LABEL;
 
   if (formDef && formDef.data && formDef.data.length > 0) {
     const field = formDef.data[0];
@@ -263,11 +268,10 @@ export default async function decorate(block) {
     return;
   }
 
-  // Create "View all runners" button
   const viewAllButton = document.createElement('button');
   viewAllButton.className = 'button secondary';
   viewAllButton.textContent = 'View all runners';
-  viewAllButton.style.display = 'none'; // Hidden by default
+  viewAllButton.style.display = 'none';
 
   viewAllButton.addEventListener('click', () => {
     const cardList = contentCardBlock.querySelector('.content-card-list');
@@ -283,7 +287,6 @@ export default async function decorate(block) {
     }
   });
 
-  // Insert button after content card block
   const contentCardWrapper = contentCardBlock.closest('.content-card-wrapper');
   if (contentCardWrapper && contentCardWrapper.parentElement) {
     const buttonWrapper = document.createElement('div');
@@ -309,11 +312,10 @@ export default async function decorate(block) {
           card.classList.remove('show-all');
         });
       }
-      filterContentCards(contentCardBlock, selectedCategory, 6, viewAllButton);
+      filterContentCards(contentCardBlock, selectedCategory, MAX_VISIBLE_CARDS, viewAllButton);
     },
   );
 
-  // Replace block content with filter form
   block.replaceChildren(filterForm);
 
   // Wait for content-card block to be decorated before applying initial filter
@@ -338,7 +340,6 @@ export default async function decorate(block) {
   });
 
   waitForDecoration.then(() => {
-    // Set default to show first 6 cards
-    filterContentCards(contentCardBlock, 'All Causes', 6, viewAllButton);
+    filterContentCards(contentCardBlock, allCauseLabel, MAX_VISIBLE_CARDS, viewAllButton);
   });
 }
