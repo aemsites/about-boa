@@ -43,42 +43,87 @@ function extractCategories(contentCardBlock) {
  * Filter content cards based on selected category
  * @param {Element} contentCardBlock - The content-card block element
  * @param {string} selectedCategory - The selected category value
+ * @param {number} maxVisible - Maximum number of cards to show initially
+ * @param {Element} viewAllButton - The "View all" button element
  */
-function filterContentCards(contentCardBlock, selectedCategory) {
+function filterContentCards(
+  contentCardBlock,
+  selectedCategory,
+  maxVisible = 6,
+  viewAllButton = null,
+) {
   const cardList = contentCardBlock.querySelector('.content-card-list');
 
   if (cardList) {
     // Block is decorated - filter card items
     const cards = cardList.querySelectorAll('.content-card-item');
+    let visibleCount = 0;
+    let hiddenCount = 0;
+
     cards.forEach((card) => {
       const { category } = card.dataset;
+      const shouldShow = selectedCategory === 'All Causes' || selectedCategory === '' || category === selectedCategory;
 
-      if (selectedCategory === 'All Causes' || selectedCategory === '' || category === selectedCategory) {
-        card.style.display = '';
-        card.removeAttribute('aria-hidden');
+      if (shouldShow) {
+        visibleCount += 1;
+        const shouldHide = maxVisible > 0 && visibleCount > maxVisible && !card.classList.contains('show-all');
+
+        card.style.display = shouldHide ? 'none' : '';
+        card.toggleAttribute('aria-hidden', shouldHide);
+        card.classList.toggle('hidden-card', shouldHide);
+
+        if (shouldHide) hiddenCount += 1;
       } else {
         card.style.display = 'none';
         card.setAttribute('aria-hidden', 'true');
+        card.classList.remove('hidden-card');
       }
     });
+
+    // Show/hide "View all" button based on hidden cards
+    if (viewAllButton) {
+      if (hiddenCount > 0) {
+        viewAllButton.style.display = '';
+      } else {
+        viewAllButton.style.display = 'none';
+      }
+    }
   } else {
     // Block hasn't been decorated yet - filter raw rows
     const rows = Array.from(contentCardBlock.children);
+    let visibleCount = 0;
+    let hiddenCount = 0;
+
     rows.forEach((row) => {
       const cells = Array.from(row.children);
       if (cells.length >= 3) {
         const categoryCell = cells[2];
         const categoryText = categoryCell.textContent.trim();
+        const shouldShow = selectedCategory === 'All Causes' || selectedCategory === '' || categoryText === selectedCategory;
 
-        if (selectedCategory === 'All Causes' || selectedCategory === '' || categoryText === selectedCategory) {
-          row.style.display = '';
-          row.removeAttribute('aria-hidden');
+        if (shouldShow) {
+          visibleCount += 1;
+          const shouldHide = maxVisible > 0 && visibleCount > maxVisible && !row.classList.contains('show-all');
+
+          row.style.display = shouldHide ? 'none' : '';
+          row.toggleAttribute('aria-hidden', shouldHide);
+          row.classList.toggle('hidden-card', shouldHide);
+
+          if (shouldHide) hiddenCount += 1;
         } else {
           row.style.display = 'none';
           row.setAttribute('aria-hidden', 'true');
+          row.classList.remove('hidden-card');
         }
       }
     });
+
+    // Show/hide "View all" button based on hidden cards
+    if (viewAllButton && hiddenCount > 0) {
+      viewAllButton.style.display = '';
+    } else if (viewAllButton) {
+      viewAllButton.style.display = 'none';
+    }
   }
 }
 
@@ -153,14 +198,9 @@ function createFilterForm(categories, label, placeholder, allCauseLabel, onChang
 async function loadFormDefinition(formPath) {
   try {
     const response = await fetch(formPath);
-    if (!response.ok) {
-      throw new Error(`Failed to load form: ${response.status}`);
-    }
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error loading form definition:', error);
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
     return null;
   }
 }
@@ -191,15 +231,9 @@ export default async function decorate(block) {
   const wrapper = block.closest('.content-card-filter-wrapper');
   let contentCardBlock = null;
 
-  // First, look for content-card in the same section after this block's wrapper
-  if (wrapper && wrapper.nextElementSibling) {
-    contentCardBlock = wrapper.nextElementSibling.querySelector('.content-card');
-  }
-
-  // If not found in same section, check next section
-  if (!contentCardBlock && section.nextElementSibling) {
-    contentCardBlock = section.nextElementSibling.querySelector('.content-card');
-  }
+  // Look for content-card in the same section or next section
+  contentCardBlock = wrapper?.nextElementSibling?.querySelector('.content-card')
+    || section.nextElementSibling?.querySelector('.content-card');
 
   if (!contentCardBlock) {
     // No content-card block found, don't render anything
@@ -229,6 +263,38 @@ export default async function decorate(block) {
     return;
   }
 
+  // Create "View all runners" button
+  const viewAllButton = document.createElement('button');
+  viewAllButton.className = 'button secondary';
+  viewAllButton.textContent = 'View all runners';
+  viewAllButton.style.display = 'none'; // Hidden by default
+
+  viewAllButton.addEventListener('click', () => {
+    const cardList = contentCardBlock.querySelector('.content-card-list');
+    if (cardList) {
+      const hiddenCards = cardList.querySelectorAll('.hidden-card');
+      hiddenCards.forEach((card) => {
+        card.classList.add('show-all');
+        card.style.display = '';
+        card.removeAttribute('aria-hidden');
+        card.classList.remove('hidden-card');
+      });
+      viewAllButton.style.display = 'none';
+    }
+  });
+
+  // Insert button after content card block
+  const contentCardWrapper = contentCardBlock.closest('.content-card-wrapper');
+  if (contentCardWrapper && contentCardWrapper.parentElement) {
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.className = 'view-all-button-wrapper';
+    buttonWrapper.appendChild(viewAllButton);
+    contentCardWrapper.parentElement.insertBefore(
+      buttonWrapper,
+      contentCardWrapper.nextSibling,
+    );
+  }
+
   // Create filter form
   const filterForm = createFilterForm(
     categories,
@@ -236,13 +302,43 @@ export default async function decorate(block) {
     placeholder,
     allCauseLabel,
     (selectedCategory) => {
-      filterContentCards(contentCardBlock, selectedCategory);
+      // Reset show-all state when filter changes
+      const cardList = contentCardBlock.querySelector('.content-card-list');
+      if (cardList) {
+        cardList.querySelectorAll('.show-all').forEach((card) => {
+          card.classList.remove('show-all');
+        });
+      }
+      filterContentCards(contentCardBlock, selectedCategory, 6, viewAllButton);
     },
   );
 
   // Replace block content with filter form
   block.replaceChildren(filterForm);
 
-  // Set default to show all cards
-  filterContentCards(contentCardBlock, 'All Causes');
+  // Wait for content-card block to be decorated before applying initial filter
+  const waitForDecoration = new Promise((resolve) => {
+    if (contentCardBlock.querySelector('.content-card-list')) {
+      resolve();
+    } else {
+      const observer = new MutationObserver(() => {
+        if (contentCardBlock.querySelector('.content-card-list')) {
+          observer.disconnect();
+          resolve();
+        }
+      });
+      observer.observe(contentCardBlock, { childList: true, subtree: true });
+
+      // Timeout after 5 seconds
+      setTimeout(() => {
+        observer.disconnect();
+        resolve();
+      }, 5000);
+    }
+  });
+
+  waitForDecoration.then(() => {
+    // Set default to show first 6 cards
+    filterContentCards(contentCardBlock, 'All Causes', 6, viewAllButton);
+  });
 }
