@@ -628,6 +628,45 @@ function transformLinkList(main, document) {
   });
 }
 
+function transformLocator(main, document) {
+  main.querySelectorAll('.aem-wrap--locator-block').forEach((el) => {
+    const cells = [];
+
+    // Get container content but exclude the form
+    const container = el.querySelector('.locator-block__container');
+    if (container) {
+      const form = container.querySelector('form');
+      if (form) {
+        const link = document.createElement('a');
+        link.href = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        link.textContent = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        form.replaceWith(link);
+      }
+    }
+
+    const contentCells = [...el.querySelector('.locator-block .row')?.children || []];
+    if (contentCells.length > 0) {
+      const cellsWrapper = [];
+      contentCells.forEach((cell) => {
+        const img = cell.querySelector('.locator-block__img img');
+        if (img) {
+          cellsWrapper.push(img);
+        } else {
+          cellsWrapper.push(cell);
+        }
+      });
+      cells.push(cellsWrapper);
+    }
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'locator',
+      cells,
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 function transformBreadcrumb(main, document) {
   const bc = main.querySelector('.aem-wrap--breadcrumb');
   if (bc && bc.textContent.trim() !== '') {
@@ -641,6 +680,28 @@ function transformBreadcrumb(main, document) {
 
     bc.remove();
   }
+}
+
+function transformSocialShare(main, document) {
+  main.querySelectorAll('.aem-wrap--social-share').forEach((el) => {
+    el.querySelectorAll('.social-share ul li').forEach((item) => {
+      const shareType = item.querySelector('.icon--social')?.dataset?.share;
+      if (shareType) {
+        item.textContent = `:${shareType}:`;
+      }
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'social-share',
+      cells: [
+        [
+          el.cloneNode(true),
+        ],
+      ],
+    });
+
+    el.replaceWith(block);
+  });
 }
 
 /**
@@ -687,6 +748,8 @@ export default {
       transformTile,
       transformIconList,
       transformLinkList,
+      transformLocator,
+      transformSocialShare,
       // more block transformations here
       createMetadata,
     ];
