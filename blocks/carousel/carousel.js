@@ -210,6 +210,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
 
 async function createSlide(row, isContentCard = false) {
   if (isContentCard) {
+    // eslint-disable-next-line import/no-cycle
     const { buildContentCard } = await import('../content-card/content-card.js');
     // Use content-card builder for content-card carousel variant
     const contentCard = buildContentCard(row, 'default', 'light');

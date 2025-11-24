@@ -1,5 +1,7 @@
 import { createOptimizedPicture, loadCSS } from '../../scripts/aem.js';
 import { openModal } from '../modal/modal.js';
+// eslint-disable-next-line import/no-cycle
+import { buildCarousel, updateCarousel } from '../carousel/carousel.js';
 
 const BG_CLASSES = [
   'dark',
@@ -13,10 +15,13 @@ const BG_CLASSES = [
  */
 function getModalWidthClass(block) {
   const blockClasses = Array.from(block.classList);
-  if (blockClasses.includes('narrow-modal')) return 'narrow';
-  if (blockClasses.includes('wide-modal')) return 'wide';
-  if (blockClasses.includes('full-modal')) return 'full';
-  return 'default';
+  if (blockClasses.includes('grid')
+    || blockClasses.includes('carousel')
+    || blockClasses.includes('filter')) {
+    return 'wide';
+  }
+
+  return 'narrow';
 }
 
 /**
@@ -124,10 +129,7 @@ export function buildContentCard(row, modalWidth = 'default', bg = 'dark') {
  * Decorate the content-card block
  * @param {Element} block - The content-card block element
  */
-export default function decorate(block) {
-  const modalWidthClass = getModalWidthClass(block);
-  const bg = block.classList.contains('light') ? 'light' : 'dark';
-
+export default async function decorate(block) {
   // Check if any row has 3 columns (filterable variant)
   const hasFilterColumn = [...block.children].some((row) => row.children.length === 3);
   // Add filter class if block has filterable content
@@ -135,6 +137,8 @@ export default function decorate(block) {
     block.classList.add('filter');
   }
 
+  const bg = block.classList.contains('light') ? 'light' : 'dark';
+  const modalWidthClass = getModalWidthClass(block);
   // Convert rows to list items
   const ul = document.createElement('ul');
   ul.classList.add('content-card-list');
@@ -145,4 +149,31 @@ export default function decorate(block) {
   });
 
   block.replaceChildren(ul);
+
+  const isCarousel = block.classList.contains('carousel');
+  if (isCarousel) {
+    const container = await buildCarousel(ul);
+
+    const isDesktop = window.matchMedia('(min-width: 900px)');
+    const isTablet = window.matchMedia('(min-width: 600px)');
+
+    if (isDesktop.matches) {
+      updateCarousel(container, 3);
+    } else if (isTablet.matches) {
+      updateCarousel(container, 2);
+    } else {
+      updateCarousel(container, 1);
+    }
+
+    // Update on resize
+    window.addEventListener('resize', () => {
+      if (isDesktop.matches) {
+        updateCarousel(container, 3);
+      } else if (isTablet.matches) {
+        updateCarousel(container, 2);
+      } else {
+        updateCarousel(container, 1);
+      }
+    });
+  }
 }
