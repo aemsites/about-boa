@@ -110,7 +110,7 @@
     --heading-font-size-xs: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem); /* 12-14px - h6 */
 
     /* nav height */
-    --nav-height: 88px;
+    --nav-height: 112px;
 
     /* layout */
     --max-content-width: 1200px;
@@ -138,7 +138,7 @@
       --default-inline-spacing: var(--spacing-xxl);
 
       /* nav height */
-      --nav-height: 150px;
+      --nav-height: 170px;
     }
   }
 
