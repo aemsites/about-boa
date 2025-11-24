@@ -130,21 +130,16 @@
 
   /* Responsive: 900px and above */
   @media (width >= 900px) {
-    .carousel-slides-container:not(.carousel-all-slides-visible) .carousel-slides {
+    .carousel-slides-container .carousel-slides {
       margin-inline: 4rem;
       width: calc(100% - 8rem);
-    }
-
-    .carousel-slides-container.carousel-all-slides-visible .carousel-slides {
-      margin-inline: 0;
-      width: 100%;
     }
   }
 
   /* Responsive: 1200px and above */
   @media (width >= 1200px) {
     .carousel-navigation-buttons > button:last-child {
-      right: 10px;
+      right: 0;
       left: auto;
     }
   }
