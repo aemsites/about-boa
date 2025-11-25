@@ -19,7 +19,7 @@ process_skills_directory() {
   local count=0
   # Count skills first
   while IFS= read -r -d '' skill_file; do
-    ((count++))
+    count=$((count + 1))
   done < <(find "$skills_dir" -type f -name 'SKILL.md' -print0)
 
   if [[ $count -eq 0 ]]; then
