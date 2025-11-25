@@ -358,18 +358,57 @@ npm test
    - **REQUIRED:** Include preview link in PR description (used for automated PSI checks)
    - Add multiple preview links if needed (e.g., different variants, edge cases)
 
-   **If only local test content exists:**
-   1. Create the PR as a draft
-   2. Ask user to create CMS content (they can use local test content as guide)
-   3. Once CMS content is ready, add preview link(s) and mark PR ready for review
+   **Determining if you need a draft PR:**
+
+   Create a **draft PR** when:
+   - ✅ Only local test content exists for NEW functionality/variants
+   - ✅ Test content demonstrates new features not yet in CMS
+   - ✅ You need user to create CMS content before final validation
+
+   Create a **regular PR** when:
+   - ✅ All test content exists in CMS and is previewable
+   - ✅ Changes only affect existing content (regressions can be tested with existing CMS content)
+
+   **Workflow for draft PRs:**
+   1. Create the PR as a draft using `gh pr create --draft`
+   2. Include existing content preview links (for regression testing if applicable)
+   3. Include next steps in PR description (see template below):
+      - Describe the test content used locally and what scenarios it covered
+      - Suggest that same/similar content be created and previewed, and links added to PR
+      - Keep steps brief but actionable for any reviewer
+   4. Instruct the user to create CMS content following the steps:
+      - Open local test content in browser: `http://localhost:3000/drafts/tmp/[test-file]`
+      - Right-click AEM Sidekick extension
+      - Click "View document source" option
+      - Use the copy button to copy the document content
+      - Paste into Word/Google Docs/Document Authoring (for UE: use as guide, copy/paste won't work directly)
+      - Preview the CMS content
+   5. User adds preview URL(s) to PR description and marks PR ready for review (or agent does with user's input)
 
 **PR Description Template:**
+
+Use this template for all PRs, including all relevant preview links and adapting as needed:
+
 ```markdown
 ## Description
 Brief description of changes
 
-## Test Content
-- Preview: https://{branch}--{repo}--{owner}.aem.page/
+[If an issue exists]
+Fix #<gh-issue-id>
+
+Test URLs:
+
+[Repeat for all relevant test urls]
+- Before: https://main--{repo}--{owner}.aem.page/{path}
+- After: https://{branch}--{repo}--{owner}.aem.page/{path} 
+
+[If only local test content (draft PR):]
+
+This PR is currently a **draft** pending creation of CMS test content.
+
+### Next Steps to Complete PR:
+
+[add relevant steps here]
 ```
 
 **Success criteria:**
