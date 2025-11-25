@@ -13,7 +13,7 @@ body.modal-open {
   max-width: 900px;
   max-height: calc(100dvh - (2 * var(--nav-height)));
   padding: 0;
-  border: 1px solid var(--color-border);
+  border: none;
 }
 
 .modal dialog .modal-content {
@@ -24,7 +24,12 @@ body.modal-open {
   max-height: calc(100dvh - (2 * var(--nav-height)) - var(--spacing-xxl));
   padding: var(--spacing-lg);
   padding-top: 0;
-  margin-top: 44px;
+  margin-top: var(--spacing-xxl);
+}
+
+.modal dialog .modal-content:has(.modal-header) {
+  margin-top: 0;
+  padding-inline: 0;
 }
 
 .modal dialog .section {
@@ -91,6 +96,10 @@ body.modal-open {
 @media (width >= 900px) {
   .modal dialog {
     width: calc(100vw - var(--spacing-xxxl));
+  }
+
+  .modal dialog:has(.modal-header) {
+    border-radius: var(--spacing-xl);
   }
   
   .modal dialog .modal-content {
