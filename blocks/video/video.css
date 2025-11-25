@@ -11,6 +11,11 @@
   margin: 0;
 }
 
+.video .video-wrapper .playkit-pre-playback-play-button {
+  background-color: var(--color-brand-red);
+  opacity: 0.9;
+}
+
 .video .video-player-container {
   position: relative;
   width: 100%;
