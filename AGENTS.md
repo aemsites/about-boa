@@ -72,7 +72,7 @@ When you need to use a skill:
 When skills reference tools you don't have, substitute your equivalent tools. Some examples:
   - `TodoWrite` → Use your planning/task tracking tool
   - `Skill` → Follow these instructions for executing skills
-  - `WebFetch` → Use your Bash/Sheel tool and execute curl to retrieve the page mentioned
+  - `WebFetch` → Use your Bash/Shell tool and execute curl to retrieve the page mentioned
   - `Read`, `Write`, `Edit`, `Bash` → Use your native tools with similar functions
   
   When in doubt, try your best to follow the instructions as written using the tools you have available.
