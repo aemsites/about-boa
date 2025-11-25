@@ -1,6 +1,6 @@
 {
   "type": "module",
   "dependencies": {
-    "jsdom": "^27.2.0"
+    "sharp": "^0.33.0"
   }
 }
