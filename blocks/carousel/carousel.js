@@ -4,14 +4,38 @@ import { loadCSS } from '../../scripts/aem.js';
 function updateActiveSlide(slide) {
   const block = slide.closest('.carousel-slides-container');
   const slideIndex = parseInt(slide.dataset.slideIndex, 10);
-  block.dataset.activeSlide = slideIndex;
 
-  const slides = block.querySelectorAll('.carousel-slide');
+  // Get the real slide count (excluding clones)
+  const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
 
-  slides.forEach((aSlide, idx) => {
-    aSlide.setAttribute('aria-hidden', idx !== slideIndex);
+  // Calculate the logical index (0 to realSlideCount-1) for indicators
+  let logicalIndex = slideIndex;
+  if (slide.classList.contains('clone')) {
+    // For clones, use the realIndex stored in dataset
+    if (slide.dataset.realIndex !== undefined) {
+      logicalIndex = parseInt(slide.dataset.realIndex, 10);
+    } else if (realSlideCount > 0) {
+      // Fallback: calculate from slideIndex
+      logicalIndex = slideIndex < 0 ? realSlideCount - 1 : slideIndex % realSlideCount;
+    }
+  }
+
+  // Store the logical index (0 to realSlideCount-1) for navigation
+  block.dataset.activeSlide = logicalIndex;
+
+  // Find the actual DOM position of this slide
+  const allSlides = block.querySelectorAll('.carousel-slide');
+  const domIndex = Array.from(allSlides).indexOf(slide);
+  block.dataset.activeDomIndex = domIndex;
+
+  const realSlides = block.querySelectorAll('.carousel-slide:not(.clone)');
+
+  realSlides.forEach((aSlide, idx) => {
+    aSlide.setAttribute('aria-hidden', idx !== logicalIndex);
     aSlide.querySelectorAll('a').forEach((link) => {
-      if (idx !== slideIndex) {
+      // Remove button class from links
+      link.classList.remove('button');
+      if (idx !== logicalIndex) {
         link.setAttribute('tabindex', '-1');
       } else {
         link.removeAttribute('tabindex');
@@ -21,7 +45,7 @@ function updateActiveSlide(slide) {
 
   const indicators = block.querySelectorAll('.carousel-slide-indicator');
   indicators.forEach((indicator, idx) => {
-    if (idx !== slideIndex) {
+    if (idx !== logicalIndex) {
       indicator.querySelector('button').removeAttribute('disabled');
     } else {
       indicator.querySelector('button').setAttribute('disabled', 'true');
@@ -29,18 +53,142 @@ function updateActiveSlide(slide) {
   });
 }
 
-function showSlide(block, slideIndex = 0) {
+function repositionIfNeeded(block) {
+  const domIndex = parseInt(block.dataset.activeDomIndex || '0', 10);
+  const logicalIndex = parseInt(block.dataset.activeSlide || '0', 10);
+  const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
   const slides = block.querySelectorAll('.carousel-slide');
-  let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
-  if (slideIndex >= slides.length) realSlideIndex = 0;
-  const activeSlide = slides[realSlideIndex];
+  const currentSlide = slides[domIndex];
 
-  activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
-  block.querySelector('.carousel-slides').scrollTo({
+  if (currentSlide && currentSlide.classList.contains('clone') && realSlideCount > 0) {
+    const slidesContainer = block.querySelector('.carousel-slides');
+    const allSlides = block.querySelectorAll('.carousel-slide');
+
+    // Find the real slide with the same logical index
+    const realSlide = Array.from(allSlides).find((s) => {
+      const slideIdx = parseInt(s.dataset.slideIndex, 10);
+      return slideIdx === logicalIndex && !s.classList.contains('clone');
+    });
+
+    if (realSlide) {
+      // Instantly reposition to the real slide
+      slidesContainer.style.scrollBehavior = 'auto';
+      slidesContainer.scrollTo({
+        top: 0,
+        left: realSlide.offsetLeft,
+        behavior: 'auto',
+      });
+      // Update DOM index
+      const newDomIndex = Array.from(allSlides).indexOf(realSlide);
+      block.dataset.activeDomIndex = newDomIndex;
+
+      // Manually update the active slide to ensure indicators are correct
+      updateActiveSlide(realSlide);
+
+      requestAnimationFrame(() => {
+        slidesContainer.style.scrollBehavior = '';
+      });
+      return true;
+    }
+  }
+  return false;
+}
+
+function showSlide(block, logicalIndex = 0, immediate = false) {
+  // Prevent navigation if already scrolling
+  if (block.dataset.isScrolling === 'true' && !immediate) {
+    return;
+  }
+
+  const hasInfiniteScroll = block.classList.contains('carousel-infinite-scroll');
+  const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
+
+  // Before navigating, check if we're on a clone and reposition if needed
+  if (hasInfiniteScroll && !immediate) {
+    const repositioned = repositionIfNeeded(block);
+    // If we repositioned, wait a moment for it to complete
+    if (repositioned) {
+      // Short delay to ensure reposition completes
+      setTimeout(() => {
+        showSlide(block, logicalIndex, false);
+      }, 50);
+      return;
+    }
+  }
+
+  const slides = block.querySelectorAll('.carousel-slide');
+  let targetSlide = null;
+
+  // Handle wrapping for infinite scroll
+  if (hasInfiniteScroll && realSlideCount > 0) {
+    // If going before first slide (prev from slide 0)
+    if (logicalIndex < 0) {
+      // Find the prepended clone-before (last slide clone)
+      targetSlide = Array.from(slides).find((s) => s.classList.contains('clone-before'));
+    } else if (logicalIndex >= realSlideCount) {
+      // If going after last real slide (next from last slide)
+      // This means we want the first slide's clone at the end
+      const targetLogicalIndex = logicalIndex % realSlideCount;
+      targetSlide = Array.from(slides).find(
+        (s) => s.classList.contains('clone-after')
+               && parseInt(s.dataset.realIndex, 10) === targetLogicalIndex,
+      );
+    } else {
+      // Normal real slide - find it by logical index
+      targetSlide = Array.from(slides).find(
+        (s) => parseInt(s.dataset.slideIndex, 10) === logicalIndex
+               && !s.classList.contains('clone'),
+      );
+    }
+  } else {
+    // Non-infinite scroll: simple wrapping
+    let wrappedIndex = logicalIndex;
+    if (logicalIndex < 0) wrappedIndex = slides.length - 1;
+    if (logicalIndex >= slides.length) wrappedIndex = 0;
+    targetSlide = slides[wrappedIndex];
+  }
+
+  if (!targetSlide) {
+    return;
+  }
+
+  const slidesContainer = block.querySelector('.carousel-slides');
+
+  // Only make links focusable if this is NOT a clone slide
+  // Clones should remain non-interactive (tabindex="-1")
+  if (!targetSlide.classList.contains('clone')) {
+    targetSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
+  }
+
+  // Set flags to prevent interference and duplicate navigations
+  block.dataset.programmaticScroll = 'true';
+  block.dataset.isScrolling = 'true';
+
+  slidesContainer.scrollTo({
     top: 0,
-    left: activeSlide.offsetLeft,
-    behavior: 'smooth',
+    left: targetSlide.offsetLeft,
+    behavior: immediate ? 'auto' : 'smooth',
   });
+
+  // Immediately update the active slide to reflect the navigation
+  // This ensures indicators update correctly before the scroll completes
+  if (immediate) {
+    updateActiveSlide(targetSlide);
+    // Clear flags immediately for instant scrolling
+    delete block.dataset.programmaticScroll;
+    delete block.dataset.isScrolling;
+  } else {
+    // For smooth scrolling, update after a brief delay
+    setTimeout(() => {
+      updateActiveSlide(targetSlide);
+    }, 100);
+
+    // Clear the flags after scroll completes
+    setTimeout(() => {
+      delete block.dataset.programmaticScroll;
+      delete block.dataset.isScrolling;
+    }, 500);
+  }
 }
 
 function bindEvents(block) {
@@ -58,10 +206,16 @@ function bindEvents(block) {
     showSlide(block, parseInt(block.dataset.activeSlide, 10) - 1);
   });
   block.querySelector('.slide-next').addEventListener('click', () => {
-    showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
+    const currentIndex = parseInt(block.dataset.activeSlide, 10);
+    showSlide(block, currentIndex + 1);
   });
 
   const slideObserver = new IntersectionObserver((entries) => {
+    // Skip if this is a programmatic scroll
+    if (block.dataset.programmaticScroll === 'true') {
+      return;
+    }
+
     // Find all intersecting slides
     const intersectingSlides = entries
       .filter((entry) => entry.isIntersecting)
@@ -82,14 +236,29 @@ function bindEvents(block) {
   });
 }
 
+/**
+ * Makes all focusable elements in a cloned slide non-focusable for accessibility
+ * @param {HTMLElement} clonedSlide - The cloned slide element
+ */
+function makeCloneNonInteractive(clonedSlide) {
+  // Set tabindex="-1" on all focusable elements
+  const focusableElements = clonedSlide.querySelectorAll(
+    'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
+  );
+  focusableElements.forEach((element) => {
+    element.setAttribute('tabindex', '-1');
+  });
+}
+
 export function updateCarousel(container, slidesPerView = 1) {
-  const slides = container.querySelectorAll('.carousel-slide');
-  const totalSlides = slides.length;
+  const realSlides = container.querySelectorAll('.carousel-slide:not(.clone)');
+  const totalSlides = realSlides.length;
   const actualSlidesPerView = Math.min(slidesPerView, totalSlides);
   const slidesContainer = container.querySelector('.carousel-slides');
 
   // Get current active slide index before updating
   const currentActiveIndex = parseInt(container.dataset.activeSlide || '0', 10);
+  const allSlides = container.querySelectorAll('.carousel-slide');
 
   // Get computed gap value from the slides container
   let gapValue = '0px';
@@ -125,14 +294,14 @@ export function updateCarousel(container, slidesPerView = 1) {
   // After layout recalculation, update scroll position and active slide
   // Use requestAnimationFrame to ensure layout has updated
   requestAnimationFrame(() => {
-    if (slidesContainer && slides.length > 0) {
+    if (slidesContainer && allSlides.length > 0) {
       // If all slides are visible, scroll to start
       if (showAllSlides) {
         showSlide(container, 0);
       } else {
         // Otherwise, maintain the current active slide index
-        const targetIndex = Math.min(currentActiveIndex, slides.length - 1);
-        const targetSlide = slides[targetIndex];
+        const targetIndex = Math.min(currentActiveIndex, allSlides.length - 1);
+        const targetSlide = allSlides[targetIndex];
         if (targetSlide) {
           showSlide(container, targetIndex);
         }
@@ -142,7 +311,7 @@ export function updateCarousel(container, slidesPerView = 1) {
 }
 
 let carouselId = 0;
-export async function buildCarousel(slidesContainer, slidesPerView = 1) {
+export async function buildCarousel(slidesContainer, slidesPerView = 1, infiniteScroll = true) {
   const placeholders = await fetchLangPlaceholders();
   loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`);
 
@@ -151,7 +320,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
   const container = document.createElement('div');
   container.classList.add('carousel-slides-container');
   container.setAttribute('id', id);
-  container.setAttribute('role', 'region');
+  container.setAttribute('role', 'group');
   container.setAttribute('aria-roledescription', placeholders.carousel || 'Carousel');
 
   slidesContainer.classList.add('carousel-slides');
@@ -161,6 +330,9 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
   const slides = [...slidesContainer.children];
   const isSingleSlide = slides.length < 2;
 
+  // Store the real slide count for infinite scroll
+  container.dataset.realSlideCount = slides.length;
+
   let slideIndicators;
   if (!isSingleSlide) {
     const slideIndicatorsNav = document.createElement('nav');
@@ -169,7 +341,6 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
     slideIndicators = document.createElement('ol');
     slideIndicators.classList.add('carousel-slide-indicators');
     slideIndicatorsNav.append(slideIndicators);
-    container.append(slideIndicatorsNav);
 
     const slideNavButtons = document.createElement('div');
     slideNavButtons.classList.add('carousel-navigation-buttons');
@@ -177,6 +348,9 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
       <button type="button" class= "slide-prev" aria-label="${placeholders.previousSlide || 'Previous Slide'}"></button>
       <button type="button" class="slide-next" aria-label="${placeholders.nextSlide || 'Next Slide'}"></button>
     `;
+
+    // Insert the slide indicators nav after the previous button
+    slideNavButtons.querySelector('.slide-prev')?.insertAdjacentElement('afterend', slideIndicatorsNav);
 
     container.append(slideNavButtons);
   }
@@ -200,10 +374,69 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
     }
   });
 
+  // Add cloned slides for infinite scroll
+  if (!isSingleSlide && infiniteScroll && slides.length > 1) {
+    container.classList.add('carousel-infinite-scroll');
+
+    // Clone last slide and prepend to the beginning for backward infinite scrolling
+    const lastSlideClone = slides[slides.length - 1].cloneNode(true);
+    lastSlideClone.classList.add('clone', 'clone-before');
+    lastSlideClone.dataset.slideIndex = -1;
+    lastSlideClone.dataset.realIndex = slides.length - 1;
+    lastSlideClone.setAttribute('id', `carousel-${id}-slide-clone-before`);
+    lastSlideClone.setAttribute('aria-hidden', 'true');
+    // Remove button class from links in clones
+    lastSlideClone.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
+    // Make clone non-interactive for accessibility
+    makeCloneNonInteractive(lastSlideClone);
+    slidesContainer.prepend(lastSlideClone);
+
+    // Clone all slides and append to the end for forward infinite scrolling
+    slides.forEach((slide, idx) => {
+      const clone = slide.cloneNode(true);
+      clone.classList.add('clone', 'clone-after');
+      clone.dataset.slideIndex = slides.length + idx;
+      clone.dataset.realIndex = idx;
+      clone.setAttribute('id', `carousel-${id}-slide-clone-after-${idx}`);
+      clone.setAttribute('aria-hidden', 'true');
+      // Remove button class from links in clones
+      clone.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
+      // Make clone non-interactive for accessibility
+      makeCloneNonInteractive(clone);
+      slidesContainer.append(clone);
+    });
+  }
+
   if (!isSingleSlide) bindEvents(container);
 
   // Initialize slides-per-view to 1 (default)
   updateCarousel(container, slidesPerView);
+
+  // If infinite scroll is enabled, start at the first real slide (index 0)
+  // This accounts for the prepended clone
+  if (!isSingleSlide && infiniteScroll && slides.length > 1) {
+    container.dataset.activeSlide = 0;
+    // Instantly position to the first real slide
+    requestAnimationFrame(() => {
+      const allSlides = slidesContainer.querySelectorAll('.carousel-slide');
+      const firstRealSlide = slidesContainer.querySelector('.carousel-slide:not(.clone)');
+      if (firstRealSlide) {
+        const slidesContainerEl = container.querySelector('.carousel-slides');
+        const domIndex = Array.from(allSlides).indexOf(firstRealSlide);
+        container.dataset.activeDomIndex = domIndex;
+
+        slidesContainerEl.style.scrollBehavior = 'auto';
+        slidesContainerEl.scrollTo({
+          top: 0,
+          left: firstRealSlide.offsetLeft,
+          behavior: 'auto',
+        });
+        requestAnimationFrame(() => {
+          slidesContainerEl.style.scrollBehavior = '';
+        });
+      }
+    });
+  }
 
   return container;
 }
@@ -211,8 +444,8 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1) {
 function createSlide(row) {
   const slide = document.createElement('li');
 
-  row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
-    column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
+  row.querySelectorAll(':scope > div').forEach((column) => {
+    column.classList.add(`carousel-slide-${column.querySelector('picture > img') ? 'image' : 'content'}`);
     slide.append(column);
   });
 
@@ -222,8 +455,8 @@ function createSlide(row) {
 export default async function decorate(block) {
   const slidesWrapper = document.createElement('ul');
   const rows = block.querySelectorAll(':scope > div');
-  rows.forEach((row, idx) => {
-    const slide = createSlide(row, idx, carouselId);
+  rows.forEach((row) => {
+    const slide = createSlide(row);
     slidesWrapper.append(slide);
   });
   block.replaceChildren(slidesWrapper);
