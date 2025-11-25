@@ -9,14 +9,14 @@ This skill guides you through designing content models for AEM Edge Delivery Ser
 
 ## Related Skills
 
-- **content-driven-development**: This skill is typically invoked FROM the CDD skill during Phase 1 (Content Model Design)
+- **content-driven-development**: This skill is typically invoked FROM the CDD skill during Step 3 (Design Content Model)
 - **building-blocks**: After content modeling is complete, this skill handles implementation
 - **block-collection-and-party**: Use to find similar blocks and their content models for reference
 
 ## When to Use This Skill
 
 ✅ **Use this skill when:**
-- Creating new blocks (usually invoked by CDD at step 1.2)
+- Creating new blocks (usually invoked by CDD at Step 3)
 - Modifying existing blocks in ways that change author-facing structure
 - Reviewing content models for best practices conformance
 - User explicitly asks about content modeling
@@ -33,8 +33,7 @@ Track your progress through content model design:
 - [ ] Step 1: Understand content requirements. See "Step 1: Understand Content Requirements" below
 - [ ] Step 2: Design block structure. See "Step 2: Design Block Structure" below
 - [ ] Step 3: Validate against best practices. See "Step 3: Validate Against Best Practices" below
-- [ ] Step 4: Present design to user and get approval. See "Step 4: Present Design to User for Validation" below
-- [ ] Step 5: Document and return approved content model. See "Step 5: Document and Return" below
+- [ ] Step 4: Document and return content model. See "Step 4: Document and Return" below
 
 ## Core Principles
 
@@ -42,8 +41,6 @@ A good content model is:
 - **Semantic**: Structure carries meaning on its own without decoration
 - **Predictable**: Authors, developers, and agents all know what to expect
 - **Reusable**: Works across authoring surfaces and projects
-
-**IMPORTANT:** Content modeling is an art, not a science. Always present your proposed content model to the user for validation before finalizing it.
 
 ## Step 1: Understand Content Requirements
 
@@ -122,27 +119,9 @@ Use this checklist to validate your content model:
 - ❌ Complex nested structures that confuse authors
 - ❌ Structures that only work in one specific authoring tool
 
-## Step 4: Present Design to User for Validation
+## Step 4: Document and Return
 
-**CRITICAL: DO NOT SKIP THIS STEP**
-
-Content modeling is an art, not a science. Before proceeding with implementation, you MUST:
-
-1. **Present your proposed content model** using the documentation format below
-2. **Explain your reasoning:**
-   - How the structure aligns with the content requirements
-   - Key design decisions and trade-offs
-   - Any alternative approaches you considered
-3. **Ask for explicit approval** from the user
-4. **Listen to feedback** and iterate on the design if needed
-
-**Why this matters:** Content models designed without user input often miss important context about authoring workflows, business requirements, or edge cases. The user may have insights about how authors will actually use this block that should inform the design.
-
-**Only proceed to implementation after the user explicitly approves the content model.**
-
-## Step 5: Document and Return
-
-After receiving user approval, provide the content model back to the calling skill (or user) in this format:
+Provide the content model back to the calling skill (or user) in this format:
 
 ```markdown
 ## Content Model: [Block Name]
@@ -165,7 +144,7 @@ purpose of each row/column and any semantic formatting used.]
 - [Common variants if applicable]
 ```
 
-**Important:** This skill focuses on designing the content model and getting user validation. After the user approves the model (Step 4), return this documentation to the calling skill (content-driven-development or building-blocks), which will handle what to do next, such as creating test content or implementing the block.
+**Important:** This skill focuses on designing the content model. After documenting the model, return this to the calling skill (content-driven-development or building-blocks), which will handle what to do next, such as creating test content or implementing the block.
 
 ## Resources
 
@@ -185,6 +164,5 @@ When in doubt, remember:
 4. **Use semantic formatting** - Let the structure carry meaning through headings, bold, italic, etc. - not through cell positions or complex configurations.
 5. **Be flexible** - Your decoration code can handle variations in author input. Don't force authors into rigid structures for developer convenience.
 6. **Validate against best practices** - Check your design against guidelines (4 cells per row, avoid spreadsheet-like structures, etc.) to inform a better design and surface potential concerns.
-7. **Get user validation** - Content modeling is an art, not a science. Always present your design and get explicit approval. If the user wants something that violates best practices, flag your concerns but respect their decision—the user knows their requirements best.
 
-Content models are the foundation of author experience. Invest time in understanding requirements, designing thoughtful structures, and validating with users. Never design content models in isolation—collaboration and validation are essential.
+Content models are the foundation of author experience. Invest time in understanding requirements and designing thoughtful structures.
