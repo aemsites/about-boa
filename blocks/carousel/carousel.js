@@ -442,6 +442,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
 }
 
 function createSlide(row) {
+  // Default carousel slide
   const slide = document.createElement('li');
 
   row.querySelectorAll(':scope > div').forEach((column) => {
