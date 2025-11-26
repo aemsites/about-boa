@@ -4,7 +4,15 @@ This project is a website built with Edge Delivery Services in Adobe Experience 
 
 ## Skills
 
-**For ALL development work involving blocks, core scripts, or functionality, you MUST start with the content-driven-development skill.** It will orchestrate other skills as needed throughout the development workflow.
+Two skills serve as primary entry points for common workflows:
+
+**content-driven-development** - Start here for ALL code changes including: new blocks, block modifications, CSS styling, bug fixes, core functionality (scripts.js, styles.css, delayed.js), auto-blocking changes, or any JavaScript/CSS work. This skill orchestrates the complete development workflow from content modeling through implementation and testing.
+
+⚠️ IMPORTANT: Even "simple" changes like CSS tweaks or small bug fixes should use CDD. The workflow ensures you have test content and validation, both required for PR approval and automated checks.
+
+**page-import** - Start here when importing or migrating webpages from any URL to AEM Edge Delivery Services. This skill orchestrates the complete import workflow including scraping, analysis, structure identification, and HTML generation.
+
+All other skills are either invoked by these primary skills or used for specific standalone tasks (e.g., searching platform documentation, finding reference implementations). Let skill descriptions guide you to the right tool for your task.
 
 ## Project Overview
 
@@ -81,7 +89,7 @@ CMS authored content is a key part of every AEM Website. The content of a page i
 **Quick tips:**
 - Inspect initial page structure: `curl http://localhost:3000/path/to/page`
 - View source markdown: `curl http://localhost:3000/path/to/page.md`
-- Local test content: Use `--html-folder drafts` flag when starting dev server. Note: the folder is still part of the path when using this option. Ex: a file at `drafts/test.html` would be accessed at `http://localhost:3000/drafts/test`
+- Local test content: Use `--html-folder drafts` flag when starting dev server. Note: the folder is still part of the path when using this option. Ex: a file at `drafts/test.plain.html` would be accessed at `http://localhost:3000/drafts/test`
 
 ### Blocks
 
@@ -89,11 +97,7 @@ Blocks are the re-usable building blocks of AEM. Blocks add styling and function
 
 **Key principle:** The initial content structure is the contract between authors and developers. Design this structure before writing any code, and be careful when making changes that could break existing pages.
 
-**For creating or modifying blocks:** Use the **building-blocks** skill which guides you through:
-- Content model design (via the content-driven-development skill)
-- JavaScript decoration patterns
-- CSS styling conventions
-- Testing and validation
+**For creating or modifying blocks:** Use the **content-driven-development** skill which orchestrates the complete workflow from content modeling through implementation and testing.
 
 **Tip:** Use `curl http://localhost:3000/path/to/page` to inspect the HTML delivered by the backend before making assumptions.
 

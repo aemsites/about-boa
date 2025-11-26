@@ -18,3 +18,7 @@ drafts/tmp/
 
 # skills caches
 .cache/
+
+# Skill dependencies and cache
+.claude/skills/**/node_modules
+.claude/skills/**/.cache

@@ -61,6 +61,8 @@
     --color-blue-royal: #0053c2;
     --color-blue-bright: #0073cf;
     --color-blue-light: #cedfff;
+    --color-blue-lightest: #dfeaff;
+    --color-blue-magnolia: #f3f6ff;
 
     /* Brand Colors - Red Shades */
     --color-red-bright: var(--color-brand-red);
@@ -110,7 +112,7 @@
     --heading-font-size-xs: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem); /* 12-14px - h6 */
 
     /* nav height */
-    --nav-height: 88px;
+    --nav-height: 112px;
 
     /* layout */
     --max-content-width: 1200px;
@@ -138,7 +140,7 @@
       --default-inline-spacing: var(--spacing-xxl);
 
       /* nav height */
-      --nav-height: 150px;
+      --nav-height: 170px;
     }
   }
 
@@ -293,6 +295,11 @@
     cursor: pointer;
   }
 
+  a.button:any-link:not(:last-of-type),
+  button:not(:last-of-type) {
+    margin-inline-end: var(--spacing-sm);
+  }
+
   button:disabled,
   button:disabled:hover {
     background-color: var(--color-gray-light);
@@ -313,6 +320,20 @@
   button.secondary:focus {
     background-color: var(--color-blue-royal);
     color: var(--color-white);
+  }
+
+  a.button.tertiary,
+  button.tertiary {
+    background-color: transparent;
+    color: var(--color-blue-royal);
+    padding-inline: 0;
+  }
+
+  a.button.tertiary:hover,
+  a.button.tertiary:focus,
+  button.tertiary:hover,
+  button.tertiary:focus {
+    text-decoration: underline;
   }
 
   /* Icons */

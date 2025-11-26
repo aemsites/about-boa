@@ -628,6 +628,45 @@ function transformLinkList(main, document) {
   });
 }
 
+function transformLocator(main, document) {
+  main.querySelectorAll('.aem-wrap--locator-block').forEach((el) => {
+    const cells = [];
+
+    // Get container content but exclude the form
+    const container = el.querySelector('.locator-block__container');
+    if (container) {
+      const form = container.querySelector('form');
+      if (form) {
+        const link = document.createElement('a');
+        link.href = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        link.textContent = 'https://main--about-boa--aemsites.aem.page/en/fragments/forms/locator';
+        form.replaceWith(link);
+      }
+    }
+
+    const contentCells = [...el.querySelector('.locator-block .row')?.children || []];
+    if (contentCells.length > 0) {
+      const cellsWrapper = [];
+      contentCells.forEach((cell) => {
+        const img = cell.querySelector('.locator-block__img img');
+        if (img) {
+          cellsWrapper.push(img);
+        } else {
+          cellsWrapper.push(cell);
+        }
+      });
+      cells.push(cellsWrapper);
+    }
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'locator',
+      cells,
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 function transformBreadcrumb(main, document) {
   const bc = main.querySelector('.aem-wrap--breadcrumb');
   if (bc && bc.textContent.trim() !== '') {
@@ -643,20 +682,164 @@ function transformBreadcrumb(main, document) {
   }
 }
 
+function transformSocialShare(main, document) {
+  main.querySelectorAll('.aem-wrap--social-share').forEach((el) => {
+    el.querySelectorAll('.social-share ul li').forEach((item) => {
+      const shareType = item.querySelector('.icon--social')?.dataset?.share;
+      if (shareType) {
+        item.textContent = `:${shareType}:`;
+      }
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'social-share',
+      cells: [
+        [
+          el.cloneNode(true),
+        ],
+      ],
+    });
+
+    el.replaceWith(block);
+  });
+}
+
+function transformVideo(main, document) {
+  main.querySelectorAll('.aem-wrap--media-kaltura').forEach((el) => {
+    const media = el.querySelector('uc-media');
+    if (!media) return;
+
+    const entryId = media.getAttribute('entryid');
+    if (!entryId) return;
+
+    const transcriptRaw = media.getAttribute('transcripttext');
+    let transcript = '';
+
+    if (transcriptRaw) {
+      // Try parsing as JSON array, otherwise use raw value
+      try {
+        const parsed = JSON.parse(transcriptRaw);
+        transcript = parsed?.[0]?.transcript || transcriptRaw;
+      } catch {
+        transcript = transcriptRaw;
+      }
+
+      // Decode if URL-encoded
+      if (transcript.includes('%')) {
+        transcript = decodeURIComponent(transcript);
+      }
+    }
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'video',
+      cells: [[entryId], [transcript]],
+    });
+
+    el.replaceWith(block);
+  });
+}
+
 /**
- * Main transformation function
+ * Sanitize and normalize a URL path
+ */
+function sanitizePath(path) {
+  return path.replace(/\/$/, '').replace(/\.html$/, '') || '/index';
+}
+
+/**
+ * Generate a modal path from page path and modal ID
+ */
+function getModalPath(pagePath, modalId) {
+  if (pagePath.startsWith('/en')) {
+    return `${pagePath.replace(/^\/en/, '/en/modals')}/${modalId}`;
+  }
+  return `/en/modals${pagePath}/${modalId}`;
+}
+
+/**
+ * Get list of transformations to apply to content
+ */
+function getTransforms() {
+  return [
+    WebImporter.rules.transformBackgroundImages,
+    normalizeURLs,
+    ensureDesktopImages,
+    transformBreadcrumb,
+    transformSections,
+    transformNotchedImage,
+    transformArticleMasthead,
+    transformCarousels,
+    transformHighlightBlock,
+    transformStoryBlock,
+    transformTile,
+    transformIconList,
+    transformLinkList,
+    transformLocator,
+    transformSocialShare,
+    transformVideo,
+    // more block transformations here
+  ];
+}
+
+/**
+ * Create a separate document for a modal with all transformations applied
+ */
+function createModalDocument(ucModal, modalId, document) {
+  const modalContent = ucModal.querySelector('.modal-content, .uc-modal__content');
+  if (!modalContent) return null;
+
+  const modalDoc = document.implementation.createHTMLDocument();
+  const modalMain = modalDoc.createElement('main');
+  const contentDiv = modalDoc.createElement('div');
+
+  contentDiv.appendChild(modalContent.cloneNode(true));
+  modalMain.appendChild(contentDiv);
+
+  // Apply all transformations
+  getTransforms().forEach((transform) => {
+    try {
+      transform(modalMain, modalDoc);
+    } catch {
+      // Silently continue if transform fails
+    }
+  });
+
+  // Add metadata
+  const meta = {
+    Title: modalId.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+  };
+  modalMain.append(WebImporter.Blocks.getMetadataBlock(modalDoc, meta));
+
+  return modalMain;
+}
+
+/**
+ * Replace modal elements with links to separate modal pages
+ */
+function replaceModalsWithLinks(document, modalPath, modalId) {
+  document.querySelectorAll('.aem-wrap--modal').forEach((el) => {
+    const ucModal = el.querySelector('uc-modal');
+    if (ucModal?.id !== modalId) return;
+
+    const link = document.createElement('a');
+    link.href = modalPath;
+    link.textContent = modalId.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+    link.className = 'button';
+
+    const wrapper = document.createElement('p');
+    wrapper.classList.add('button-wrapper');
+    wrapper.appendChild(link);
+
+    el.replaceWith(wrapper);
+  });
+}
+
+/**
+ * Main transformation function - One input, multiple outputs
+ * Extracts main page AND separate modal pages from a single source
  */
 export default {
-  /**
-   * Apply DOM operations to the provided document and return
-   * the root element to be then transformed to Markdown.
-   * @param {HTMLDocument} document The document
-   * @param {string} url The url of the page imported
-   * @param {string} html The raw html (the document is cleaned up during preprocessing)
-   * @param {object} params Object containing some parameters given by the import process.
-   * @returns {HTMLElement} The root element to be transformed
-   */
-  transformDOM: ({
+  transform: ({
     document,
     // eslint-disable-next-line no-unused-vars
     _url,
@@ -665,74 +848,41 @@ export default {
     // eslint-disable-next-line no-unused-vars
     params,
   }) => {
-    // Find the main content area
     const main = document.querySelector('main');
-
     if (!main) {
-      console.warn('No main element found');
-      return document.body;
+      return [{ element: document.body, path: '/index' }];
     }
 
-    const transforms = [
-      WebImporter.rules.transformBackgroundImages,
-      normalizeURLs,
-      ensureDesktopImages,
-      transformBreadcrumb,
-      transformSections,
-      transformNotchedImage,
-      transformArticleMasthead,
-      transformCarousels,
-      transformHighlightBlock,
-      transformStoryBlock,
-      transformTile,
-      transformIconList,
-      transformLinkList,
-      // more block transformations here
-      createMetadata,
+    // Apply all transformations to main page
+    [...getTransforms(), createMetadata].forEach((transform) => transform(main, document));
+
+    // Extract modals as separate documents
+    const pagePath = sanitizePath(new URL(params.originalURL).pathname);
+    const modals = [];
+
+    document.querySelectorAll('.aem-wrap--modal').forEach((el) => {
+      const ucModal = el.querySelector('uc-modal');
+      if (!ucModal?.id) return;
+
+      const modalId = ucModal.id;
+      const modalDoc = createModalDocument(ucModal, modalId, document);
+
+      if (modalDoc) {
+        const modalPath = getModalPath(pagePath, modalId);
+        modals.push({
+          element: modalDoc,
+          path: WebImporter.FileUtils.sanitizePath(modalPath),
+        });
+
+        // Replace modal with link on main page
+        replaceModalsWithLinks(document, modalPath, modalId);
+      }
+    });
+
+    // Build results array
+    return [
+      { element: main, path: WebImporter.FileUtils.sanitizePath(pagePath) },
+      ...modals,
     ];
-
-    transforms.forEach((transform) => transform(main, document));
-
-    return main;
-  },
-
-  /**
-   * Return a path that describes the document being transformed (file name, nesting...).
-   * The path is then used to create the corresponding Word document.
-   * @param {HTMLDocument} document The document
-   * @param {string} url The url of the page imported
-   * @param {string} html The raw html (the document is cleaned up during preprocessing)
-   * @param {object} params Object containing some parameters given by the import process.
-   * @return {string} The path
-   */
-  generateDocumentPath: ({
-    // eslint-disable-next-line no-unused-vars
-    document,
-    // eslint-disable-next-line no-unused-vars
-    url,
-    // eslint-disable-next-line no-unused-vars
-    html,
-    params,
-  }) => {
-    // Use the original URL from params
-    const u = new URL(params.originalURL);
-    let path = u.pathname;
-
-    // Remove trailing slash
-    if (path.endsWith('/')) {
-      path = path.slice(0, -1);
-    }
-
-    // Remove .html extension if present
-    path = path.replace(/\.html$/, '');
-
-    // Default to index if empty
-    if (!path || path === '/') {
-      path = '/index';
-    }
-
-    // Sanitize the path to follow AEM URL conventions
-    // (lowercase, latin characters only, hyphens only)
-    return WebImporter.FileUtils.sanitizePath(path);
   },
 };
