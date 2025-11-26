@@ -54,6 +54,11 @@ function updateActiveSlide(slide) {
 }
 
 function repositionIfNeeded(block) {
+  // Check if we need to wait for scrolling to finish
+  if (block.dataset.isScrolling === 'true') {
+    return false; // Still scrolling, don't reposition yet
+  }
+
   const domIndex = parseInt(block.dataset.activeDomIndex || '0', 10);
   const logicalIndex = parseInt(block.dataset.activeSlide || '0', 10);
   const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
@@ -71,6 +76,9 @@ function repositionIfNeeded(block) {
     });
 
     if (realSlide) {
+      // Set flag to prevent IntersectionObserver interference
+      block.dataset.repositioning = 'true';
+
       // Instantly reposition to the real slide
       slidesContainer.style.scrollBehavior = 'auto';
       slidesContainer.scrollTo({
@@ -78,6 +86,7 @@ function repositionIfNeeded(block) {
         left: realSlide.offsetLeft,
         behavior: 'auto',
       });
+
       // Update DOM index
       const newDomIndex = Array.from(allSlides).indexOf(realSlide);
       block.dataset.activeDomIndex = newDomIndex;
@@ -87,6 +96,7 @@ function repositionIfNeeded(block) {
 
       requestAnimationFrame(() => {
         slidesContainer.style.scrollBehavior = '';
+        delete block.dataset.repositioning;
       });
       return true;
     }
@@ -103,35 +113,28 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
   const hasInfiniteScroll = block.classList.contains('carousel-infinite-scroll');
   const realSlideCount = parseInt(block.dataset.realSlideCount || '0', 10);
 
-  // Before navigating, check if we're on a clone and reposition if needed
-  if (hasInfiniteScroll && !immediate) {
-    const repositioned = repositionIfNeeded(block);
-    // If we repositioned, wait a moment for it to complete
-    if (repositioned) {
-      // Short delay to ensure reposition completes
-      setTimeout(() => {
-        showSlide(block, logicalIndex, false);
-      }, 50);
-      return;
-    }
-  }
-
   const slides = block.querySelectorAll('.carousel-slide');
   let targetSlide = null;
 
-  // Handle wrapping for infinite scroll
+  // Handle wrapping for infinite scroll with symmetric clones
   if (hasInfiniteScroll && realSlideCount > 0) {
-    // If going before first slide (prev from slide 0)
+    // Normalize the logical index to handle wrapping
+    let normalizedIndex = logicalIndex;
+
     if (logicalIndex < 0) {
-      // Find the prepended clone-before (last slide clone)
-      targetSlide = Array.from(slides).find((s) => s.classList.contains('clone-before'));
+      // Going backward: use clone-before set
+      // Map negative index to positive: -1 -> realSlideCount-1, -2 -> realSlideCount-2, etc.
+      normalizedIndex = ((logicalIndex % realSlideCount) + realSlideCount) % realSlideCount;
+      targetSlide = Array.from(slides).find(
+        (s) => s.classList.contains('clone-before')
+               && parseInt(s.dataset.realIndex, 10) === normalizedIndex,
+      );
     } else if (logicalIndex >= realSlideCount) {
-      // If going after last real slide (next from last slide)
-      // This means we want the first slide's clone at the end
-      const targetLogicalIndex = logicalIndex % realSlideCount;
+      // Going forward: use clone-after set
+      normalizedIndex = logicalIndex % realSlideCount;
       targetSlide = Array.from(slides).find(
         (s) => s.classList.contains('clone-after')
-               && parseInt(s.dataset.realIndex, 10) === targetLogicalIndex,
+               && parseInt(s.dataset.realIndex, 10) === normalizedIndex,
       );
     } else {
       // Normal real slide - find it by logical index
@@ -155,7 +158,6 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
   const slidesContainer = block.querySelector('.carousel-slides');
 
   // Only make links focusable if this is NOT a clone slide
-  // Clones should remain non-interactive (tabindex="-1")
   if (!targetSlide.classList.contains('clone')) {
     targetSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
   }
@@ -170,24 +172,30 @@ function showSlide(block, logicalIndex = 0, immediate = false) {
     behavior: immediate ? 'auto' : 'smooth',
   });
 
-  // Immediately update the active slide to reflect the navigation
-  // This ensures indicators update correctly before the scroll completes
-  if (immediate) {
+  // Handle scroll completion
+  const onScrollEnd = () => {
     updateActiveSlide(targetSlide);
-    // Clear flags immediately for instant scrolling
     delete block.dataset.programmaticScroll;
     delete block.dataset.isScrolling;
-  } else {
-    // For smooth scrolling, update after a brief delay
-    setTimeout(() => {
-      updateActiveSlide(targetSlide);
-    }, 100);
 
-    // Clear the flags after scroll completes
-    setTimeout(() => {
-      delete block.dataset.programmaticScroll;
-      delete block.dataset.isScrolling;
-    }, 500);
+    // After scroll completes, check if we're on a clone and reposition
+    if (hasInfiniteScroll && targetSlide.classList.contains('clone')) {
+      // Small delay to ensure scroll is fully settled
+      setTimeout(() => repositionIfNeeded(block), 50);
+    }
+  };
+
+  if (immediate) {
+    onScrollEnd();
+    return;
+  }
+
+  // Use scrollend event if available, otherwise fallback to timeout
+  if ('onscrollend' in slidesContainer) {
+    slidesContainer.addEventListener('scrollend', onScrollEnd, { once: true });
+  } else {
+    // Fallback for older browsers
+    setTimeout(onScrollEnd, 500);
   }
 }
 
@@ -211,8 +219,8 @@ function bindEvents(block) {
   });
 
   const slideObserver = new IntersectionObserver((entries) => {
-    // Skip if this is a programmatic scroll
-    if (block.dataset.programmaticScroll === 'true') {
+    // Skip if this is a programmatic scroll or repositioning
+    if (block.dataset.programmaticScroll === 'true' || block.dataset.repositioning === 'true') {
       return;
     }
 
@@ -229,6 +237,13 @@ function bindEvents(block) {
         return currentLeft < leftmostLeft ? current : leftmost;
       });
       updateActiveSlide(leftmostSlide);
+
+      // If user manually scrolled to a clone, schedule reposition
+      if (block.classList.contains('carousel-infinite-scroll')
+          && leftmostSlide.classList.contains('clone')) {
+        // Delay to allow scroll to settle
+        setTimeout(() => repositionIfNeeded(block), 300);
+      }
     }
   }, { threshold: 0.5 });
   block.querySelectorAll('.carousel-slide').forEach((slide) => {
@@ -250,7 +265,8 @@ function makeCloneNonInteractive(clonedSlide) {
   });
 }
 
-export function updateCarousel(container, slidesPerView = 1) {
+export function updateCarousel(container, settings = {}) {
+  const slidesPerView = settings.slidesPerView || 1;
   const realSlides = container.querySelectorAll('.carousel-slide:not(.clone)');
   const totalSlides = realSlides.length;
   const actualSlidesPerView = Math.min(slidesPerView, totalSlides);
@@ -311,7 +327,11 @@ export function updateCarousel(container, slidesPerView = 1) {
 }
 
 let carouselId = 0;
-export async function buildCarousel(slidesContainer, slidesPerView = 1, infiniteScroll = true) {
+export async function buildCarousel(slidesContainer, settings = {}) {
+  // Extract settings with defaults
+  const slidesPerView = settings.slidesPerView || 1;
+  const infiniteScroll = settings.infiniteScroll !== undefined ? settings.infiniteScroll : true;
+
   const placeholders = await fetchLangPlaceholders();
   loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`);
 
@@ -374,43 +394,44 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
     }
   });
 
-  // Add cloned slides for infinite scroll
+  // Add cloned slides for infinite scroll with symmetric structure
   if (!isSingleSlide && infiniteScroll && slides.length > 1) {
     container.classList.add('carousel-infinite-scroll');
 
-    // Clone last slide and prepend to the beginning for backward infinite scrolling
-    const lastSlideClone = slides[slides.length - 1].cloneNode(true);
-    lastSlideClone.classList.add('clone', 'clone-before');
-    lastSlideClone.dataset.slideIndex = -1;
-    lastSlideClone.dataset.realIndex = slides.length - 1;
-    lastSlideClone.setAttribute('id', `carousel-${id}-slide-clone-before`);
-    lastSlideClone.setAttribute('aria-hidden', 'true');
-    // Remove button class from links in clones
-    lastSlideClone.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
-    // Make clone non-interactive for accessibility
-    makeCloneNonInteractive(lastSlideClone);
-    slidesContainer.prepend(lastSlideClone);
-
-    // Clone all slides and append to the end for forward infinite scrolling
+    // Clone ALL slides for symmetric infinite scroll (before and after)
+    const clonesBefore = [];
     slides.forEach((slide, idx) => {
-      const clone = slide.cloneNode(true);
-      clone.classList.add('clone', 'clone-after');
-      clone.dataset.slideIndex = slides.length + idx;
-      clone.dataset.realIndex = idx;
-      clone.setAttribute('id', `carousel-${id}-slide-clone-after-${idx}`);
-      clone.setAttribute('aria-hidden', 'true');
-      // Remove button class from links in clones
-      clone.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
-      // Make clone non-interactive for accessibility
-      makeCloneNonInteractive(clone);
-      slidesContainer.append(clone);
+      // Clone for before (prepend)
+      const cloneBefore = slide.cloneNode(true);
+      cloneBefore.classList.add('clone', 'clone-before');
+      cloneBefore.dataset.slideIndex = -(slides.length - idx);
+      cloneBefore.dataset.realIndex = idx;
+      cloneBefore.setAttribute('id', `carousel-${id}-slide-clone-before-${idx}`);
+      cloneBefore.setAttribute('aria-hidden', 'true');
+      cloneBefore.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
+      makeCloneNonInteractive(cloneBefore);
+      clonesBefore.push(cloneBefore);
+
+      // Clone for after (append immediately)
+      const cloneAfter = slide.cloneNode(true);
+      cloneAfter.classList.add('clone', 'clone-after');
+      cloneAfter.dataset.slideIndex = slides.length + idx;
+      cloneAfter.dataset.realIndex = idx;
+      cloneAfter.setAttribute('id', `carousel-${id}-slide-clone-after-${idx}`);
+      cloneAfter.setAttribute('aria-hidden', 'true');
+      cloneAfter.querySelectorAll('a').forEach((link) => link.classList.remove('button'));
+      makeCloneNonInteractive(cloneAfter);
+      slidesContainer.append(cloneAfter);
     });
+
+    // Prepend all before-clones at once in correct order
+    clonesBefore.forEach((clone) => slidesContainer.prepend(clone));
   }
 
   if (!isSingleSlide) bindEvents(container);
 
-  // Initialize slides-per-view to 1 (default)
-  updateCarousel(container, slidesPerView);
+  // Initialize slides-per-view
+  updateCarousel(container, { slidesPerView });
 
   // If infinite scroll is enabled, start at the first real slide (index 0)
   // This accounts for the prepended clone
