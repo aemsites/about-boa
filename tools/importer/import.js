@@ -739,6 +739,70 @@ function transformVideo(main, document) {
   });
 }
 
+function transformModalHeader(main, document) {
+  // Find the first uc-layout__grid that is a direct child of main in the modal content
+  const modalContent = main.querySelector('.modal-content, .uc-modal__content');
+  if (!modalContent) return;
+
+  const layout = main.querySelector('.uc-layout__grid:has(.aem-wrap--simple-image)');
+  let block;
+  let target;
+
+  if (layout) {
+    block = WebImporter.Blocks.createBlock(document, {
+      name: 'modal-header',
+      cells: [createRowFromSelectors(layout, '.aem-wrap--simple-image img', '.uc-layout__grid-cell:nth-child(2)')],
+    });
+    target = layout;
+  } else {
+    const gridCell = main.querySelector('.uc-layout__grid-cell:has(.aem-wrap--simple-image)');
+    if (gridCell) {
+      const img = gridCell.querySelector('.aem-wrap--simple-image img');
+      block = WebImporter.Blocks.createBlock(document, {
+        name: 'modal-header',
+        cells: [[img]],
+      });
+      target = gridCell.querySelector('.aem-wrap--simple-image');
+    }
+  }
+
+  if (block && target) {
+    target.replaceWith(block);
+  }
+}
+
+function transformQuote(main, document) {
+  main.querySelectorAll('.aem-wrap--quote').forEach((el) => {
+    const variants = [];
+    if (el.querySelector('.quote--border-bottom')) {
+      variants.push('border-bottom');
+    } else if (el.querySelector('.quote--border-top')) {
+      variants.push('border-top');
+    }
+
+    if (el.querySelector('.quote--red-variation')) {
+      variants.push('red');
+    }
+    
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'quote',
+      variants,
+      cells: [[el.cloneNode(true)]],
+    });
+    el.replaceWith(block);
+  });
+}
+
+function transformAccordion(main, document) {
+  main.querySelectorAll('.aem-wrap--accordion').forEach((el) => {
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'accordion',
+      cells: [[el.cloneNode(true)]],
+    });
+    el.replaceWith(block);
+  });
+}
+
 /**
  * Sanitize and normalize a URL path
  */
@@ -777,6 +841,8 @@ function getTransforms() {
     transformLocator,
     transformSocialShare,
     transformVideo,
+    transformQuote,
+    transformAccordion,
     // more block transformations here
   ];
 }
@@ -796,7 +862,7 @@ function createModalDocument(ucModal, modalId, document) {
   modalMain.appendChild(contentDiv);
 
   // Apply all transformations
-  getTransforms().forEach((transform) => {
+  [...getTransforms(), transformModalHeader].forEach((transform) => {
     try {
       transform(modalMain, modalDoc);
     } catch {
