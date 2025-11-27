@@ -32,28 +32,24 @@
 }
 
 .accordion details summary::after {
-  content: '';
+  content: '+';
   position: absolute;
   top: 50%;
   right: var(--spacing-s);
-  transform: translateY(-50%) rotate(135deg);
-  width: var(--spacing-xs);
-  height: var(--spacing-xs);
-  border: 2px solid;
-  border-width: 2px 2px 0 0;
-  transition: transform 0.2s;
+  transform: translateY(-50%);
+  font-size: var(--heading-font-size-xxl);
+  font-family: var(--heading-font-family);
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.3s;
 }
 
 .accordion details[open] summary::after {
-  transform: translateY(-50%) rotate(-45deg);
+  content: '-';
 }
 
 .accordion details .accordion-item-body {
   padding: 0 var(--spacing-s);
-}
-
-.accordion details[open] .accordion-item-body {
-  background-color: var(--background-color);
 }
 
 @media (width >= 900px) {
