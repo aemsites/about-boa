@@ -774,20 +774,29 @@ function transformModalHeader(main, document) {
 function transformQuote(main, document) {
   main.querySelectorAll('.aem-wrap--quote').forEach((el) => {
     const variants = [];
+    const cells = [];
     if (el.querySelector('.quote--border-bottom')) {
       variants.push('border-bottom');
-    } else if (el.querySelector('.quote--border-top')) {
+    }
+
+    if (el.querySelector('.quote--border-top')) {
       variants.push('border-top');
     }
 
     if (el.querySelector('.quote--red-variation')) {
       variants.push('red');
     }
-    
+
+    [...el.querySelector('blockquote')?.children || []].forEach((child) => {
+      if (child.textContent.trim() !== '') {
+        cells.push([child.cloneNode(true)]);
+      }
+    });
+
     const block = WebImporter.Blocks.createBlock(document, {
       name: 'quote',
       variants,
-      cells: [[el.cloneNode(true)]],
+      cells,
     });
     el.replaceWith(block);
   });

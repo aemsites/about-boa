@@ -1,21 +1,15 @@
+/* Base styles */
 .quote blockquote {
-  margin: 0 auto;
-  padding: 0 24px;
+  position: relative;
+  margin: 0 var(--spacing-xxl);
+  padding-inline-start: var(--spacing-xxxl);
   max-width: 900px;
 }
 
-@media (width >= 900px) {
-  .quote blockquote {
-    padding: 0 32px;
-  }
-}
-
 .quote blockquote .quote-quotation {
-  font-size: 120%;
-}
-
-.quote blockquote .quote-quotation > :first-child {
-  text-indent: -0.5ch;
+  font-size: var(--heading-font-size-l);
+  font-family: var(--heading-font-family);
+  font-weight: 300;
 }
 
 .quote blockquote .quote-quotation > :first-child::before,
@@ -23,19 +17,120 @@
   line-height: 0;
 }
 
-.quote blockquote .quote-quotation > :first-child::before {
-  content: "“";
+.quote:not(.red) blockquote .quote-quotation::before {
+  content: "\201C";
+  display: block;
+  color: var(--color-red-light);
+  font-size: 12.5rem;
+  position: absolute;
+  top: -70px;
+  left: -5px;
 }
 
 .quote blockquote .quote-quotation > :last-child::after {
-  content: "”";
+  content: "\201D";
 }
 
 .quote blockquote .quote-attribution {
-  text-align: right;
+  font-size: var(--body-font-size-xs);
 }
 
-.quote blockquote .quote-attribution > :first-child::before {
+/* Border variants */
+.quote.border-top::before {
+  content: "";
+  display: block;
+  border-top: 1px solid var(--color-border);
+  padding-block-start: var(--spacing-xl);
+}
+
+.quote.border-bottom::after {
+  content: "";
+  display: block;
+  border-bottom: 1px solid var(--color-border);
+  padding-block-end: var(--spacing-xl);
+}
+
+/* Red variant */
+.quote.red blockquote .quote-quotation {
+  color: var(--color-brand-red);
+  font-size: var(--heading-font-size-m);
+}
+
+.quote.red blockquote .quote-quotation > :first-child::before {
+  content: "\201C";
+}
+
+/* Carousel variant */
+.carousel .quote blockquote .quote-quotation::before {
+  color: var(--color-brand-red);
+}
+
+.carousel .quote blockquote .quote-quotation + .quote-attribution::before {
   content: "—";
-  padding-right: 0.5ch;
+  display: inline-block;
+  margin-inline-end: var(--spacing-xs);
+  font-size: var(--body-font-size-s);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  vertical-align: text-top;
+}
+
+.carousel .quote blockquote .quote-quotation + .quote-attribution > p {
+  display: inline-block;
+  font-size: var(--heading-font-size-l);
+  font-family: var(--heading-font-family);
+}
+
+.carousel .quote blockquote .quote-attribution + .quote-attribution {
+  text-transform: uppercase;
+  font-size: var(--body-font-size-s);
+  color: var(--color-gray);
+}
+
+/* Modal variant */
+.modal .quote {
+  background-color: var(--color-blue-magnolia);
+  padding: var(--spacing-xxl) var(--spacing-xl);
+}
+
+.modal .quote blockquote {
+  margin: 0;
+  padding: var(--spacing-xxl) 0 0;
+}
+
+.modal .quote blockquote .quote-quotation {
+  color: var(--color-blue-neptune);
+}
+
+.modal .quote blockquote .quote-quotation::before {
+  color: var(--color-blue-ultramarine);
+  left: -10px;
+}
+
+/* Media queries */
+@media (width >= 900px) {
+  .quote blockquote {
+    padding: 0 var(--spacing-xxxl);
+  }
+
+  .quote blockquote .quote-quotation {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  .quote.red blockquote .quote-quotation {
+    font-size: var(--heading-font-size-l);
+  }
+
+  .quote.red blockquote .quote-attribution {
+    font-size: var(--body-font-size-m);
+  }
+
+  .carousel .quote blockquote .quote-quotation + .quote-attribution > p {
+    font-size: var(--heading-font-size-xl);
+  }
+
+  .carousel .quote blockquote .quote-attribution + .quote-attribution {
+    font-size: var(--body-font-size-m);
+  }
 }
