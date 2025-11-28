@@ -804,11 +804,43 @@ function transformQuote(main, document) {
 
 function transformAccordion(main, document) {
   main.querySelectorAll('.aem-wrap--accordion').forEach((el) => {
-    const block = WebImporter.Blocks.createBlock(document, {
-      name: 'accordion',
-      cells: [[el.cloneNode(true)]],
-    });
-    el.replaceWith(block);
+    // Check for nested accordion
+    // Check for other nested blocks like media-kaltura, etc.
+    const isNestedAccordion = el.querySelector('.aem-wrap--media-kaltura');
+    if (isNestedAccordion) {
+      const wrapper = document.createElement('div');
+
+      const startBlock = WebImporter.Blocks.createBlock(document, {
+        name: 'nested-accordion',
+        cells: [['heading', 'h2']],
+      });
+      wrapper.appendChild(startBlock);
+
+      el.querySelectorAll('uc-accordion-item').forEach((item) => {
+        const button = item.querySelector('.uc-accordion__button');
+        if (!button) return;
+        const heading = document.createElement('h2');
+        heading.textContent = button.textContent.trim();
+        wrapper.appendChild(heading);
+
+        const content = item.querySelector('.uc-accordion-item__content');
+        wrapper.appendChild(content);
+      });
+
+      const endBlock = WebImporter.Blocks.createBlock(document, {
+        name: 'nested-accordion',
+        cells: [['']],
+      });
+      wrapper.appendChild(endBlock);
+
+      el.replaceWith(wrapper);
+    } else {
+      const block = WebImporter.Blocks.createBlock(document, {
+        name: 'accordion',
+        cells: [[el.cloneNode(true)]],
+      });
+      el.replaceWith(block);
+    }
   });
 }
 
@@ -841,6 +873,7 @@ function getTransforms() {
     transformSections,
     transformNotchedImage,
     transformArticleMasthead,
+    transformAccordion, // nested wrapper blocks to be transformed before the actual blocks get transformed
     transformCarousels,
     transformHighlightBlock,
     transformStoryBlock,
@@ -851,7 +884,6 @@ function getTransforms() {
     transformSocialShare,
     transformVideo,
     transformQuote,
-    transformAccordion,
     // more block transformations here
   ];
 }
