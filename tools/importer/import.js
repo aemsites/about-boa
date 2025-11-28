@@ -151,7 +151,7 @@ function transformCarousels(main, document) {
     el.replaceWith(block);
   });
 
-  main.querySelectorAll('.aem-wrap--carousel').forEach((el) => {
+  main.querySelectorAll('.aem-wrap--carousel:not(:has(.aem-wrap--content-card))').forEach((el) => {
     const cells = [];
     const variants = [];
     const items = el.querySelectorAll('.uc-carousel__item');
@@ -844,6 +844,60 @@ function transformAccordion(main, document) {
   });
 }
 
+function transformContentCards(main, document) {
+  main.querySelectorAll('.aem-wrap--content-card-container, .aem-wrap--carousel:has(.aem-wrap--content-card)').forEach((el) => {
+    const contentCards = el.querySelectorAll('.aem-wrap--content-card');
+    const cells = [];
+    const variants = [];
+
+    if (el.querySelector('.uc-carousel')) {
+      variants.push('carousel', 'light');
+    }
+
+    if (el.querySelector('[cardwidth="10"]')) {
+      variants.push('grid');
+    }
+
+    contentCards.forEach((card) => {
+      const img = card.querySelector('.uc-background__container--image img') || '';
+      if (img) {
+        const srcAttr = img.getAttribute('src');
+        if (srcAttr) {
+          let newSrc;
+          if (srcAttr.startsWith('http://') || srcAttr.startsWith('https://')) {
+            newSrc = srcAttr.replace(/^https?:\/\/[^/]+/, 'https://about.bankofamerica.com');
+          } else if (srcAttr.startsWith('//')) {
+            newSrc = srcAttr.replace(/^\/\/[^/]+/, 'https://about.bankofamerica.com');
+          } else {
+            const cleanSrc = srcAttr.startsWith('/') ? srcAttr : `/${srcAttr}`;
+            newSrc = `https://about.bankofamerica.com${cleanSrc}`;
+          }
+          img.setAttribute('src', newSrc);
+        }
+      }
+
+      const content = card.querySelector('.uc-card__container-text') || '';
+      const modalId = card.querySelector('a[data-uc-modal-id]')?.getAttribute('data-uc-modal-id');
+      if (modalId) {
+        const link = document.createElement('a');
+        link.classList.add('modal-link');
+        link.setAttribute('href', `#${modalId}`);
+        link.textContent = modalId;
+        content.appendChild(link);
+      }
+
+      cells.push([img, content?.cloneNode(true)]);
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'content-card',
+      variants,
+      cells,
+    });
+    el.replaceWith(block);
+  });
+}
+
 /**
  * Sanitize and normalize a URL path
  */
@@ -873,7 +927,7 @@ function getTransforms() {
     transformSections,
     transformNotchedImage,
     transformArticleMasthead,
-    transformAccordion, // nested wrapper blocks to be transformed before the actual blocks get transformed
+    transformAccordion, // should be called before transformVideo since video is nested in accordion
     transformCarousels,
     transformHighlightBlock,
     transformStoryBlock,
@@ -884,6 +938,7 @@ function getTransforms() {
     transformSocialShare,
     transformVideo,
     transformQuote,
+    transformContentCards,
     // more block transformations here
   ];
 }
@@ -924,20 +979,10 @@ function createModalDocument(ucModal, modalId, document) {
  * Replace modal elements with links to separate modal pages
  */
 function replaceModalsWithLinks(document, modalPath, modalId) {
-  document.querySelectorAll('.aem-wrap--modal').forEach((el) => {
-    const ucModal = el.querySelector('uc-modal');
-    if (ucModal?.id !== modalId) return;
-
-    const link = document.createElement('a');
-    link.href = modalPath;
-    link.textContent = modalId.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-    link.className = 'button';
-
-    const wrapper = document.createElement('p');
-    wrapper.classList.add('button-wrapper');
-    wrapper.appendChild(link);
-
-    el.replaceWith(wrapper);
+  document.querySelectorAll(`a.modal-link[href^="#${modalId}"]`).forEach((el) => {
+    const linkSrc = modalPath.startsWith('/') ? `https://main--about-boa--aemsites.aem.page${modalPath}` : modalPath;
+    el.href = linkSrc;
+    el.textContent = linkSrc;
   });
 }
 
