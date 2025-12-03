@@ -23,6 +23,8 @@
   .icon-list .icon-list-visual .icon {
     width: 48px;
     height: 48px;
+    font-size: 48px; /* for icomoon font icons */
+    line-height: 1;
   }
 
   .icon-list .icon-list-visual .icon svg {
