@@ -1,0 +1,57 @@
+@layer blocks {
+  .icon-list > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--spacing-lg);
+  }
+
+  .icon-list > ul > li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .icon-list .icon-list-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .icon-list .icon-list-visual .icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .icon-list .icon-list-visual .icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .icon-list .icon-list-visual picture img {
+    max-width: 80px;
+    height: auto;
+  }
+
+  .icon-list .icon-list-content {
+    text-align: center;
+  }
+
+  .icon-list .icon-list-content h3 {
+    margin-block-end: var(--spacing-xs);
+  }
+
+  .icon-list .icon-list-content p:last-child {
+    margin-block-end: 0;
+  }
+
+  /* Tablet and up: 3-wide grid */
+  @media (width >= 600px) {
+    .icon-list > ul {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
