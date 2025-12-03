@@ -250,7 +250,11 @@ function makeCloneNonInteractive(clonedSlide) {
   });
 }
 
-export function updateCarousel(container, slidesPerView = 1) {
+export function updateCarousel(container, settings = {}) {
+  const {
+    slidesPerView = 1,
+  } = settings;
+
   const realSlides = container.querySelectorAll('.carousel-slide:not(.clone)');
   const totalSlides = realSlides.length;
   const actualSlidesPerView = Math.min(slidesPerView, totalSlides);
@@ -295,9 +299,22 @@ export function updateCarousel(container, slidesPerView = 1) {
   // Use requestAnimationFrame to ensure layout has updated
   requestAnimationFrame(() => {
     if (slidesContainer && allSlides.length > 0) {
-      // If all slides are visible, scroll to start
+      // If all slides are visible, scroll to start (first real slide)
       if (showAllSlides) {
-        showSlide(container, 0);
+        // Find the first real slide and scroll directly to it
+        const firstRealSlide = slidesContainer.querySelector('.carousel-slide:not(.clone)');
+        if (firstRealSlide) {
+          slidesContainer.style.scrollBehavior = 'auto';
+          slidesContainer.scrollTo({
+            top: 0,
+            left: firstRealSlide.offsetLeft,
+            behavior: 'auto',
+          });
+          updateActiveSlide(firstRealSlide);
+          requestAnimationFrame(() => {
+            slidesContainer.style.scrollBehavior = '';
+          });
+        }
       } else {
         // Otherwise, maintain the current active slide index
         const targetIndex = Math.min(currentActiveIndex, allSlides.length - 1);
@@ -311,7 +328,12 @@ export function updateCarousel(container, slidesPerView = 1) {
 }
 
 let carouselId = 0;
-export async function buildCarousel(slidesContainer, slidesPerView = 1, infiniteScroll = true) {
+export async function buildCarousel(slidesContainer, settings = {}) {
+  const {
+    slidesPerView = 1,
+    infiniteScroll = true,
+  } = settings;
+
   const placeholders = await fetchLangPlaceholders();
   loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`);
 
@@ -328,13 +350,14 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
   container.append(slidesContainer);
 
   const slides = [...slidesContainer.children];
-  const isSingleSlide = slides.length < 2;
+  // If all slides fit in view, no need for controls/clones/events
+  const allSlidesVisible = slides.length <= slidesPerView;
 
   // Store the real slide count for infinite scroll
   container.dataset.realSlideCount = slides.length;
 
   let slideIndicators;
-  if (!isSingleSlide) {
+  if (!allSlidesVisible) {
     const slideIndicatorsNav = document.createElement('nav');
     slideIndicatorsNav.classList.add('carousel-slide-indicators-nav');
     slideIndicatorsNav.setAttribute('aria-label', placeholders.carouselSlideControls || 'Carousel Slide Controls');
@@ -375,7 +398,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
   });
 
   // Add cloned slides for infinite scroll
-  if (!isSingleSlide && infiniteScroll && slides.length > 1) {
+  if (!allSlidesVisible && infiniteScroll) {
     container.classList.add('carousel-infinite-scroll');
 
     // Clone last slide and prepend to the beginning for backward infinite scrolling
@@ -407,14 +430,14 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
     });
   }
 
-  if (!isSingleSlide) bindEvents(container);
+  if (!allSlidesVisible) bindEvents(container);
 
   // Initialize slides-per-view to 1 (default)
-  updateCarousel(container, slidesPerView);
+  updateCarousel(container, { slidesPerView });
 
   // If infinite scroll is enabled, start at the first real slide (index 0)
   // This accounts for the prepended clone
-  if (!isSingleSlide && infiniteScroll && slides.length > 1) {
+  if (!allSlidesVisible && infiniteScroll) {
     container.dataset.activeSlide = 0;
     // Instantly position to the first real slide
     requestAnimationFrame(() => {
@@ -442,6 +465,7 @@ export async function buildCarousel(slidesContainer, slidesPerView = 1, infinite
 }
 
 function createSlide(row) {
+  // Default carousel slide
   const slide = document.createElement('li');
 
   row.querySelectorAll(':scope > div').forEach((column) => {
