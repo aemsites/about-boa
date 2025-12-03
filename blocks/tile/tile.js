@@ -44,21 +44,21 @@ export default async function decorate(block) {
   const isTablet = window.matchMedia('(min-width: 600px)');
 
   if (isDesktop.matches) {
-    updateCarousel(container, 3);
+    updateCarousel(container, { slidesPerView: 3 });
   } else if (isTablet.matches) {
-    updateCarousel(container, 2);
+    updateCarousel(container, { slidesPerView: 2 });
   } else {
-    updateCarousel(container, 1);
+    updateCarousel(container, { slidesPerView: 1 });
   }
 
   // Update on resize
   window.addEventListener('resize', () => {
     if (isDesktop.matches) {
-      updateCarousel(container, 3);
+      updateCarousel(container, { slidesPerView: 3 });
     } else if (isTablet.matches) {
-      updateCarousel(container, 2);
+      updateCarousel(container, { slidesPerView: 2 });
     } else {
-      updateCarousel(container, 1);
+      updateCarousel(container, { slidesPerView: 1 });
     }
   });
 }

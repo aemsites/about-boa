@@ -270,4 +270,18 @@
       padding: var(--spacing-xxl) 100px;
     }
   }
+
+  /* Content Card Carousel variant - override default carousel slide styles */
+  .carousel.content-card .carousel-slide.content-card-item {
+    /* Content cards maintain their column layout in carousel */
+    flex-direction: column;
+    gap: 0;
+  }
+
+  @media (width >= 900px) {
+    .carousel.content-card .carousel-slide.content-card-item {
+      /* Keep column layout even on desktop for content cards */
+      flex-direction: column;
+    }
+  }
 }

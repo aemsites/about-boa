@@ -61,6 +61,8 @@
     --color-blue-royal: #0053c2;
     --color-blue-bright: #0073cf;
     --color-blue-light: #cedfff;
+    --color-blue-lightest: #dfeaff;
+    --color-blue-magnolia: #f3f6ff;
 
     /* Brand Colors - Red Shades */
     --color-red-bright: var(--color-brand-red);
