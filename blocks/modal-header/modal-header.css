@@ -1,6 +1,6 @@
 .modal-header {
-  width: 100%;
   margin-block-start: 0;
+  margin-inline: calc(var(--spacing-l) * -1);
 }
 
 /* Row container - flexbox for responsive layout */
@@ -60,6 +60,10 @@
 }
 
 @media (width >= 900px) {
+  .modal-header {
+    margin-inline: calc(var(--spacing-xl) * -1);
+  }
+
   .modal-header > div {
     flex-direction: row;
     gap: var(--spacing-xxl);

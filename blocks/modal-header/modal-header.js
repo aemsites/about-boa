@@ -9,15 +9,16 @@ export default function decorate(block) {
   if (!row) return;
 
   const columns = row.querySelectorAll(':scope > div');
-  if (columns.length === 0) return;
 
-  const imageColumn = columns[0];
-  imageColumn.classList.add('modal-header-image');
-
-  const contentColumn = columns[1];
-  if (contentColumn) {
-    contentColumn.classList.add('modal-header-content');
-  } else {
+  if (columns.length === 1) {
     block.classList.add('single-column');
   }
+
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      column.classList.add('modal-header-image');
+    } else {
+      column.classList.add('modal-header-content');
+    }
+  });
 }
