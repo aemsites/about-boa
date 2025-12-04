@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Footnotes Manager</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" href="data:,">
+    <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
+    <script src="/tools/da/footnotes/footnotes.js" type="module"></script>
+    <link rel="stylesheet" href="/tools/da/footnotes/footnotes.css">
+  </head>
+  <body>
+    <div id="footnotes-container">
+      <div class="info-section">
+        <div class="info-note">
+          <strong>Footnotes Manager:</strong> Create linked footnote references that connect to your footnotes block.
+        </div>
+        <p class="help-text">
+          This plugin scans your page for a footnotes block and lets you create inline references with automatic back-linking.
+        </p>
+      </div>
+
+      <div class="scan-section">
+        <button id="scan-page" type="button" class="button secondary" aria-describedby="status-message">Scan Page for Footnotes</button>
+        <div id="status-message" class="status-message"></div>
+      </div>
+      
+      <div id="main-content" class="main-content" style="display: none;">
+        <div class="two-column-layout">
+          <div class="selection-column" role="region" aria-labelledby="selection-heading">
+            <h3 id="selection-heading">Available Footnotes:</h3>
+            <div id="footnotes-list" class="footnotes-list" role="group" aria-label="Available footnotes"></div>
+          </div>
+          
+          <div class="action-column" role="region" aria-labelledby="action-heading">
+            <h3 id="action-heading">Create Reference:</h3>
+            <div class="action-content">
+              <div class="reference-preview" id="reference-preview">
+                <div class="empty-state">
+                  <p>Select a footnote to create a reference</p>
+                </div>
+              </div>
+              
+              <div id="reference-options" class="reference-options" style="display: none;">
+                <div class="form-group">
+                  <label for="reference-text">Reference Text (visible in content):</label>
+                  <input type="text" id="reference-text" placeholder="e.g., [1], *, †, or custom text" value="[1]">
+                  <small>This is what appears in your content where you insert the reference</small>
+                </div>
+                
+                <div class="form-group">
+                  <label for="reference-title">Reference Title (hover text):</label>
+                  <input type="text" id="reference-title" placeholder="Optional: Shows on hover">
+                  <small>Optional: Provides context when users hover over the reference</small>
+                </div>
+              </div>
+              
+              <div class="action-buttons">
+                <button id="insert-reference" type="button" class="button secondary" disabled>Insert Footnote Reference</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+

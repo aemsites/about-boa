@@ -1,0 +1,99 @@
+@layer blocks {
+  .footnotes {
+    margin-top: var(--spacing-xxl, 48px);
+    padding-top: var(--spacing-l, 24px);
+    border-top: 2px solid var(--border-color, #e0e0e0);
+  }
+
+  .footnotes-list {
+    list-style: decimal;
+    margin: 0;
+    padding: 0 0 0 24px;
+    counter-reset: footnote-counter;
+  }
+
+  .footnotes-list > li {
+    margin-bottom: var(--spacing-m, 16px);
+    padding-left: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-color, #4b4b4b);
+  }
+
+  .footnotes-list > li:last-child {
+    margin-bottom: 0;
+  }
+
+  .footnote-content {
+    display: inline;
+  }
+
+  /* Back-links styling */
+  .footnote-backlinks {
+    display: inline;
+    margin-left: 0.5em;
+    font-size: 0.9em;
+    white-space: nowrap;
+  }
+
+  .footnote-backlink {
+    text-decoration: none;
+    color: var(--link-color, #4d7bff);
+    padding: 0 0.25em;
+    font-weight: 600;
+    transition: color 0.2s ease;
+  }
+
+  .footnote-backlink:hover {
+    color: var(--link-hover-color, #3d6bef);
+    text-decoration: underline;
+  }
+
+  .footnote-backlink:focus {
+    outline: 2px solid var(--focus-outline, rgb(22 122 243));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Mobile optimization */
+  @media (width <= 768px) {
+    .footnotes {
+      margin-top: var(--spacing-xl, 32px);
+      padding-top: var(--spacing-m, 16px);
+    }
+
+    .footnotes-list {
+      padding-left: 20px;
+    }
+
+    .footnotes-list > li {
+      font-size: 13px;
+      margin-bottom: var(--spacing-s, 12px);
+    }
+  }
+}
+
+/* Global styling for footnote references in content */
+.footnote-ref {
+  text-decoration: none;
+  color: var(--link-color, #4d7bff);
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+/* Superscript styling for inline references */
+sup .footnote-ref {
+  font-size: inherit;
+}
+
+.footnote-ref:hover {
+  color: var(--link-hover-color, #3d6bef);
+  text-decoration: underline;
+}
+
+.footnote-ref:focus {
+  outline: 2px solid var(--focus-outline, rgb(22 122 243));
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
