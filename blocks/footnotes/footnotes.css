@@ -1,99 +1,85 @@
 @layer blocks {
   .footnotes {
-    margin-top: var(--spacing-xxl, 48px);
-    padding-top: var(--spacing-l, 24px);
-    border-top: 2px solid var(--border-color, #e0e0e0);
+    margin-top: var(--spacing-xxl);
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--color-border);
   }
 
   .footnotes-list {
-    list-style: decimal;
+    list-style: none;
     margin: 0;
-    padding: 0 0 0 24px;
-    counter-reset: footnote-counter;
+    padding: 0;
   }
 
   .footnotes-list > li {
-    margin-bottom: var(--spacing-m, 16px);
-    padding-left: 8px;
-    font-size: 14px;
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    font-size: var(--body-font-size-xs);
     line-height: 1.6;
-    color: var(--text-color, #4b4b4b);
+    color: var(--text-color);
   }
 
   .footnotes-list > li:last-child {
     margin-bottom: 0;
   }
 
-  .footnote-content {
-    display: inline;
+  .footnote-number {
+    flex-shrink: 0;
+    min-width: 1.5em;
   }
 
-  /* Back-links styling */
-  .footnote-backlinks {
-    display: inline;
-    margin-left: 0.5em;
-    font-size: 0.9em;
-    white-space: nowrap;
+  .footnote-content {
+    flex: 1;
   }
 
   .footnote-backlink {
     text-decoration: none;
-    color: var(--link-color, #4d7bff);
-    padding: 0 0.25em;
-    font-weight: 600;
+    color: var(--link-color);
     transition: color 0.2s ease;
   }
 
   .footnote-backlink:hover {
-    color: var(--link-hover-color, #3d6bef);
+    color: var(--link-hover-color);
     text-decoration: underline;
   }
 
   .footnote-backlink:focus {
-    outline: 2px solid var(--focus-outline, rgb(22 122 243));
+    outline: 2px solid var(--link-color);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
-  /* Mobile optimization */
   @media (width <= 768px) {
     .footnotes {
-      margin-top: var(--spacing-xl, 32px);
-      padding-top: var(--spacing-m, 16px);
-    }
-
-    .footnotes-list {
-      padding-left: 20px;
+      margin-top: var(--spacing-xl);
+      padding-top: var(--spacing-md);
     }
 
     .footnotes-list > li {
-      font-size: 13px;
-      margin-bottom: var(--spacing-s, 12px);
+      margin-bottom: var(--spacing-sm);
     }
   }
 }
 
 /* Global styling for footnote references in content */
-.footnote-ref {
+a[href*="#footnote-"]:not(.footnotes a) {
   text-decoration: none;
-  color: var(--link-color, #4d7bff);
+  color: var(--link-color);
   font-weight: 600;
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
   transition: color 0.2s ease;
 }
 
-/* Superscript styling for inline references */
-sup .footnote-ref {
-  font-size: inherit;
-}
-
-.footnote-ref:hover {
-  color: var(--link-hover-color, #3d6bef);
+a[href*="#footnote-"]:not(.footnotes a):hover {
+  color: var(--link-hover-color);
   text-decoration: underline;
 }
 
-.footnote-ref:focus {
-  outline: 2px solid var(--focus-outline, rgb(22 122 243));
+a[href*="#footnote-"]:not(.footnotes a):focus {
+  outline: 2px solid var(--link-color);
   outline-offset: 2px;
   border-radius: 2px;
 }
-

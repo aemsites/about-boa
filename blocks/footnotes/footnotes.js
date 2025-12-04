@@ -3,86 +3,89 @@
  * @param {Element} block The footnotes block element
  */
 function addBackLinks(block) {
-  const footnotes = block.querySelectorAll('li[id]');
+  block.querySelectorAll('li[id]').forEach((footnote) => {
+    const { id } = footnote;
+    const numberEl = footnote.querySelector('.footnote-number');
+    if (!numberEl) return;
 
-  footnotes.forEach((footnote) => {
-    const footnoteId = footnote.id;
+    // Find references to this footnote (not inside the block itself)
+    const references = [...document.querySelectorAll(`a[href$="#${id}"]`)]
+      .filter((ref) => !block.contains(ref));
 
-    // Find all references to this footnote in the document
-    const references = document.querySelectorAll(`a[href$="#${footnoteId}"].footnote-ref`);
+    if (references.length === 0) return;
 
-    if (references.length > 0) {
-      // Create back-links container
-      const backlinksContainer = document.createElement('span');
-      backlinksContainer.className = 'footnote-backlinks';
-      backlinksContainer.setAttribute('aria-label', 'Back to content');
+    // Auto-generate IDs for references that don't have one
+    references.forEach((ref, i) => {
+      if (!ref.id) ref.id = `fnref-${id}-${i + 1}`;
+    });
 
-      references.forEach((ref, index) => {
-        const backlink = document.createElement('a');
-        backlink.href = `#${ref.id}`;
-        backlink.className = 'footnote-backlink';
-        backlink.textContent = '↩';
-        backlink.title = `Return to reference ${index + 1}`;
-        backlink.setAttribute('aria-label', `Return to reference ${index + 1}`);
+    // Make the number a back-link to the first reference
+    const backlink = document.createElement('a');
+    backlink.href = `#${references[0].id}`;
+    backlink.className = 'footnote-backlink';
+    backlink.textContent = numberEl.textContent;
+    backlink.title = 'Return to reference';
+    backlink.setAttribute('aria-label', 'Return to reference');
 
-        // Add space between multiple back-links
-        if (index > 0) {
-          backlinksContainer.append(' ');
-        }
-        backlinksContainer.append(backlink);
-      });
-
-      // Append back-links to the footnote
-      footnote.append(' ');
-      footnote.append(backlinksContainer);
-    }
+    numberEl.textContent = '';
+    numberEl.append(backlink);
   });
 }
 
 /**
+ * Creates a footnote list item with number and content structure
+ * @param {Element} source Source element (li or row div)
+ * @param {number} index Footnote index (0-based)
+ * @returns {Element} Structured list item
+ */
+function createFootnoteItem(source, index) {
+  const li = source.tagName === 'LI' ? source : document.createElement('li');
+  const num = index + 1;
+
+  // Set ID if not present
+  if (!li.id) {
+    li.id = source.id || source.querySelector('[id]')?.id || `footnote-${num}`;
+  }
+
+  // Create number element
+  const numberEl = document.createElement('span');
+  numberEl.className = 'footnote-number';
+  numberEl.textContent = `${num}.`;
+
+  // Wrap content
+  const content = document.createElement('span');
+  content.className = 'footnote-content';
+
+  // Move children to content wrapper
+  if (source.tagName === 'LI') {
+    while (li.firstChild) content.append(li.firstChild);
+  } else {
+    while (source.firstElementChild) content.append(source.firstElementChild);
+  }
+
+  li.append(numberEl, content);
+  return li;
+}
+
+/**
  * Decorates the footnotes block
- * Converts table rows to an ordered list with proper IDs
- * Adds back-links to references in the document
+ * Supports two authoring patterns:
+ * 1. Multiple rows - each row is a footnote
+ * 2. Single row with ul/ol - list items are footnotes
  * @param {Element} block The footnotes block element
  */
 export default function decorate(block) {
-  // Create ordered list for footnotes
+  const existingList = block.querySelector('ul, ol');
+  const items = existingList
+    ? [...existingList.querySelectorAll(':scope > li')]
+    : [...block.children];
+
   const ol = document.createElement('ol');
   ol.className = 'footnotes-list';
+  items.forEach((item, i) => ol.append(createFootnoteItem(item, i)));
 
-  // Get all rows (each row is a footnote)
-  const rows = [...block.children];
-
-  rows.forEach((row, index) => {
-    const li = document.createElement('li');
-    const footnoteNumber = index + 1;
-
-    // Set ID for linking (check if row has custom ID first)
-    const customId = row.getAttribute('id') || row.querySelector('[id]')?.id;
-    li.id = customId || `footnote-${footnoteNumber}`;
-
-    // Move content from row to list item
-    while (row.firstElementChild) {
-      li.append(row.firstElementChild);
-    }
-
-    // Wrap content in a span for easier styling with back-links
-    const content = document.createElement('span');
-    content.className = 'footnote-content';
-    while (li.firstChild) {
-      content.append(li.firstChild);
-    }
-    li.append(content);
-
-    ol.append(li);
-  });
-
-  // Replace block content with ordered list
   block.replaceChildren(ol);
 
-  // Add back-links after a short delay to ensure references are in DOM
-  // This runs after the page is fully loaded and all references are inserted
-  setTimeout(() => {
-    addBackLinks(block);
-  }, 100);
+  // Add back-links after DOM is ready
+  setTimeout(() => addBackLinks(block), 100);
 }

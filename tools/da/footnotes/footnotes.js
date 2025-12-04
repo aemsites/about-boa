@@ -4,186 +4,163 @@ import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 let selectedFootnote = null;
 let pageUrl = '';
 
+// DOM element cache
+const $ = (id) => document.getElementById(id);
+
 /**
- * Generate a unique back-reference ID for tracking where footnotes are referenced
+ * Truncate text with ellipsis
  */
-function generateBackRefId() {
-  const timestamp = Date.now();
-  const random = Math.floor(Math.random() * 1000);
-  return `fnref-${timestamp}-${random}`;
+const truncate = (text, max = 100) => (text.length > max ? `${text.substring(0, max)}...` : text);
+
+/**
+ * Create footnote object from element
+ */
+const createFootnote = (el, index) => {
+  const text = el.textContent.trim();
+  if (!text || (el.tagName === 'P' && text.length <= 10)) return null;
+  return {
+    id: el.id || el.getAttribute('data-footnote') || `footnote-${index + 1}`,
+    text: truncate(text),
+    fullText: text,
+    index: index + 1,
+  };
+};
+
+/**
+ * Extract footnotes from a parsed document
+ */
+function extractFootnotesFromDoc(doc) {
+  const block = doc.querySelector('.footnotes, .block.footnotes, [class*="footnotes"]');
+  if (!block) return { error: 'No footnotes block found on this page. Please add a footnotes block first.' };
+
+  // Try different selectors in order of preference
+  const selectors = [':scope > div', 'ol > li, ul > li', 'p, div[id], [data-footnote]'];
+  let footnotes = [];
+
+  selectors.some((selector) => {
+    footnotes = [...block.querySelectorAll(selector)].map(createFootnote).filter(Boolean);
+    return footnotes.length > 0;
+  });
+
+  return footnotes.length
+    ? { footnotes }
+    : { error: 'No footnotes found in the footnotes block. Please add footnotes first.' };
 }
 
 /**
  * Update the preview when a footnote is selected
  */
 function updatePreview() {
-  const previewContainer = document.getElementById('reference-preview');
-  const referenceOptions = document.getElementById('reference-options');
-  const insertButton = document.getElementById('insert-reference');
-  const referenceTextInput = document.getElementById('reference-text');
-  const referenceTitleInput = document.getElementById('reference-title');
+  const preview = $('reference-preview');
+  const options = $('reference-options');
+  const btn = $('insert-reference');
 
   if (!selectedFootnote) {
-    previewContainer.innerHTML = `
-      <div class="empty-state">
-        <p>Select a footnote to create a reference</p>
-      </div>
-    `;
-    referenceOptions.style.display = 'none';
-    insertButton.disabled = true;
+    preview.innerHTML = '<div class="empty-state"><p>Select a footnote to create a reference</p></div>';
+    options.style.display = 'none';
+    btn.disabled = true;
     return;
   }
 
-  // Show options
-  referenceOptions.style.display = 'block';
-  insertButton.disabled = false;
+  options.style.display = 'block';
+  btn.disabled = false;
 
-  // Get reference text and title
-  const refText = referenceTextInput.value.trim() || '[1]';
-  const refTitle = referenceTitleInput.value.trim() || selectedFootnote.text;
+  const refText = $('reference-text').value.trim() || selectedFootnote.index;
+  const refTitle = $('reference-title').value.trim() || selectedFootnote.text;
 
-  // Update preview
-  const backRefId = generateBackRefId();
-  const previewHtml = `
+  preview.innerHTML = `
     <div class="preview-box">
       <div class="preview-label">Reference will look like:</div>
       <div class="preview-example">
-        <sup>
-          <a href="${pageUrl}#${selectedFootnote.id}" 
-             id="${backRefId}"
-             title="${refTitle}"
-             class="footnote-ref">${refText}</a>
-        </sup>
+        <a href="${pageUrl}#${selectedFootnote.id}" title="${refTitle}"><sup>${refText}</sup></a>
       </div>
       <div class="preview-details">
         <strong>Links to:</strong> ${selectedFootnote.text}
         ${refTitle !== selectedFootnote.text ? `<br><strong>Hover text:</strong> ${refTitle}` : ''}
       </div>
-    </div>
-  `;
+    </div>`;
+}
 
-  previewContainer.innerHTML = previewHtml;
+/**
+ * Handle footnote card selection
+ */
+function selectFootnote(card, footnote) {
+  document.querySelectorAll('.footnote-card').forEach((c) => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedFootnote = footnote;
+  $('reference-text').value = footnote.index;
+  $('reference-title').value = footnote.text;
+  updatePreview();
+}
+
+/**
+ * Process and display footnotes from a parsed document
+ */
+function displayFootnotes(doc) {
+  const status = $('status-message');
+  const { footnotes, error } = extractFootnotesFromDoc(doc);
+
+  if (error) {
+    status.textContent = error;
+    status.className = 'status-message error';
+    return;
+  }
+
+  const list = $('footnotes-list');
+  list.innerHTML = footnotes.map((fn) => `
+    <div class="footnote-card" data-index="${fn.index - 1}">
+      <div class="footnote-number">${fn.index}</div>
+      <div class="footnote-content">
+        <div class="footnote-text">${fn.text}</div>
+        <div class="footnote-id">#${fn.id}</div>
+      </div>
+    </div>`).join('');
+
+  // Event delegation for card clicks
+  list.onclick = (e) => {
+    const card = e.target.closest('.footnote-card');
+    if (card) selectFootnote(card, footnotes[card.dataset.index]);
+  };
+
+  status.textContent = `Found ${footnotes.length} footnote${footnotes.length !== 1 ? 's' : ''} on the page.`;
+  status.className = 'status-message success';
+  $('main-content').style.display = 'block';
+}
+
+/**
+ * Fetch and parse HTML document
+ */
+async function fetchAndParse(url, token) {
+  const opts = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+  const resp = await fetch(url, opts);
+  if (!resp.ok) throw new Error(`Could not fetch: ${resp.status}`);
+  return new DOMParser().parseFromString(await resp.text(), 'text/html');
 }
 
 /**
  * Scan the page for footnotes block and extract individual footnotes
  */
 async function scanPageForFootnotes() {
-  const statusMessage = document.getElementById('status-message');
-  const mainContent = document.getElementById('main-content');
-  const footnotesList = document.getElementById('footnotes-list');
-
-  statusMessage.textContent = 'Scanning page for footnotes block...';
-  statusMessage.className = 'status-message loading';
+  const status = $('status-message');
+  status.textContent = 'Scanning page for footnotes block...';
+  status.className = 'status-message loading';
 
   try {
-    const { context } = await DA_SDK;
+    const { context, token } = await DA_SDK;
+    if (!context) throw new Error('DA SDK context not available. Please make sure you are in the DA editor.');
+
     pageUrl = `https://main--${context.repo}--${context.org}.aem.page${context.path}`;
 
-    const response = await fetch(pageUrl);
-    if (!response.ok) {
-      throw new Error('Could not fetch preview page');
-    }
+    const doc = token
+      ? await fetchAndParse(`https://admin.da.live/source/${context.org}/${context.repo}${context.path}.html`, token)
+      : await fetchAndParse(pageUrl);
 
-    const html = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-
-    // Look for footnotes block
-    const footnotesBlock = doc.querySelector('.footnotes, .block.footnotes, [class*="footnotes"]');
-
-    if (!footnotesBlock) {
-      statusMessage.textContent = 'No footnotes block found on this page. Please add a footnotes block first.';
-      statusMessage.className = 'status-message error';
-      return;
-    }
-
-    // Extract individual footnotes
-    // Look for common patterns: ol > li, div with data-footnote, paragraphs, etc.
-    const footnotes = [];
-
-    // Try ordered list items first (most common pattern)
-    const listItems = footnotesBlock.querySelectorAll('ol > li, ul > li');
-    if (listItems.length > 0) {
-      listItems.forEach((item, index) => {
-        const text = item.textContent.trim();
-        const id = item.id || `footnote-${index + 1}`;
-
-        if (text) {
-          footnotes.push({
-            id,
-            text: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
-            fullText: text,
-            index: index + 1,
-          });
-        }
-      });
-    } else {
-      // Fallback: look for paragraphs or divs
-      const items = footnotesBlock.querySelectorAll('p, div[id], [data-footnote]');
-      items.forEach((item, index) => {
-        const text = item.textContent.trim();
-        const id = item.id || item.getAttribute('data-footnote') || `footnote-${index + 1}`;
-
-        if (text && text.length > 10) { // Filter out empty or very short items
-          footnotes.push({
-            id,
-            text: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
-            fullText: text,
-            index: index + 1,
-          });
-        }
-      });
-    }
-
-    if (footnotes.length === 0) {
-      statusMessage.textContent = 'No footnotes found in the footnotes block. Please add footnotes first.';
-      statusMessage.className = 'status-message error';
-      return;
-    }
-
-    // Display footnotes
-    footnotesList.innerHTML = '';
-
-    footnotes.forEach((footnote) => {
-      const footnoteCard = document.createElement('div');
-      footnoteCard.className = 'footnote-card';
-      footnoteCard.innerHTML = `
-        <div class="footnote-number">${footnote.index}</div>
-        <div class="footnote-content">
-          <div class="footnote-text">${footnote.text}</div>
-          <div class="footnote-id">#${footnote.id}</div>
-        </div>
-      `;
-
-      footnoteCard.addEventListener('click', () => {
-        // Remove previous selection
-        document.querySelectorAll('.footnote-card').forEach((card) => {
-          card.classList.remove('selected');
-        });
-
-        // Select this footnote
-        footnoteCard.classList.add('selected');
-        selectedFootnote = footnote;
-
-        // Update reference text with the footnote number
-        document.getElementById('reference-text').value = `[${footnote.index}]`;
-        document.getElementById('reference-title').value = footnote.text;
-
-        updatePreview();
-      });
-
-      footnotesList.appendChild(footnoteCard);
-    });
-
-    statusMessage.textContent = `Found ${footnotes.length} footnote${footnotes.length !== 1 ? 's' : ''} on the page.`;
-    statusMessage.className = 'status-message success';
-    mainContent.style.display = 'block';
-  } catch (error) {
+    displayFootnotes(doc);
+  } catch (err) {
     // eslint-disable-next-line no-console
-    console.error('Error scanning page:', error);
-    statusMessage.textContent = 'Could not scan page. Please preview your page first, then try again.';
-    statusMessage.className = 'status-message error';
+    console.error('Error scanning page:', err);
+    status.textContent = `Could not scan page: ${err.message}. Make sure you are logged in to DA.`;
+    status.className = 'status-message error';
   }
 }
 
@@ -193,50 +170,34 @@ async function scanPageForFootnotes() {
 async function insertFootnoteReference() {
   if (!selectedFootnote) return;
 
-  const referenceText = document.getElementById('reference-text').value.trim() || `[${selectedFootnote.index}]`;
-  const referenceTitle = document.getElementById('reference-title').value.trim() || selectedFootnote.text;
-  const backRefId = generateBackRefId();
-
-  // Create the footnote reference HTML
-  // Using sup for superscript styling, with a link to the footnote
-  const referenceHtml = `<sup><a href="${pageUrl}#${selectedFootnote.id}" id="${backRefId}" title="${referenceTitle}" class="footnote-ref">${referenceText}</a></sup>`;
+  const refText = $('reference-text').value.trim() || selectedFootnote.index;
+  const refTitle = $('reference-title').value.trim() || selectedFootnote.text;
+  const html = `<a href="${pageUrl}#${selectedFootnote.id}" title="${refTitle}"><sup>${refText}</sup></a>`;
 
   try {
     const { actions } = await DA_SDK;
-    await actions.sendHTML(referenceHtml);
+    await actions.sendHTML(html);
 
-    // Show success message
-    const statusMessage = document.getElementById('status-message');
-    statusMessage.textContent = `Footnote reference inserted! The reference links to #${selectedFootnote.id}`;
-    statusMessage.className = 'status-message success';
+    $('status-message').textContent = `Footnote reference inserted! Links to #${selectedFootnote.id}`;
+    $('status-message').className = 'status-message success';
 
-    // Optionally close the plugin after insertion
-    // Commenting out to allow multiple insertions
-    // actions.closeLibrary();
+    await actions.closeLibrary();
 
-    // Reset selection for next insertion
-    document.querySelectorAll('.footnote-card').forEach((card) => {
-      card.classList.remove('selected');
-    });
+    document.querySelectorAll('.footnote-card').forEach((c) => c.classList.remove('selected'));
     selectedFootnote = null;
     updatePreview();
-  } catch (error) {
+  } catch (err) {
     // eslint-disable-next-line no-console
-    console.error('Error inserting reference:', error);
-    const statusMessage = document.getElementById('status-message');
-    statusMessage.textContent = 'Failed to insert reference. Please try again.';
-    statusMessage.className = 'status-message error';
+    console.error('Error inserting reference:', err);
+    $('status-message').textContent = 'Failed to insert reference. Please try again.';
+    $('status-message').className = 'status-message error';
   }
 }
 
-/**
- * Initialize the plugin
- */
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('scan-page').addEventListener('click', scanPageForFootnotes);
-  document.getElementById('insert-reference').addEventListener('click', insertFootnoteReference);
-
-  // Update preview when reference text or title changes
-  document.getElementById('reference-text').addEventListener('input', updatePreview);
-  document.getElementById('reference-title').addEventListener('input', updatePreview);
+  $('insert-reference').addEventListener('click', insertFootnoteReference);
+  $('reference-text').addEventListener('input', updatePreview);
+  $('reference-title').addEventListener('input', updatePreview);
+  scanPageForFootnotes();
 });

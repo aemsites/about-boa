@@ -20,14 +20,13 @@
       </div>
 
       <div class="scan-section">
-        <button id="scan-page" type="button" class="button secondary" aria-describedby="status-message">Scan Page for Footnotes</button>
         <div id="status-message" class="status-message"></div>
       </div>
       
       <div id="main-content" class="main-content" style="display: none;">
         <div class="two-column-layout">
           <div class="selection-column" role="region" aria-labelledby="selection-heading">
-            <h3 id="selection-heading">Available Footnotes:</h3>
+            <h3 id="selection-heading">Select a Footnote to Create a Reference:</h3>
             <div id="footnotes-list" class="footnotes-list" role="group" aria-label="Available footnotes"></div>
           </div>
           
@@ -43,7 +42,7 @@
               <div id="reference-options" class="reference-options" style="display: none;">
                 <div class="form-group">
                   <label for="reference-text">Reference Text (visible in content):</label>
-                  <input type="text" id="reference-text" placeholder="e.g., [1], *, †, or custom text" value="[1]">
+                  <input type="text" id="reference-text" placeholder="e.g., [1], *, †, or custom text" value="1">
                   <small>This is what appears in your content where you insert the reference</small>
                 </div>
                 
