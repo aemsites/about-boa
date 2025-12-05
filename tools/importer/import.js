@@ -761,6 +761,8 @@ function transformFootnotes(main, document) {
       currentGroup = [curr];
     }
   }
+
+  currentGroup.forEach((el) => el.querySelectorAll('a.foot-note_link')?.forEach((link) => link.remove()));
   groups.push(currentGroup);
 
   // Create a block for each group of adjacent footnotes
