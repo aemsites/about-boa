@@ -739,6 +739,92 @@ function transformVideo(main, document) {
   });
 }
 
+function transformFootnotes(main, document) {
+  const footnotes = [...main.querySelectorAll('.aem-wrap--footnote')];
+  if (footnotes.length === 0) return;
+
+  // Group adjacent footnotes
+  const groups = [];
+  let currentGroup = [footnotes[0]];
+
+  for (let i = 1; i < footnotes.length; i += 1) {
+    const prev = footnotes[i - 1];
+    const curr = footnotes[i];
+
+    prev.querySelector('a.foot-note_link')?.remove();
+    curr.querySelector('a.foot-note_link')?.remove();
+
+    if (prev.nextElementSibling === curr) {
+      currentGroup.push(curr);
+    } else {
+      groups.push(currentGroup);
+      currentGroup = [curr];
+    }
+  }
+  groups.push(currentGroup);
+
+  // Create a block for each group of adjacent footnotes
+  groups.forEach((group) => {
+    const cells = group.map((el) => [el.cloneNode(true)]);
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'footnotes',
+      cells,
+    });
+
+    group[0].replaceWith(block);
+    group.slice(1).forEach((el) => el.remove());
+  });
+}
+
+function transformFootnotesBacklinks(main, document) {
+  main.querySelectorAll('a[href*="#footnote-"]').forEach((link) => {
+    // Remove accessibility-hidden spans
+    link.querySelector('.accessibility-hidden')?.remove();
+
+    const text = link.textContent.trim();
+    const match = text.match(/^(\d+)(.*)$/);
+    const num = match ? match[1] : text;
+    const punct = match ? match[2].trim() : '';
+
+    const supEl = document.createElement('sup');
+    supEl.textContent = num;
+    link.textContent = '';
+    link.appendChild(supEl);
+
+    // Handle parent <sup> - unwrap the link from it
+    const parent = link.parentElement;
+    if (parent && parent.tagName === 'SUP') {
+      parent.before(link);
+
+      if (punct) {
+        const punctSup = document.createElement('sup');
+        punctSup.textContent = punct;
+        link.after(punctSup);
+      }
+
+      if (!parent.textContent.trim() && parent.querySelectorAll('a').length === 0) {
+        parent.remove();
+      }
+    } else if (punct) {
+      // Add punctuation as separate <sup> if not in a parent sup
+      const punctSup = document.createElement('sup');
+      punctSup.textContent = punct;
+      link.after(punctSup);
+    }
+  });
+
+  main.querySelectorAll('sup').forEach((sup) => {
+    // If sup only contains text (punctuation), keep it
+    if (sup.children.length === 0 && sup.textContent.trim()) {
+      return;
+    }
+    // If sup is empty, remove it
+    if (!sup.textContent.trim()) {
+      sup.remove();
+    }
+  });
+}
+
 /**
  * Sanitize and normalize a URL path
  */
@@ -777,6 +863,8 @@ function getTransforms() {
     transformLocator,
     transformSocialShare,
     transformVideo,
+    transformFootnotes,
+    transformFootnotesBacklinks,
     // more block transformations here
   ];
 }
