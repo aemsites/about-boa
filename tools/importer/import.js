@@ -780,6 +780,12 @@ function transformFootnotesBacklinks(main, document) {
   main.querySelectorAll('a[href*="#footnote-"]').forEach((link) => {
     // Remove accessibility-hidden spans
     link.querySelector('.accessibility-hidden')?.remove();
+    if (link.previousElementSibling?.classList.contains('accessibility-hidden')) {
+      link.previousElementSibling.remove();
+    }
+    if (link.nextElementSibling?.classList.contains('accessibility-hidden')) {
+      link.nextElementSibling.remove();
+    }
 
     const text = link.textContent.trim();
     const match = text.match(/^(\d+)(.*)$/);
