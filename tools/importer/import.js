@@ -151,7 +151,7 @@ function transformCarousels(main, document) {
     el.replaceWith(block);
   });
 
-  main.querySelectorAll('.aem-wrap--carousel').forEach((el) => {
+  main.querySelectorAll('.aem-wrap--carousel:not(:has(.aem-wrap--content-card))').forEach((el) => {
     const cells = [];
     const variants = [];
     const items = el.querySelectorAll('.uc-carousel__item');
@@ -739,6 +739,165 @@ function transformVideo(main, document) {
   });
 }
 
+function transformModalHeader(main, document) {
+  // Find the first uc-layout__grid that is a direct child of main in the modal content
+  const modalContent = main.querySelector('.modal-content, .uc-modal__content');
+  if (!modalContent) return;
+
+  const layout = main.querySelector('.uc-layout__grid:has(.aem-wrap--simple-image)');
+  let block;
+  let target;
+
+  if (layout) {
+    block = WebImporter.Blocks.createBlock(document, {
+      name: 'modal-header',
+      cells: [createRowFromSelectors(layout, '.aem-wrap--simple-image img', '.uc-layout__grid-cell:nth-child(2)')],
+    });
+    target = layout;
+  } else {
+    const gridCell = main.querySelector('.uc-layout__grid-cell:has(.aem-wrap--simple-image)');
+    if (gridCell) {
+      const img = gridCell.querySelector('.aem-wrap--simple-image img');
+      block = WebImporter.Blocks.createBlock(document, {
+        name: 'modal-header',
+        cells: [[img]],
+      });
+      target = gridCell.querySelector('.aem-wrap--simple-image');
+    }
+  }
+
+  if (block && target) {
+    target.replaceWith(block);
+  }
+}
+
+function transformQuote(main, document) {
+  main.querySelectorAll('.aem-wrap--quote').forEach((el) => {
+    const variants = [];
+    const cells = [];
+    if (el.querySelector('.quote--border-bottom')) {
+      variants.push('border-bottom');
+    }
+
+    if (el.querySelector('.quote--border-top')) {
+      variants.push('border-top');
+    }
+
+    if (el.querySelector('.quote--red-variation')) {
+      variants.push('red');
+    }
+
+    [...el.querySelector('blockquote')?.children || []].forEach((child) => {
+      if (child.textContent.trim() !== '') {
+        cells.push([child.cloneNode(true)]);
+      }
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'quote',
+      variants,
+      cells,
+    });
+    el.replaceWith(block);
+  });
+}
+
+function transformAccordion(main, document) {
+  main.querySelectorAll('.aem-wrap--accordion').forEach((el) => {
+    // Check for nested accordion
+    // Check for other nested blocks like media-kaltura, etc.
+    const isNestedAccordion = el.querySelector('.aem-wrap--media-kaltura');
+    if (isNestedAccordion) {
+      const wrapper = document.createElement('div');
+
+      const startBlock = WebImporter.Blocks.createBlock(document, {
+        name: 'nested-accordion',
+        cells: [['heading', 'h2']],
+      });
+      wrapper.appendChild(startBlock);
+
+      el.querySelectorAll('uc-accordion-item').forEach((item) => {
+        const button = item.querySelector('.uc-accordion__button');
+        if (!button) return;
+        const heading = document.createElement('h2');
+        heading.textContent = button.textContent.trim();
+        wrapper.appendChild(heading);
+
+        const content = item.querySelector('.uc-accordion-item__content');
+        wrapper.appendChild(content);
+      });
+
+      const endBlock = WebImporter.Blocks.createBlock(document, {
+        name: 'nested-accordion',
+        cells: [['']],
+      });
+      wrapper.appendChild(endBlock);
+
+      el.replaceWith(wrapper);
+    } else {
+      const block = WebImporter.Blocks.createBlock(document, {
+        name: 'accordion',
+        cells: [[el.cloneNode(true)]],
+      });
+      el.replaceWith(block);
+    }
+  });
+}
+
+function transformContentCards(main, document) {
+  main.querySelectorAll('.aem-wrap--content-card-container, .aem-wrap--carousel:has(.aem-wrap--content-card)').forEach((el) => {
+    const contentCards = el.querySelectorAll('.aem-wrap--content-card');
+    const cells = [];
+    const variants = [];
+
+    if (el.querySelector('.uc-carousel')) {
+      variants.push('carousel', 'light');
+    }
+
+    if (el.querySelector('[cardwidth="10"]')) {
+      variants.push('grid');
+    }
+
+    contentCards.forEach((card) => {
+      const img = card.querySelector('.uc-background__container--image img') || '';
+      if (img) {
+        const srcAttr = img.getAttribute('src');
+        if (srcAttr) {
+          let newSrc;
+          if (srcAttr.startsWith('http://') || srcAttr.startsWith('https://')) {
+            newSrc = srcAttr.replace(/^https?:\/\/[^/]+/, 'https://about.bankofamerica.com');
+          } else if (srcAttr.startsWith('//')) {
+            newSrc = srcAttr.replace(/^\/\/[^/]+/, 'https://about.bankofamerica.com');
+          } else {
+            const cleanSrc = srcAttr.startsWith('/') ? srcAttr : `/${srcAttr}`;
+            newSrc = `https://about.bankofamerica.com${cleanSrc}`;
+          }
+          img.setAttribute('src', newSrc);
+        }
+      }
+
+      const content = card.querySelector('.uc-card__container-text') || '';
+      const modalId = card.querySelector('a[data-uc-modal-id]')?.getAttribute('data-uc-modal-id');
+      if (modalId) {
+        const link = document.createElement('a');
+        link.classList.add('modal-link');
+        link.setAttribute('href', `#${modalId}`);
+        link.textContent = modalId;
+        content.appendChild(link);
+      }
+
+      cells.push([img, content?.cloneNode(true)]);
+    });
+
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'content-card',
+      variants,
+      cells,
+    });
+    el.replaceWith(block);
+  });
+}
+
 /**
  * Sanitize and normalize a URL path
  */
@@ -768,6 +927,7 @@ function getTransforms() {
     transformSections,
     transformNotchedImage,
     transformArticleMasthead,
+    transformAccordion, // should be called before transformVideo since video is nested in accordion
     transformCarousels,
     transformHighlightBlock,
     transformStoryBlock,
@@ -777,6 +937,8 @@ function getTransforms() {
     transformLocator,
     transformSocialShare,
     transformVideo,
+    transformQuote,
+    transformContentCards,
     // more block transformations here
   ];
 }
@@ -796,7 +958,7 @@ function createModalDocument(ucModal, modalId, document) {
   modalMain.appendChild(contentDiv);
 
   // Apply all transformations
-  getTransforms().forEach((transform) => {
+  [...getTransforms(), transformModalHeader].forEach((transform) => {
     try {
       transform(modalMain, modalDoc);
     } catch {
@@ -817,20 +979,10 @@ function createModalDocument(ucModal, modalId, document) {
  * Replace modal elements with links to separate modal pages
  */
 function replaceModalsWithLinks(document, modalPath, modalId) {
-  document.querySelectorAll('.aem-wrap--modal').forEach((el) => {
-    const ucModal = el.querySelector('uc-modal');
-    if (ucModal?.id !== modalId) return;
-
-    const link = document.createElement('a');
-    link.href = modalPath;
-    link.textContent = modalId.replace(/-/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
-    link.className = 'button';
-
-    const wrapper = document.createElement('p');
-    wrapper.classList.add('button-wrapper');
-    wrapper.appendChild(link);
-
-    el.replaceWith(wrapper);
+  document.querySelectorAll(`a.modal-link[href^="#${modalId}"]`).forEach((el) => {
+    const linkSrc = modalPath.startsWith('/') ? `https://main--about-boa--aemsites.aem.page${modalPath}` : modalPath;
+    el.href = linkSrc;
+    el.textContent = linkSrc;
   });
 }
 
