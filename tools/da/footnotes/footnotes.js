@@ -22,6 +22,17 @@ const escapeHtml = (str) => String(str)
  */
 const truncate = (text, max = 100) => (text.length > max ? `${text.substring(0, max)}...` : text);
 
+const NUMBER_WORDS = [
+  '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen',
+  'eighteen', 'nineteen', 'twenty',
+];
+
+/**
+ * Converts a number to its word equivalent (1 → "one", 2 → "two", etc.)
+ */
+const toWordNumber = (num) => NUMBER_WORDS[num] || String(num);
+
 /**
  * Create footnote object from element
  */
@@ -29,7 +40,7 @@ const createFootnote = (el, index) => {
   const text = el.textContent.trim();
   if (!text || (el.tagName === 'P' && text.length <= 10)) return null;
   return {
-    id: el.id || el.getAttribute('data-footnote') || `footnote-${index + 1}`,
+    id: el.id || el.getAttribute('data-footnote') || `footnote-${toWordNumber(index + 1)}`,
     text: truncate(text),
     fullText: text,
     index: index + 1,
@@ -84,7 +95,7 @@ function updatePreview() {
     <div class="preview-box">
       <div class="preview-label">Reference will look like:</div>
       <div class="preview-example">
-        <a href="${pageUrl}#${footnoteId}" title="${refTitle}"><sup>${refText}</sup></a>
+        <a href="#${footnoteId}" title="${refTitle}"><sup>${refText}</sup></a>
       </div>
       <div class="preview-details">
         <strong>Links to:</strong> ${footnoteText}
@@ -188,7 +199,7 @@ async function insertFootnoteReference() {
   const refText = escapeHtml($('reference-text').value.trim() || selectedFootnote.index);
   const refTitle = escapeHtml($('reference-title').value.trim() || selectedFootnote.text);
   const footnoteId = escapeHtml(selectedFootnote.id);
-  const html = `<a href="${pageUrl}#${footnoteId}" title="${refTitle}"><sup>${refText}</sup></a>`;
+  const html = `<a href="#${footnoteId}" title="${refTitle}"><sup>${refText}</sup></a>`;
 
   try {
     const { actions } = await DA_SDK;

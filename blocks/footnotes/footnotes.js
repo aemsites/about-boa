@@ -1,24 +1,46 @@
 import { enableSmoothAnchorScroll } from '../../scripts/utils.js';
 
+const NUMBER_WORDS = [
+  '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen',
+  'eighteen', 'nineteen', 'twenty',
+];
+
+/**
+ * Converts a number to its word equivalent (1 → "one", 2 → "two", etc.)
+ * Falls back to numeric string for numbers > 20
+ * @param {number} num The number to convert
+ * @returns {string} The word representation
+ */
+const toWordNumber = (num) => NUMBER_WORDS[num] || String(num);
+
 /**
  * Adds back-links from footnotes to their references in the document
  * @param {Element} block The footnotes block element
  */
 function addBackLinks(block) {
-  block.querySelectorAll('li[id]').forEach((footnote) => {
+  block.querySelectorAll('li[id]').forEach((footnote, index) => {
     const { id } = footnote;
     const numberEl = footnote.querySelector('.footnote-number');
     if (!numberEl) return;
 
-    // Find references to this footnote (not inside the block itself)
-    const references = [...document.querySelectorAll(`a[href$="#${id}"]`)]
+    const num = index + 1;
+    // Find references - check both word format (footnote-one) and numeric format (footnote-1)
+    const wordId = `footnote-${toWordNumber(num)}`;
+    const numericId = `footnote-${num}`;
+    const selectors = [id, wordId, numericId]
+      .filter((s, i, arr) => arr.indexOf(s) === i)
+      .map((s) => `a[href$="#${s}"]`)
+      .join(', ');
+
+    const references = [...document.querySelectorAll(selectors)]
       .filter((ref) => !block.contains(ref));
 
     if (references.length === 0) return;
 
     // Auto-generate IDs for references that don't have one
-    references.forEach((ref, i) => {
-      if (!ref.id) ref.id = `fnref-${id}-${i + 1}`;
+    references.forEach((ref) => {
+      if (!ref.id) ref.id = `${id}_back`;
     });
 
     // Make the number a back-link to the first reference
@@ -47,9 +69,9 @@ function createFootnoteItem(source, index) {
   const li = source.tagName === 'LI' ? source : document.createElement('li');
   const num = index + 1;
 
-  // Set ID if not present
+  // Set ID if not present (format: footnote-one, footnote-two, etc.)
   if (!li.id) {
-    li.id = source.id || source.querySelector('[id]')?.id || `footnote-${num}`;
+    li.id = source.id || source.querySelector('[id]')?.id || `footnote-${toWordNumber(num)}`;
   }
 
   // Create number element
