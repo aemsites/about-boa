@@ -8,6 +8,16 @@ let pageUrl = '';
 const $ = (id) => document.getElementById(id);
 
 /**
+ * Escape HTML special characters to prevent XSS
+ */
+const escapeHtml = (str) => String(str)
+  .replace(/&/g, '&amp;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;')
+  .replace(/'/g, '&#39;');
+
+/**
  * Truncate text with ellipsis
  */
 const truncate = (text, max = 100) => (text.length > max ? `${text.substring(0, max)}...` : text);
@@ -65,18 +75,20 @@ function updatePreview() {
   options.style.display = 'block';
   btn.disabled = false;
 
-  const refText = $('reference-text').value.trim() || selectedFootnote.index;
-  const refTitle = $('reference-title').value.trim() || selectedFootnote.text;
+  const refText = escapeHtml($('reference-text').value.trim() || selectedFootnote.index);
+  const refTitle = escapeHtml($('reference-title').value.trim() || selectedFootnote.text);
+  const footnoteId = escapeHtml(selectedFootnote.id);
+  const footnoteText = escapeHtml(selectedFootnote.text);
 
   preview.innerHTML = `
     <div class="preview-box">
       <div class="preview-label">Reference will look like:</div>
       <div class="preview-example">
-        <a href="${pageUrl}#${selectedFootnote.id}" title="${refTitle}"><sup>${refText}</sup></a>
+        <a href="${pageUrl}#${footnoteId}" title="${refTitle}"><sup>${refText}</sup></a>
       </div>
       <div class="preview-details">
-        <strong>Links to:</strong> ${selectedFootnote.text}
-        ${refTitle !== selectedFootnote.text ? `<br><strong>Hover text:</strong> ${refTitle}` : ''}
+        <strong>Links to:</strong> ${footnoteText}
+        ${refTitle !== footnoteText ? `<br><strong>Hover text:</strong> ${refTitle}` : ''}
       </div>
     </div>`;
 }
@@ -91,6 +103,9 @@ function selectFootnote(card, footnote) {
   $('reference-text').value = footnote.index;
   $('reference-title').value = footnote.text;
   updatePreview();
+
+  // Scroll to Create Reference section
+  $('action-heading').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 /**
@@ -111,8 +126,8 @@ function displayFootnotes(doc) {
     <div class="footnote-card" data-index="${fn.index - 1}">
       <div class="footnote-number">${fn.index}</div>
       <div class="footnote-content">
-        <div class="footnote-text">${fn.text}</div>
-        <div class="footnote-id">#${fn.id}</div>
+        <div class="footnote-text">${escapeHtml(fn.text)}</div>
+        <div class="footnote-id">#${escapeHtml(fn.id)}</div>
       </div>
     </div>`).join('');
 
@@ -170,9 +185,10 @@ async function scanPageForFootnotes() {
 async function insertFootnoteReference() {
   if (!selectedFootnote) return;
 
-  const refText = $('reference-text').value.trim() || selectedFootnote.index;
-  const refTitle = $('reference-title').value.trim() || selectedFootnote.text;
-  const html = `<a href="${pageUrl}#${selectedFootnote.id}" title="${refTitle}"><sup>${refText}</sup></a>`;
+  const refText = escapeHtml($('reference-text').value.trim() || selectedFootnote.index);
+  const refTitle = escapeHtml($('reference-title').value.trim() || selectedFootnote.text);
+  const footnoteId = escapeHtml(selectedFootnote.id);
+  const html = `<a href="${pageUrl}#${footnoteId}" title="${refTitle}"><sup>${refText}</sup></a>`;
 
   try {
     const { actions } = await DA_SDK;

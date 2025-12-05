@@ -1,3 +1,5 @@
+import { enableSmoothAnchorScroll } from '../../scripts/utils.js';
+
 /**
  * Adds back-links from footnotes to their references in the document
  * @param {Element} block The footnotes block element
@@ -23,9 +25,12 @@ function addBackLinks(block) {
     const backlink = document.createElement('a');
     backlink.href = `#${references[0].id}`;
     backlink.className = 'footnote-backlink';
-    backlink.textContent = numberEl.textContent;
     backlink.title = 'Return to reference';
     backlink.setAttribute('aria-label', 'Return to reference');
+
+    const backlinkText = document.createElement('sup');
+    backlinkText.textContent = numberEl.textContent;
+    backlink.append(backlinkText);
 
     numberEl.textContent = '';
     numberEl.append(backlink);
@@ -50,17 +55,17 @@ function createFootnoteItem(source, index) {
   // Create number element
   const numberEl = document.createElement('span');
   numberEl.className = 'footnote-number';
-  numberEl.textContent = `${num}.`;
+  numberEl.textContent = `${num}`;
 
   // Wrap content
   const content = document.createElement('span');
   content.className = 'footnote-content';
 
-  // Move children to content wrapper
+  // Move children to content wrapper (use firstChild to include text nodes)
   if (source.tagName === 'LI') {
     while (li.firstChild) content.append(li.firstChild);
   } else {
-    while (source.firstElementChild) content.append(source.firstElementChild);
+    while (source.firstChild) content.append(source.firstChild);
   }
 
   li.append(numberEl, content);
@@ -86,6 +91,6 @@ export default function decorate(block) {
 
   block.replaceChildren(ol);
 
-  // Add back-links after DOM is ready
-  setTimeout(() => addBackLinks(block), 100);
+  addBackLinks(block);
+  enableSmoothAnchorScroll(block);
 }

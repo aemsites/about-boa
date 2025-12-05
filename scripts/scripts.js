@@ -14,7 +14,7 @@ import {
   buildBlock,
   toClassName,
 } from './aem.js';
-import { rewriteLinkUrl } from './utils.js';
+import { rewriteLinkUrl, enableSmoothAnchorScroll } from './utils.js';
 import { replacePlaceholders } from './placeholders.js';
 
 const { searchParams, origin } = new URL(window.location.href);
@@ -122,6 +122,7 @@ function mergeButtonContainers(main) {
 
 function decorateLinks(main) {
   main.querySelectorAll('a').forEach(rewriteLinkUrl);
+  enableSmoothAnchorScroll(main);
 }
 
 function normalizeLists(main) {
