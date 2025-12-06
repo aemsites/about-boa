@@ -503,9 +503,9 @@ function transformIconList(main, document) {
 
             if (iconClass) {
               const iconName = iconClass.replace('unity-icon-', '');
-              // Create span with icon reference syntax (same as convertIcons rule)
+              // Create span with icomoon icon reference syntax
               icon = document.createElement('span');
-              icon.innerHTML = `:${iconName}:`;
+              icon.innerHTML = `:icomoon-${iconName}:`;
             }
           }
         }
@@ -563,9 +563,9 @@ function transformIconList(main, document) {
 
             if (iconClass) {
               const iconName = iconClass.replace('uc-icon-', '');
-              // Create span with icon reference syntax (same as convertIcons rule)
+              // Create span with icomoon icon reference syntax
               icon = document.createElement('span');
-              icon.innerHTML = `:${iconName}:`;
+              icon.innerHTML = `:icomoon-${iconName}:`;
             }
           }
         }
