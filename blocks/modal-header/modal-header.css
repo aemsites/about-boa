@@ -1,0 +1,86 @@
+.modal-header {
+  margin-block-start: 0;
+  margin-inline: calc(var(--spacing-l) * -1);
+}
+
+/* Row container - flexbox for responsive layout */
+.modal-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+
+/* Image column */
+.modal-header .modal-header-image {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.modal-header .modal-header-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-header .modal-header-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Content column */
+.modal-header .modal-header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--spacing-m);
+  width: 100%;
+}
+
+/* Inline images in content */
+.modal-header .modal-header-content picture {
+  display: block;
+  margin: var(--spacing-s) 0;
+}
+
+.modal-header .modal-header-content picture img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* CTA Buttons */
+.modal-header .modal-header-content a.button {
+  background-color: var(--color-brand-red);
+  color: var(--color-white);
+}
+
+.modal-header .modal-header-content a.button:hover {
+  background-color: var(--color-red-regal);
+}
+
+@media (width >= 900px) {
+  .modal-header {
+    margin-inline: calc(var(--spacing-xl) * -1);
+  }
+
+  .modal-header > div {
+    flex-direction: row;
+    gap: var(--spacing-xxl);
+  }
+
+  .modal-header .modal-header-image {
+    width: 50%;
+  }
+
+  .modal-header .modal-header-content {
+    width: 50%;
+    padding: var(--spacing-xl);
+  }
+
+  /* Single column mode - image takes full width */
+  .modal-header.single-column .modal-header-image {
+    width: 100%;
+  }
+}
+
