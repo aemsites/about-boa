@@ -1,7 +1,7 @@
 import {
   loadHeader,
   loadFooter,
-  decorateIcons,
+  decorateIcon,
   decorateSections,
   decorateBlock,
   decorateBlocks,
@@ -18,6 +18,16 @@ import { rewriteLinkUrl, enableSmoothAnchorScroll } from './utils.js';
 import { replacePlaceholders } from './placeholders.js';
 
 const { searchParams, origin } = new URL(window.location.href);
+
+function decorateIcons(element) {
+  const icons = element.querySelectorAll('span.icon');
+  icons.forEach((span) => {
+    const isIcomoon = [...span.classList].some((c) => c.startsWith('icon-icomoon-'));
+    if (!isIcomoon) {
+      decorateIcon(span);
+    }
+  });
+}
 
 /**
  * load fonts.css and set a session storage flag
@@ -217,6 +227,12 @@ async function loadLazy(doc) {
   autolinkModals(doc);
 
   const main = doc.querySelector('main');
+
+  // load icomoon icon font/css if needed
+  if (main.querySelector('span.icon[class*="icon-icomoon-"]')) {
+    loadCSS(`${window.hlx.codeBasePath}/styles/icomoon-icons.css`);
+  }
+
   await loadSections(main);
   await templateModule.loadLazy(main);
 
