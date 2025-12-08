@@ -23,3 +23,20 @@
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
   text-wrap: balance;
 }
+
+/* Global styling for footnote references in content */
+a[href*="#footnote-"]:not(.footnotes a) {
+  color: var(--link-color);
+  font-size: var(--body-font-size-xs);
+  text-decoration: underline;
+  text-underline-offset: calc(var(--spacing-xxs) * -1);
+  line-height: 0;
+  transition: color 0.2s ease;
+  position: relative;
+  top: calc(var(--spacing-xxs) * -1);
+}
+
+a[href*="#footnote-"]:not(.footnotes a):hover {
+  color: var(--link-hover-color);
+  text-decoration: none;
+}

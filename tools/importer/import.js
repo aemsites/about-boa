@@ -899,6 +899,161 @@ function transformContentCards(main, document) {
 }
 
 /**
+ * Word to number mapping for converting word-based footnote IDs to numeric
+ */
+const WORD_TO_NUMBER = {
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+  ten: 10,
+  eleven: 11,
+  twelve: 12,
+  thirteen: 13,
+  fourteen: 14,
+  fifteen: 15,
+  sixteen: 16,
+  seventeen: 17,
+  eighteen: 18,
+  nineteen: 19,
+  twenty: 20,
+};
+
+/**
+ * Convert word-based footnote ID to numeric format
+ * e.g., "footnote-one" → "footnote-1", "footnote-twenty" → "footnote-20"
+ */
+function convertWordIdToNumeric(id) {
+  if (!id) return id;
+  const match = id.match(/^footnote-(\w+)$/);
+  if (match) {
+    const word = match[1].toLowerCase();
+    const num = WORD_TO_NUMBER[word];
+    if (num) {
+      return `footnote-${num}`;
+    }
+  }
+  return id;
+}
+
+function transformFootnotes(main, document) {
+  const footnotes = [...main.querySelectorAll('.aem-wrap--footnote')];
+  if (footnotes.length === 0) return;
+
+  // Group adjacent footnotes
+  const groups = [];
+  let currentGroup = [footnotes[0]];
+
+  for (let i = 1; i < footnotes.length; i += 1) {
+    const prev = footnotes[i - 1];
+    const curr = footnotes[i];
+
+    prev.querySelector('a.foot-note_link')?.remove();
+    curr.querySelector('a.foot-note_link')?.remove();
+
+    if (prev.nextElementSibling === curr) {
+      currentGroup.push(curr);
+    } else {
+      groups.push(currentGroup);
+      currentGroup = [curr];
+    }
+  }
+
+  currentGroup.forEach((el) => el.querySelectorAll('a.foot-note_link')?.forEach((link) => link.remove()));
+  groups.push(currentGroup);
+
+  // Create a block for each group of adjacent footnotes
+  groups.forEach((group) => {
+    const cells = group.map((el) => {
+      const clone = el.cloneNode(true);
+      // Convert word-based IDs to numeric
+      clone.querySelectorAll('[id]').forEach((idEl) => {
+        idEl.id = convertWordIdToNumeric(idEl.id);
+      });
+      return [clone];
+    });
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'footnotes',
+      cells,
+    });
+
+    group[0].replaceWith(block);
+    group.slice(1).forEach((el) => el.remove());
+  });
+}
+
+function transformFootnotesBacklinks(main, document) {
+  main.querySelectorAll('a[href*="#footnote-"]').forEach((link) => {
+    // Convert word-based href to numeric
+    const href = link.getAttribute('href');
+    if (href) {
+      const hashIndex = href.indexOf('#footnote-');
+      if (hashIndex !== -1) {
+        const idPart = href.substring(hashIndex + 1);
+        const newId = convertWordIdToNumeric(idPart);
+        link.setAttribute('href', href.substring(0, hashIndex + 1) + newId);
+      }
+    }
+
+    // Remove accessibility-hidden spans
+    link.querySelector('.accessibility-hidden')?.remove();
+    if (link.previousElementSibling?.classList.contains('accessibility-hidden')) {
+      link.previousElementSibling.remove();
+    }
+    if (link.nextElementSibling?.classList.contains('accessibility-hidden')) {
+      link.nextElementSibling.remove();
+    }
+
+    const text = link.textContent.trim();
+    const match = text.match(/^(\d+)(.*)$/);
+    const num = match ? match[1] : text;
+    const punct = match ? match[2].trim() : '';
+
+    const supEl = document.createElement('sup');
+    supEl.textContent = num;
+    link.textContent = '';
+    link.appendChild(supEl);
+
+    // Handle parent <sup> - unwrap the link from it
+    const parent = link.parentElement;
+    if (parent && parent.tagName === 'SUP') {
+      parent.before(link);
+
+      if (punct) {
+        const punctSup = document.createElement('sup');
+        punctSup.textContent = punct;
+        link.after(punctSup);
+      }
+
+      if (!parent.textContent.trim() && parent.querySelectorAll('a').length === 0) {
+        parent.remove();
+      }
+    } else if (punct) {
+      // Add punctuation as separate <sup> if not in a parent sup
+      const punctSup = document.createElement('sup');
+      punctSup.textContent = punct;
+      link.after(punctSup);
+    }
+  });
+
+  main.querySelectorAll('sup').forEach((sup) => {
+    // If sup only contains text (punctuation), keep it
+    if (sup.children.length === 0 && sup.textContent.trim()) {
+      return;
+    }
+    // If sup is empty, remove it
+    if (!sup.textContent.trim()) {
+      sup.remove();
+    }
+  });
+}
+
+/**
  * Sanitize and normalize a URL path
  */
 function sanitizePath(path) {
@@ -939,6 +1094,8 @@ function getTransforms() {
     transformVideo,
     transformQuote,
     transformContentCards,
+    transformFootnotes,
+    transformFootnotesBacklinks,
     // more block transformations here
   ];
 }

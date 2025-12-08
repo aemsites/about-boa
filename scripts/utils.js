@@ -62,3 +62,45 @@ export function rewriteLinkUrl(a) {
 
   return a;
 }
+
+/**
+ * Enables smooth scrolling for same-page anchor links
+ * @param {Element} main the main content element
+ */
+export function enableSmoothAnchorScroll(main) {
+  main.querySelectorAll('a[href*="#"]').forEach((anchor) => {
+    const href = anchor.getAttribute('href');
+    if (!href) return;
+
+    // Handle hash-only URLs directly (e.g., "#footnote-1")
+    // These are always same-page references
+    const isHashOnly = href.startsWith('#');
+
+    let hash;
+    let isSamePage;
+
+    if (isHashOnly) {
+      hash = href;
+      isSamePage = true;
+    } else {
+      const url = new URL(anchor.href, window.location.origin);
+      hash = url.hash;
+      isSamePage = url.origin === window.location.origin
+        && url.pathname === window.location.pathname;
+    }
+
+    if (hash && isSamePage) {
+      anchor.addEventListener('click', (e) => {
+        const target = document.getElementById(hash.slice(1));
+        if (target) {
+          e.preventDefault();
+          const headerHeight = document.querySelector('.nav-main')?.offsetHeight || 0;
+          window.scrollTo({
+            top: target.getBoundingClientRect().top + window.scrollY - headerHeight,
+            behavior: 'smooth',
+          });
+        }
+      });
+    }
+  });
+}
