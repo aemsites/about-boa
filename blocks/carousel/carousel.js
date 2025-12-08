@@ -334,8 +334,10 @@ export async function buildCarousel(slidesContainer, settings = {}) {
     infiniteScroll = true,
   } = settings;
 
-  const placeholders = await fetchLangPlaceholders();
-  loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`);
+  const [placeholders] = await Promise.all([
+    fetchLangPlaceholders(),
+    loadCSS(`${window.hlx.codeBasePath}/blocks/carousel/carousel-base.css`),
+  ]);
 
   carouselId += 1;
   const id = `carousel-${carouselId}`;
