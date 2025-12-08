@@ -87,6 +87,32 @@ function addTranscriptControls(player, container, transcriptionHtml) {
   setTimeout(() => clearInterval(checkInterval), 10000);
 }
 
+async function waitForKalturaPlayer() {
+  return new Promise((resolve) => {
+    if (window.KalturaPlayer) {
+      resolve();
+      return;
+    }
+
+    const checkInterval = setInterval(() => {
+      if (window.KalturaPlayer) {
+        clearInterval(checkInterval);
+        resolve();
+      }
+    }, 100);
+
+    // Timeout after 10 seconds
+    setTimeout(() => {
+      clearInterval(checkInterval);
+      if (!window.KalturaPlayer) {
+        // eslint-disable-next-line no-console
+        console.error('Kaltura Player failed to load');
+      }
+      resolve();
+    }, 10000);
+  });
+}
+
 async function loadKalturaPlayer(playerId, entryId, transcriptionHtml, container) {
   const playerElement = document.getElementById(playerId);
 
@@ -101,6 +127,11 @@ async function loadKalturaPlayer(playerId, entryId, transcriptionHtml, container
 
   const scriptUrl = `https://cdnapisec.kaltura.com/p/${KALTURA_PARTNER_ID}/embedPlaykitJs/uiconf_id/${KALTURA_UI_CONF_ID}/langs/en,es`;
   await loadScript(scriptUrl);
+  await waitForKalturaPlayer();
+
+  if (!window.KalturaPlayer) {
+    return;
+  }
 
   const config = {
     targetId: playerId,
@@ -127,7 +158,7 @@ async function loadKalturaPlayer(playerId, entryId, transcriptionHtml, container
  * @param {Element} block - The video block element
  */
 export default async function decorate(block) {
-  const playerId = `kaltura-player-${new Date().getTime()}`;
+  const playerId = `kaltura-player-${Math.random().toString(36).substring(2, 15)}`;
   let entryId = '';
   let transcription = null;
 
