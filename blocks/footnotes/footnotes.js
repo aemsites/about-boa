@@ -1,19 +1,5 @@
 import { enableSmoothAnchorScroll } from '../../scripts/utils.js';
 
-const NUMBER_WORDS = [
-  '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
-  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen',
-  'eighteen', 'nineteen', 'twenty',
-];
-
-/**
- * Converts a number to its word equivalent (1 → "one", 2 → "two", etc.)
- * Falls back to numeric string for numbers > 20
- * @param {number} num The number to convert
- * @returns {string} The word representation
- */
-const toWordNumber = (num) => NUMBER_WORDS[num] || String(num);
-
 /**
  * Adds back-links from footnotes to their references in the document
  * @param {Element} block The footnotes block element
@@ -25,10 +11,9 @@ function addBackLinks(block) {
     if (!numberEl) return;
 
     const num = index + 1;
-    // Find references - check both word format (footnote-one) and numeric format (footnote-1)
-    const wordId = `footnote-${toWordNumber(num)}`;
+    // Find references by footnote ID
     const numericId = `footnote-${num}`;
-    const selectors = [id, wordId, numericId]
+    const selectors = [id, numericId]
       .filter((s, i, arr) => arr.indexOf(s) === i)
       .map((s) => `a[href$="#${s}"]`)
       .join(', ');
@@ -69,9 +54,9 @@ function createFootnoteItem(source, index) {
   const li = source.tagName === 'LI' ? source : document.createElement('li');
   const num = index + 1;
 
-  // Set ID if not present (format: footnote-one, footnote-two, etc.)
+  // Set ID if not present (format: footnote-1, footnote-2, etc.)
   if (!li.id) {
-    li.id = source.id || source.querySelector('[id]')?.id || `footnote-${toWordNumber(num)}`;
+    li.id = source.id || source.querySelector('[id]')?.id || `footnote-${num}`;
   }
 
   // Create number element
@@ -80,7 +65,7 @@ function createFootnoteItem(source, index) {
   numberEl.textContent = `${num}`;
 
   // Wrap content
-  const content = document.createElement('span');
+  const content = document.createElement('div');
   content.className = 'footnote-content';
 
   // Move children to content wrapper (use firstChild to include text nodes)

@@ -1,70 +1,55 @@
-.footnotes {
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-md);
-}
-
-.footnotes-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.footnotes-list > li {
-  display: flex;
-  position: relative;
-  margin-bottom: var(--spacing-sm);
-  font-size: var(--body-font-size-xs);
-  line-height: 1.6;
-  color: var(--text-color);
-}
-
-.footnotes-list > li:last-child {
-  margin-bottom: 0;
-}
-
-.footnote-number {
-  flex-shrink: 0;
-  min-width: 1em;
-  font-size: var(--body-font-size-s);
-}
-
-.footnote-content {
-  flex: 1;
-}
-
-.footnote-backlink {
-  text-decoration: none;
-  color: var(--link-color);
-  transition: color 0.2s ease;
-  position: absolute;
-  top: calc(var(--spacing-xxs) * -1);
-}
-
-.footnote-backlink:hover {
-  color: var(--link-hover-color);
-  text-decoration: underline;
-}
-
-@media (width > 900px) {
+@layer blocks {
   .footnotes {
-    margin-top: var(--spacing-xxl);
-    padding-top: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-md);
   }
-}
 
-/* Global styling for footnote references in content */
-a[href*="#footnote-"]:not(.footnotes a) {
-  color: var(--link-color);
-  font-size: var(--body-font-size-xs);
-  text-decoration: underline;
-  text-underline-offset: calc(var(--spacing-xxs) * -1);
-  line-height: 0;
-  transition: color 0.2s ease;
-  position: relative;
-  top: calc(var(--spacing-xxs) * -1);
-}
+  .footnotes .footnotes-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-a[href*="#footnote-"]:not(.footnotes a):hover {
-  color: var(--link-hover-color);
-  text-decoration: none;
+  .footnotes .footnotes-list > li {
+    display: flex;
+    position: relative;
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--body-font-size-xs);
+    line-height: 1.6;
+    color: var(--text-color);
+  }
+
+  .footnotes .footnotes-list > li:last-child {
+    margin-bottom: 0;
+  }
+
+  .footnotes .footnote-number {
+    flex-shrink: 0;
+    min-width: 1em;
+    font-size: var(--body-font-size-s);
+  }
+
+  .footnotes .footnote-content {
+    flex: 1;
+  }
+
+  .footnotes .footnote-backlink {
+    text-decoration: none;
+    color: var(--link-color);
+    transition: color 0.2s ease;
+    position: absolute;
+    top: calc(var(--spacing-xxs) * -1);
+  }
+
+  .footnotes .footnote-backlink:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+  }
+
+  @media (width > 900px) {
+    .footnotes {
+      margin-top: var(--spacing-xxl);
+      padding-top: var(--spacing-lg);
+    }
+  }
 }

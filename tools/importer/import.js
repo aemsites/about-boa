@@ -898,6 +898,49 @@ function transformContentCards(main, document) {
   });
 }
 
+/**
+ * Word to number mapping for converting word-based footnote IDs to numeric
+ */
+const WORD_TO_NUMBER = {
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+  ten: 10,
+  eleven: 11,
+  twelve: 12,
+  thirteen: 13,
+  fourteen: 14,
+  fifteen: 15,
+  sixteen: 16,
+  seventeen: 17,
+  eighteen: 18,
+  nineteen: 19,
+  twenty: 20,
+};
+
+/**
+ * Convert word-based footnote ID to numeric format
+ * e.g., "footnote-one" → "footnote-1", "footnote-twenty" → "footnote-20"
+ */
+function convertWordIdToNumeric(id) {
+  if (!id) return id;
+  const match = id.match(/^footnote-(\w+)$/);
+  if (match) {
+    const word = match[1].toLowerCase();
+    const num = WORD_TO_NUMBER[word];
+    if (num) {
+      return `footnote-${num}`;
+    }
+  }
+  return id;
+}
+
 function transformFootnotes(main, document) {
   const footnotes = [...main.querySelectorAll('.aem-wrap--footnote')];
   if (footnotes.length === 0) return;
@@ -926,7 +969,14 @@ function transformFootnotes(main, document) {
 
   // Create a block for each group of adjacent footnotes
   groups.forEach((group) => {
-    const cells = group.map((el) => [el.cloneNode(true)]);
+    const cells = group.map((el) => {
+      const clone = el.cloneNode(true);
+      // Convert word-based IDs to numeric
+      clone.querySelectorAll('[id]').forEach((idEl) => {
+        idEl.id = convertWordIdToNumeric(idEl.id);
+      });
+      return [clone];
+    });
     const block = WebImporter.Blocks.createBlock(document, {
       name: 'footnotes',
       cells,
@@ -939,6 +989,17 @@ function transformFootnotes(main, document) {
 
 function transformFootnotesBacklinks(main, document) {
   main.querySelectorAll('a[href*="#footnote-"]').forEach((link) => {
+    // Convert word-based href to numeric
+    const href = link.getAttribute('href');
+    if (href) {
+      const hashIndex = href.indexOf('#footnote-');
+      if (hashIndex !== -1) {
+        const idPart = href.substring(hashIndex + 1);
+        const newId = convertWordIdToNumeric(idPart);
+        link.setAttribute('href', href.substring(0, hashIndex + 1) + newId);
+      }
+    }
+
     // Remove accessibility-hidden spans
     link.querySelector('.accessibility-hidden')?.remove();
     if (link.previousElementSibling?.classList.contains('accessibility-hidden')) {
