@@ -349,8 +349,25 @@ export default async function decorate(block) {
   const placeholders = await fetchLangPlaceholders();
 
   // Get no-results fragment path from block content or use default
-  const link = block.querySelector('a[href]');
-  const noResultsFragmentPath = link ? link.getAttribute('href') : DEFAULT_NO_RESULTS_FRAGMENT;
+  // The link may have been auto-blocked as a fragment, so check for both cases
+  let noResultsFragmentPath = DEFAULT_NO_RESULTS_FRAGMENT;
+
+  // Check for auto-blocked fragment first (link was converted to fragment block)
+  const fragmentBlock = block.querySelector('.fragment');
+  if (fragmentBlock) {
+    const fragmentLink = fragmentBlock.querySelector('a[href]');
+    if (fragmentLink) {
+      noResultsFragmentPath = fragmentLink.getAttribute('href');
+    }
+    // Remove the fragment block to prevent it from trying to load
+    fragmentBlock.remove();
+  } else {
+    // Check for direct link (not auto-blocked)
+    const link = block.querySelector('a[href]');
+    if (link) {
+      noResultsFragmentPath = link.getAttribute('href');
+    }
+  }
 
   // Get search parameters from URL
   const query = searchParams.get('q') || '';
