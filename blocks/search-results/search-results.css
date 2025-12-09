@@ -9,12 +9,15 @@ main .search-results {
 main .search-results .search-results-search-bar {
   background-color: #012169;
   margin-inline: calc(-50vw + 50%);
-  padding-block: var(--spacing-xl);
+  padding-block: var(--spacing-xxl, 3rem);
   padding-inline: calc(50vw - 50%);
   margin-block-end: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
 }
 
 main .search-results .search-results-search-bar form {
+  width: 100%;
   max-width: 400px;
 }
 
