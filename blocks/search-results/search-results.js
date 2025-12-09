@@ -122,6 +122,49 @@ function createResultItem(result) {
 }
 
 /**
+ * Get visible page numbers for pagination
+ * @param {number} currentPage - current page
+ * @param {number} totalPages - total pages
+ * @returns {Array} array of page numbers and ellipsis markers
+ */
+function getVisiblePages(currentPage, totalPages) {
+  const pages = [];
+  const maxVisible = 5;
+
+  if (totalPages <= maxVisible + 2) {
+    // Show all pages if total is small enough
+    for (let i = 1; i <= totalPages; i += 1) {
+      pages.push(i);
+    }
+  } else if (currentPage <= 3) {
+    // Near the start: 1 2 3 4 ... last
+    for (let i = 1; i <= 4; i += 1) {
+      pages.push(i);
+    }
+    pages.push('...');
+    pages.push(totalPages);
+  } else if (currentPage >= totalPages - 2) {
+    // Near the end: 1 ... last-3 last-2 last-1 last
+    pages.push(1);
+    pages.push('...');
+    for (let i = totalPages - 3; i <= totalPages; i += 1) {
+      pages.push(i);
+    }
+  } else {
+    // In the middle: 1 ... curr-1 curr curr+1 ... last
+    pages.push(1);
+    pages.push('...');
+    pages.push(currentPage - 1);
+    pages.push(currentPage);
+    pages.push(currentPage + 1);
+    pages.push('...');
+    pages.push(totalPages);
+  }
+
+  return pages;
+}
+
+/**
  * Create pagination
  * @param {number} currentPage - current page
  * @param {number} totalPages - total pages
@@ -136,22 +179,60 @@ function createPagination(currentPage, totalPages, placeholders, onPageChange) {
 
   const list = document.createElement('ul');
 
-  for (let i = 1; i <= totalPages; i += 1) {
-    const li = document.createElement('li');
-    const button = document.createElement('button');
-    button.textContent = i;
-    button.setAttribute('aria-label', getPlaceholder(placeholders, 'searchPageLabel', `Page ${i}`).replace('{number}', i));
+  // Previous button
+  const prevLi = document.createElement('li');
+  const prevButton = document.createElement('button');
+  prevButton.className = 'pagination-prev';
+  prevButton.textContent = getPlaceholder(placeholders, 'searchPaginationPrev', 'Prev');
+  prevButton.setAttribute('aria-label', getPlaceholder(placeholders, 'searchPaginationPrevLabel', 'Previous page'));
+  if (currentPage === 1) {
+    prevButton.disabled = true;
+  } else {
+    prevButton.addEventListener('click', () => onPageChange(currentPage - 1));
+  }
+  prevLi.append(prevButton);
+  list.append(prevLi);
 
-    if (i === currentPage) {
-      button.setAttribute('aria-current', 'page');
-      button.disabled = true;
+  // Page numbers
+  const visiblePages = getVisiblePages(currentPage, totalPages);
+  visiblePages.forEach((page) => {
+    const li = document.createElement('li');
+
+    if (page === '...') {
+      const ellipsis = document.createElement('span');
+      ellipsis.className = 'pagination-ellipsis';
+      ellipsis.textContent = '...';
+      li.append(ellipsis);
     } else {
-      button.addEventListener('click', () => onPageChange(i));
+      const button = document.createElement('button');
+      button.textContent = page;
+      button.setAttribute('aria-label', getPlaceholder(placeholders, 'searchPageLabel', `Page ${page}`).replace('{number}', page));
+
+      if (page === currentPage) {
+        button.setAttribute('aria-current', 'page');
+        button.disabled = true;
+      } else {
+        button.addEventListener('click', () => onPageChange(page));
+      }
+      li.append(button);
     }
 
-    li.append(button);
     list.append(li);
+  });
+
+  // Next button
+  const nextLi = document.createElement('li');
+  const nextButton = document.createElement('button');
+  nextButton.className = 'pagination-next';
+  nextButton.textContent = getPlaceholder(placeholders, 'searchPaginationNext', 'Next');
+  nextButton.setAttribute('aria-label', getPlaceholder(placeholders, 'searchPaginationNextLabel', 'Next page'));
+  if (currentPage === totalPages) {
+    nextButton.disabled = true;
+  } else {
+    nextButton.addEventListener('click', () => onPageChange(currentPage + 1));
   }
+  nextLi.append(nextButton);
+  list.append(nextLi);
 
   nav.append(list);
   return nav;

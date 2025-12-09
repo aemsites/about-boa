@@ -156,19 +156,29 @@ main .search-results .search-results-pagination button {
   transition: background-color 0.2s ease;
 }
 
+main .search-results .search-results-pagination button.pagination-prev,
+main .search-results .search-results-pagination button.pagination-next {
+  min-width: auto;
+  padding-inline: var(--spacing-sm);
+}
+
 main .search-results .search-results-pagination button:disabled {
-  color: var(--text-color);
-  font-weight: 500;
+  color: var(--color-gray);
   cursor: default;
 }
 
 main .search-results .search-results-pagination button[aria-current="page"] {
-  color: var(--link-color);
+  color: var(--text-color);
   font-weight: 500;
 }
 
 main .search-results .search-results-pagination button:hover:not(:disabled) {
   background-color: var(--color-gray-lightest);
+}
+
+main .search-results .search-results-pagination .pagination-ellipsis {
+  color: var(--color-gray);
+  padding-inline: var(--spacing-xs);
 }
 
 /* Loading State */
