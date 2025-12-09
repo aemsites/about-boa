@@ -61,20 +61,6 @@ function filterData(searchTerms, data) {
 }
 
 /**
- * Sort results by date
- * @param {Object[]} results - array of results
- * @param {string} direction - 'newest' or 'oldest'
- * @returns {Object[]} sorted results
- */
-function sortByDate(results, direction) {
-  return [...results].sort((a, b) => {
-    const dateA = a.date ? new Date(a.date).getTime() : 0;
-    const dateB = b.date ? new Date(b.date).getTime() : 0;
-    return direction === 'newest' ? dateB - dateA : dateA - dateB;
-  });
-}
-
-/**
  * Format date for display
  * @param {string} dateStr - date string
  * @returns {string} formatted date
@@ -97,20 +83,14 @@ function formatDate(dateStr) {
  * Update URL with search parameters
  * @param {string} query - search query
  * @param {number} page - page number
- * @param {string} sort - sort option
  */
-function updateURL(query, page, sort) {
+function updateURL(query, page) {
   const url = new URL(window.location.href);
   if (query) url.searchParams.set('q', query);
   if (page > 1) {
     url.searchParams.set('p', page);
   } else {
     url.searchParams.delete('p');
-  }
-  if (sort && sort !== 'relevance') {
-    url.searchParams.set('sort', sort);
-  } else {
-    url.searchParams.delete('sort');
   }
   window.history.replaceState({}, '', url.toString());
 }
@@ -178,58 +158,13 @@ function createPagination(currentPage, totalPages, placeholders, onPageChange) {
 }
 
 /**
- * Create sort controls
- * @param {string} currentSort - current sort option
- * @param {Object} placeholders - placeholders
- * @param {Function} onSortChange - callback for sort change
- * @returns {HTMLElement}
- */
-function createSortControls(currentSort, placeholders, onSortChange) {
-  const container = document.createElement('div');
-  container.className = 'search-results-sort';
-
-  const label = document.createElement('span');
-  label.className = 'search-results-sort-label';
-  label.textContent = getPlaceholder(placeholders, 'searchSortBy', 'Sort by:');
-
-  const options = document.createElement('ul');
-  options.className = 'search-results-sort-options';
-
-  const sortOptions = [
-    { value: 'relevance', label: getPlaceholder(placeholders, 'searchSortRelevance', 'Relevance') },
-    { value: 'newest', label: getPlaceholder(placeholders, 'searchSortNewest', 'Newest') },
-    { value: 'oldest', label: getPlaceholder(placeholders, 'searchSortOldest', 'Oldest') },
-  ];
-
-  sortOptions.forEach((option) => {
-    const li = document.createElement('li');
-    const button = document.createElement('button');
-    button.textContent = option.label;
-    button.setAttribute('aria-label', `Sort results by ${option.label}`);
-
-    if (option.value === currentSort) {
-      button.disabled = true;
-      button.setAttribute('aria-pressed', 'true');
-    } else {
-      button.addEventListener('click', () => onSortChange(option.value));
-    }
-
-    li.append(button);
-    options.append(li);
-  });
-
-  container.append(label, options);
-  return container;
-}
-
-/**
  * Render search results
  * @param {HTMLElement} block - block element
  * @param {Object} state - current state
  */
 async function renderResults(block, state) {
   const {
-    results, currentPage, currentSort, placeholders, noResultsFragmentPath,
+    results, currentPage, placeholders, noResultsFragmentPath,
   } = state;
 
   const resultsContainer = block.querySelector('.search-results-container');
@@ -266,22 +201,6 @@ async function renderResults(block, state) {
 
     resultsContainer.append(noResultsWrapper);
   } else {
-    // Sort controls
-    const sortControls = createSortControls(currentSort, placeholders, (newSort) => {
-      state.currentSort = newSort;
-      state.currentPage = 1;
-
-      if (newSort === 'relevance') {
-        state.results = state.originalResults;
-      } else {
-        state.results = sortByDate(state.originalResults, newSort);
-      }
-
-      updateURL(state.query, 1, newSort);
-      renderResults(block, state);
-    });
-    resultsContainer.append(sortControls);
-
     // Results list
     const list = document.createElement('div');
     list.className = 'search-results-list';
@@ -296,7 +215,7 @@ async function renderResults(block, state) {
     if (totalPages > 1) {
       const pagination = createPagination(currentPage, totalPages, placeholders, (newPage) => {
         state.currentPage = newPage;
-        updateURL(state.query, newPage, state.currentSort);
+        updateURL(state.query, newPage);
         renderResults(block, state);
         // Scroll to top of results
         block.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -324,17 +243,8 @@ async function executeSearch(block, state) {
 
     if (searchTerms.length === 0) {
       state.results = [];
-      state.originalResults = [];
     } else {
-      const filtered = filterData(searchTerms, allData);
-      state.originalResults = filtered;
-
-      // Apply sort if not relevance
-      if (state.currentSort === 'relevance') {
-        state.results = filtered;
-      } else {
-        state.results = sortByDate(filtered, state.currentSort);
-      }
+      state.results = filterData(searchTerms, allData);
     }
 
     await renderResults(block, state);
@@ -355,15 +265,12 @@ export default async function decorate(block) {
   // Get search parameters from URL
   const query = searchParams.get('q') || '';
   const page = parseInt(searchParams.get('p'), 10) || 1;
-  const sort = searchParams.get('sort') || 'relevance';
 
   // Initialize state
   const state = {
     query,
     currentPage: page,
-    currentSort: sort,
     results: [],
-    originalResults: [],
     placeholders,
     noResultsFragmentPath,
   };
@@ -381,7 +288,6 @@ export default async function decorate(block) {
   } else {
     // No query - show no results
     state.results = [];
-    state.originalResults = [];
     await renderResults(block, state);
   }
 }

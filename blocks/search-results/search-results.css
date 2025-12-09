@@ -14,63 +14,6 @@ main .search-results .search-results-count {
   margin-block: 0 var(--spacing-md);
 }
 
-/* Sort Controls */
-main .search-results .search-results-sort {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding-block-end: var(--spacing-md);
-  border-block-end: 1px solid var(--color-border);
-  margin-block-end: var(--spacing-lg);
-}
-
-main .search-results .search-results-sort-label {
-  font-weight: 500;
-}
-
-main .search-results .search-results-sort-options {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-main .search-results .search-results-sort-options li {
-  display: flex;
-  align-items: center;
-}
-
-main .search-results .search-results-sort-options li:not(:last-child)::after {
-  content: "|";
-  color: var(--color-gray);
-  margin-inline: var(--spacing-sm);
-}
-
-main .search-results .search-results-sort-options button {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-size: inherit;
-  font-family: inherit;
-  color: var(--link-color);
-  cursor: pointer;
-  text-decoration: none;
-}
-
-main .search-results .search-results-sort-options button:disabled {
-  color: var(--color-gray);
-  cursor: default;
-}
-
-main .search-results .search-results-sort-options button:hover:not(:disabled) {
-  text-decoration: underline;
-  color: var(--link-hover-color);
-}
-
 /* Results List */
 main .search-results .search-results-list {
   display: flex;
@@ -242,11 +185,3 @@ main .search-results .search-results-no-results p:not(:has(strong), :has(a), :fi
   color: var(--text-color);
   line-height: 1.5;
 }
-
-/* Responsive adjustments */
-@media (width >= 900px) {
-  main .search-results .search-results-sort {
-    gap: var(--spacing-sm);
-  }
-}
-
