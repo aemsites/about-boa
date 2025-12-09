@@ -19,64 +19,103 @@ function getPlaceholder(placeholders, key, fallback) {
 }
 
 /**
- * Filter data based on search terms
+ * Filter and rank data based on search terms
+ * - Searches title and description only
+ * - Ranks by number of matching terms (more matches = higher rank)
+ * - Secondary sort by last modified date (newest first)
  * @param {string[]} searchTerms - array of search terms
  * @param {Object[]} data - array of data entries
- * @returns {Object[]} filtered and sorted results
+ * @returns {Object[]} filtered and sorted results with matchedTerms
  */
 function filterData(searchTerms, data) {
-  const foundInTitle = [];
-  const foundInMeta = [];
+  const results = [];
 
   data.forEach((result) => {
-    let minIdx = -1;
+    const title = (result.title || '').toLowerCase();
+    const description = (result.description || '').toLowerCase();
+    const searchableText = `${title} ${description}`;
 
-    // Search in title first
-    searchTerms.forEach((term) => {
-      const idx = (result.title || '').toLowerCase().indexOf(term);
-      if (idx >= 0 && (minIdx < 0 || idx < minIdx)) minIdx = idx;
-    });
+    // Find which terms match
+    const matchedTerms = searchTerms.filter((term) => searchableText.includes(term));
 
-    if (minIdx >= 0) {
-      foundInTitle.push({ minIdx, result });
-      return;
-    }
+    if (matchedTerms.length > 0) {
+      // Bonus for title matches
+      const titleMatches = searchTerms.filter((term) => title.includes(term)).length;
 
-    // Search in description and path
-    const metaContents = `${result.title || ''} ${result.description || ''} ${result.path.split('/').pop()}`.toLowerCase();
-    searchTerms.forEach((term) => {
-      const idx = metaContents.indexOf(term);
-      if (idx >= 0 && (minIdx < 0 || idx < minIdx)) minIdx = idx;
-    });
-
-    if (minIdx >= 0) {
-      foundInMeta.push({ minIdx, result });
+      results.push({
+        ...result,
+        matchedTerms,
+        matchCount: matchedTerms.length,
+        titleMatchCount: titleMatches,
+        lastModified: result.lastModified || 0,
+      });
     }
   });
 
-  return [
-    ...foundInTitle.sort((a, b) => a.minIdx - b.minIdx),
-    ...foundInMeta.sort((a, b) => a.minIdx - b.minIdx),
-  ].map((item) => item.result);
+  // Sort by: title matches (desc), total matches (desc), then last modified (newest first)
+  return results.sort((a, b) => {
+    if (b.titleMatchCount !== a.titleMatchCount) {
+      return b.titleMatchCount - a.titleMatchCount;
+    }
+    if (b.matchCount !== a.matchCount) {
+      return b.matchCount - a.matchCount;
+    }
+    return b.lastModified - a.lastModified;
+  });
 }
 
 /**
  * Format date for display
- * @param {string} dateStr - date string
+ * @param {number|string} timestamp - timestamp or date string
  * @returns {string} formatted date
  */
-function formatDate(dateStr) {
-  if (!dateStr) return '';
+function formatDate(timestamp) {
+  if (!timestamp) return '';
   try {
-    const date = new Date(dateStr);
+    // Handle both Unix timestamps (seconds) and milliseconds
+    const ts = typeof timestamp === 'number' && timestamp < 10000000000
+      ? timestamp * 1000
+      : timestamp;
+    const date = new Date(ts);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
   } catch {
-    return dateStr;
+    return '';
   }
+}
+
+/**
+ * Highlight matched terms in text (XSS-safe using DOM methods)
+ * @param {string} text - original text
+ * @param {string[]} terms - terms to highlight
+ * @returns {DocumentFragment} fragment with highlighted text
+ */
+function highlightTerms(text, terms) {
+  const fragment = document.createDocumentFragment();
+
+  if (!terms || terms.length === 0) {
+    fragment.append(document.createTextNode(text));
+    return fragment;
+  }
+
+  // Create regex pattern for all terms (case-insensitive)
+  const pattern = new RegExp(`(${terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+  const parts = text.split(pattern);
+
+  parts.forEach((part) => {
+    if (terms.some((term) => part.toLowerCase() === term.toLowerCase())) {
+      const mark = document.createElement('mark');
+      mark.textContent = part;
+      fragment.append(mark);
+    } else {
+      fragment.append(document.createTextNode(part));
+    }
+  });
+
+  return fragment;
 }
 
 /**
@@ -96,8 +135,8 @@ function updateURL(query, page) {
 }
 
 /**
- * Create a single result item
- * @param {Object} result - result data
+ * Create a single result item with highlighted terms
+ * @param {Object} result - result data with matchedTerms
  * @returns {HTMLElement}
  */
 function createResultItem(result) {
@@ -107,15 +146,15 @@ function createResultItem(result) {
   const link = document.createElement('a');
   link.href = result.path;
   link.className = 'search-results-item-title';
-  link.textContent = result.title || result.path;
+  link.append(highlightTerms(result.title || result.path, result.matchedTerms));
 
   const description = document.createElement('p');
   description.className = 'search-results-item-description';
-  description.textContent = result.description || '';
+  description.append(highlightTerms(result.description || '', result.matchedTerms));
 
   const date = document.createElement('p');
   date.className = 'search-results-item-date';
-  date.textContent = formatDate(result.date);
+  date.textContent = formatDate(result.lastModified);
 
   item.append(link, description, date);
   return item;
