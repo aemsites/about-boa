@@ -392,6 +392,11 @@
     margin-block: var(--spacing-md);
   }
 
+  header .block,
+  footer .block {
+    margin-block: 0;
+  }
+
   main > .section:first-of-type > div > .block {
     margin-block-start: 0;
   }
