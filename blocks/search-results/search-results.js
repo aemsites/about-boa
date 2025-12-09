@@ -1,4 +1,5 @@
 import { loadFragment } from '../fragment/fragment.js';
+import { decorateIcons } from '../../scripts/scripts.js';
 import ffetch from '../../scripts/ffetch.js';
 import fetchLangPlaceholders from '../../scripts/placeholders.js';
 
@@ -458,6 +459,7 @@ export default async function decorate(block) {
     updateURL(newQuery, 1);
     executeSearch(block, state);
   });
+  decorateIcons(searchBar);
   block.append(searchBar);
 
   const container = document.createElement('div');

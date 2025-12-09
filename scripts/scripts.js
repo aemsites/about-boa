@@ -19,7 +19,7 @@ import { replacePlaceholders } from './placeholders.js';
 
 const { searchParams, origin } = new URL(window.location.href);
 
-function decorateIcons(element) {
+export function decorateIcons(element) {
   const icons = element.querySelectorAll('span.icon');
   icons.forEach((span) => {
     const isIcomoon = [...span.classList].some((c) => c.startsWith('icon-icomoon-'));
