@@ -19,40 +19,47 @@ function getPlaceholder(placeholders, key, fallback) {
 }
 
 /**
- * Filter and rank data based on search terms
- * - Searches title and description only
- * - Ranks by number of matching terms (more matches = higher rank)
- * - Secondary sort by last modified date (newest first)
+ * Check if entry matches any search terms
+ * @param {Object} entry - data entry
  * @param {string[]} searchTerms - array of search terms
- * @param {Object[]} data - array of data entries
- * @returns {Object[]} filtered and sorted results with matchedTerms
+ * @returns {boolean} true if entry matches
  */
-function filterData(searchTerms, data) {
-  const results = [];
+function matchesSearchTerms(entry, searchTerms) {
+  const title = (entry.title || '').toLowerCase();
+  const description = (entry.description || '').toLowerCase();
+  const searchableText = `${title} ${description}`;
+  return searchTerms.some((term) => searchableText.includes(term));
+}
 
-  data.forEach((result) => {
-    const title = (result.title || '').toLowerCase();
-    const description = (result.description || '').toLowerCase();
-    const searchableText = `${title} ${description}`;
+/**
+ * Add match metadata to entry for ranking
+ * @param {Object} entry - data entry
+ * @param {string[]} searchTerms - array of search terms
+ * @returns {Object} entry with match metadata
+ */
+function addMatchMetadata(entry, searchTerms) {
+  const title = (entry.title || '').toLowerCase();
+  const description = (entry.description || '').toLowerCase();
+  const searchableText = `${title} ${description}`;
 
-    // Find which terms match
-    const matchedTerms = searchTerms.filter((term) => searchableText.includes(term));
+  const matchedTerms = searchTerms.filter((term) => searchableText.includes(term));
+  const titleMatchCount = searchTerms.filter((term) => title.includes(term)).length;
 
-    if (matchedTerms.length > 0) {
-      // Bonus for title matches
-      const titleMatches = searchTerms.filter((term) => title.includes(term)).length;
+  return {
+    ...entry,
+    matchedTerms,
+    matchCount: matchedTerms.length,
+    titleMatchCount,
+  };
+}
 
-      results.push({
-        ...result,
-        matchedTerms,
-        matchCount: matchedTerms.length,
-        titleMatchCount: titleMatches,
-        lastModified: result.lastModified || 0,
-      });
-    }
-  });
-
-  // Sort by: title matches (desc), total matches (desc), then last modified (newest first)
+/**
+ * Sort results by ranking criteria
+ * - Title matches (desc), total matches (desc), then last modified (newest first)
+ * @param {Object[]} results - array of results with match metadata
+ * @returns {Object[]} sorted results
+ */
+function sortResults(results) {
   return results.sort((a, b) => {
     if (b.titleMatchCount !== a.titleMatchCount) {
       return b.titleMatchCount - a.titleMatchCount;
@@ -60,7 +67,7 @@ function filterData(searchTerms, data) {
     if (b.matchCount !== a.matchCount) {
       return b.matchCount - a.matchCount;
     }
-    return b.lastModified - a.lastModified;
+    return (b.lastModified || 0) - (a.lastModified || 0);
   });
 }
 
@@ -355,16 +362,20 @@ async function executeSearch(block, state) {
   resultsContainer.innerHTML = `<p class="search-results-loading">${getPlaceholder(state.placeholders, 'searchLoading', 'Loading results...')}</p>`;
 
   try {
-    // Fetch all data from query-index
-    const allData = await ffetch('/query-index.json').all();
-
-    // Filter by search terms
+    // Parse search terms (min 3 chars each)
     const searchTerms = state.query.toLowerCase().split(/\s+/).filter((term) => term.length >= 3);
 
     if (searchTerms.length === 0) {
       state.results = [];
     } else {
-      state.results = filterData(searchTerms, allData);
+      // Use ffetch's filter and map for streaming efficiency
+      const results = await ffetch('/query-index.json')
+        .filter((entry) => matchesSearchTerms(entry, searchTerms))
+        .map((entry) => addMatchMetadata(entry, searchTerms))
+        .all();
+
+      // Sort results (ffetch doesn't have built-in sort)
+      state.results = sortResults(results);
     }
 
     await renderResults(block, state);
