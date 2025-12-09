@@ -269,6 +269,12 @@ function createSearchBar(state, placeholders, onSearch) {
   const form = document.createElement('form');
   form.setAttribute('role', 'search');
 
+  const inputWrapper = document.createElement('div');
+  inputWrapper.className = 'search-results-input-wrapper';
+
+  const icon = document.createElement('span');
+  icon.className = 'icon icon-search';
+
   const input = document.createElement('input');
   input.type = 'search';
   input.name = 'q';
@@ -285,7 +291,8 @@ function createSearchBar(state, placeholders, onSearch) {
     }
   });
 
-  form.append(input);
+  inputWrapper.append(icon, input);
+  form.append(inputWrapper);
   wrapper.append(form);
   return wrapper;
 }
