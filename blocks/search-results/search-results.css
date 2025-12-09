@@ -185,6 +185,15 @@ main .search-results .search-results-no-results {
   margin-block-start: var(--spacing-lg);
 }
 
+/* Spacing between recommendation sections in no-results fragment */
+main .search-results .search-results-no-results > .section {
+  margin-block-start: var(--spacing-xl);
+}
+
+main .search-results .search-results-no-results > .section:first-child {
+  margin-block-start: 0;
+}
+
 /* Recommended item styling in no-results fragment */
 main .search-results .search-results-no-results p {
   margin-block: 0;
