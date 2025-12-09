@@ -255,6 +255,41 @@ async function executeSearch(block, state) {
   }
 }
 
+/**
+ * Create the search bar
+ * @param {Object} state - current state
+ * @param {Object} placeholders - placeholders
+ * @param {Function} onSearch - callback for search submission
+ * @returns {HTMLElement}
+ */
+function createSearchBar(state, placeholders, onSearch) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'search-results-search-bar';
+
+  const form = document.createElement('form');
+  form.setAttribute('role', 'search');
+
+  const input = document.createElement('input');
+  input.type = 'search';
+  input.name = 'q';
+  input.className = 'search-results-input';
+  input.placeholder = getPlaceholder(placeholders, 'searchPlaceholder', 'Suggested Keywords');
+  input.value = state.query;
+  input.setAttribute('aria-label', getPlaceholder(placeholders, 'searchInputLabel', 'Search'));
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newQuery = input.value.trim();
+    if (newQuery) {
+      onSearch(newQuery);
+    }
+  });
+
+  form.append(input);
+  wrapper.append(form);
+  return wrapper;
+}
+
 export default async function decorate(block) {
   const placeholders = await fetchLangPlaceholders();
 
@@ -277,6 +312,15 @@ export default async function decorate(block) {
 
   // Clear block and create structure
   block.innerHTML = '';
+
+  // Search bar
+  const searchBar = createSearchBar(state, placeholders, (newQuery) => {
+    state.query = newQuery;
+    state.currentPage = 1;
+    updateURL(newQuery, 1);
+    executeSearch(block, state);
+  });
+  block.append(searchBar);
 
   const container = document.createElement('div');
   container.className = 'search-results-container';
