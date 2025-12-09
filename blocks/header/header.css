@@ -101,7 +101,7 @@
 
   header nav[aria-expanded='true'] .nav-hamburger-icon::before,
   header nav[aria-expanded='true'] .nav-hamburger-icon::after {
-    top: 0;
+    top: calc(var(--spacing-lg) / 2);
     left: 0;
     width: var(--spacing-lg);
     height: 3px;
@@ -111,7 +111,7 @@
   }
 
   header nav[aria-expanded='true'] .nav-hamburger-icon::after {
-    top: 0;
+    top: calc(var(--spacing-lg) / 2);
     bottom: auto;
     transform: rotate(-45deg);
   }

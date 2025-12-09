@@ -114,7 +114,7 @@
     --heading-font-size-xs: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem); /* 12-14px - h6 */
 
     /* nav height */
-    --nav-height: 112px;
+    --nav-height: 84px;
 
     /* layout */
     --max-content-width: 1200px;
@@ -142,7 +142,7 @@
       --default-inline-spacing: var(--spacing-xxl);
 
       /* nav height */
-      --nav-height: 170px;
+      --nav-height: 164px;
     }
   }
 
@@ -392,8 +392,12 @@
     margin-block: var(--spacing-md);
   }
 
-  header .block {
-    margin-block: 0;
+  main > .section:first-of-type > div > .block {
+    margin-block-start: 0;
+  }
+
+  main > .section:last-of-type > div > .block {
+    margin-block-end: 0;
   }
 }
 
