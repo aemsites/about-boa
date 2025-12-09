@@ -392,8 +392,7 @@
     margin-block: var(--spacing-md);
   }
 
-  header .block,
-  footer .block {
+  header .block {
     margin-block: 0;
   }
 
