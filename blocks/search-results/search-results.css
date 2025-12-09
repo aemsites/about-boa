@@ -5,6 +5,11 @@ main .search-results {
   margin-block: var(--spacing-lg);
 }
 
+/* Container - reserve minimum height to reduce CLS */
+main .search-results .search-results-container {
+  min-height: 50vh;
+}
+
 /* Full-bleed Search Bar */
 main .search-results .search-results-search-bar {
   background-color: #012169;
@@ -68,12 +73,13 @@ main .search-results .search-results-input::-webkit-search-cancel-button {
   display: none;
 }
 
-/* Results Count */
+/* Results Count - min-height to reduce CLS when text loads */
 main .search-results .search-results-count {
   font-family: var(--heading-font-family);
   font-size: var(--heading-font-size-xl);
   font-weight: 300;
   line-height: 1.25;
+  min-height: 1.25em;
   margin-block: 0 var(--spacing-md);
 }
 
@@ -189,12 +195,13 @@ main .search-results .search-results-pagination .pagination-ellipsis {
   padding-inline: var(--spacing-xs);
 }
 
-/* Loading State */
+/* Loading State - positioned to reduce CLS when results load */
 main .search-results .search-results-loading {
-  font-size: var(--body-font-size-m);
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 300;
   color: var(--color-gray);
-  text-align: center;
-  padding: var(--spacing-xl);
+  padding-block: var(--spacing-md);
 }
 
 /* Error State */
