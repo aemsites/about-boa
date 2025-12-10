@@ -22,6 +22,9 @@ const { searchParams, origin } = new URL(window.location.href);
 export function decorateIcons(element) {
   const icons = element.querySelectorAll('span.icon');
   icons.forEach((span) => {
+    // Skip if already decorated (has img or svg child)
+    if (span.querySelector('img, svg')) return;
+
     const isIcomoon = [...span.classList].some((c) => c.startsWith('icon-icomoon-'));
     if (!isIcomoon) {
       decorateIcon(span);

@@ -1,10 +1,146 @@
 import { getMetadata } from '../../scripts/aem.js';
+import { decorateIcons } from '../../scripts/scripts.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { toggleAllNavSections } from '../nav-sections/nav-sections.js';
 import { toggleAllNavTools } from '../nav-tools/nav-tools.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
+
+/**
+ * Creates the mobile search overlay panel
+ * @param {Element} navBrand The nav brand element containing the logo
+ * @returns {Element} The search overlay element
+ */
+function createSearchOverlay(navBrand) {
+  const overlay = document.createElement('div');
+  overlay.className = 'nav-search-overlay';
+  overlay.setAttribute('aria-hidden', 'true');
+
+  // Create header with back, logo, and close
+  const header = document.createElement('div');
+  header.className = 'nav-search-header';
+
+  // Back button
+  const backButton = document.createElement('button');
+  backButton.className = 'nav-search-back';
+  backButton.setAttribute('type', 'button');
+  backButton.setAttribute('aria-label', 'Back to menu');
+
+  // Logo (clone from nav-brand)
+  const logo = document.createElement('div');
+  logo.className = 'nav-search-logo';
+  const brandLink = navBrand?.querySelector('a');
+  if (brandLink) {
+    const logoClone = brandLink.cloneNode(true);
+    logoClone.removeAttribute('href');
+    logoClone.setAttribute('aria-hidden', 'true');
+    logo.appendChild(logoClone);
+  }
+
+  // Close button
+  const closeButton = document.createElement('button');
+  closeButton.className = 'nav-search-close';
+  closeButton.setAttribute('type', 'button');
+  closeButton.setAttribute('aria-label', 'Close menu');
+
+  header.append(backButton, logo, closeButton);
+
+  // Create search form
+  const form = document.createElement('form');
+  form.className = 'nav-search-form';
+  form.setAttribute('role', 'search');
+  form.setAttribute('action', '/en/search');
+
+  const inputWrapper = document.createElement('div');
+  inputWrapper.className = 'nav-search-input-wrapper';
+
+  const input = document.createElement('input');
+  input.type = 'search';
+  input.name = 'q';
+  input.className = 'nav-search-input';
+  input.placeholder = 'Enter Search Keywords';
+  input.setAttribute('aria-label', 'Search');
+
+  const submitButton = document.createElement('button');
+  submitButton.type = 'submit';
+  submitButton.className = 'nav-search-submit';
+  submitButton.setAttribute('aria-label', 'Submit search');
+  submitButton.innerHTML = '<span class="icon icon-search"></span>';
+
+  inputWrapper.append(input, submitButton);
+  form.append(inputWrapper);
+
+  overlay.append(header, form);
+
+  // Decorate icons (double-decoration check in decorateIcons prevents logo duplication)
+  decorateIcons(overlay);
+
+  return overlay;
+}
+
+/**
+ * Opens the search overlay
+ * @param {Element} overlay The search overlay element
+ */
+function openSearchOverlay(overlay) {
+  overlay.setAttribute('aria-hidden', 'false');
+  const input = overlay.querySelector('.nav-search-input');
+  // Focus the input after transition
+  setTimeout(() => input?.focus(), 300);
+}
+
+/**
+ * Closes the search overlay
+ * @param {Element} overlay The search overlay element
+ */
+function closeSearchOverlay(overlay) {
+  overlay.setAttribute('aria-hidden', 'true');
+  const input = overlay.querySelector('.nav-search-input');
+  if (input) input.value = '';
+}
+
+/**
+ * Sets up search overlay event handlers
+ * @param {Element} overlay The search overlay element
+ * @param {Element} nav The nav element
+ * @param {Element} navSections The nav sections element
+ * @param {Function} toggleMenuFn The toggle menu function
+ */
+function setupSearchOverlayHandlers(overlay, nav, navSections, toggleMenuFn) {
+  const backButton = overlay.querySelector('.nav-search-back');
+  const closeButton = overlay.querySelector('.nav-search-close');
+  const form = overlay.querySelector('.nav-search-form');
+
+  // Back button returns to main menu
+  backButton?.addEventListener('click', () => {
+    closeSearchOverlay(overlay);
+  });
+
+  // Close button closes entire menu
+  closeButton?.addEventListener('click', () => {
+    closeSearchOverlay(overlay);
+    toggleMenuFn(nav, navSections, false);
+  });
+
+  // Form submission navigates to search page
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const input = form.querySelector('.nav-search-input');
+    const query = input?.value?.trim();
+    if (query) {
+      window.location.href = `/en/search?q=${encodeURIComponent(query)}`;
+    }
+  });
+
+  // Close on escape
+  overlay.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape') {
+      e.stopPropagation();
+      closeSearchOverlay(overlay);
+    }
+  });
+}
 
 function closeOnEscape(e) {
   if (e.code === 'Escape') {
@@ -201,11 +337,13 @@ export default async function decorate(block) {
       if (searchIcon) {
         const searchText = document.createElement('span');
         searchText.classList.add('mobile-only', 'search-text');
-        // searchText.innerHTML = 'Search';
         searchText.textContent = 'Search';
         searchIcon?.parentElement?.append(searchText);
 
         sectionItem.classList.add('has-search');
+
+        // Mark this as the search trigger - overlay will be set up after nav is complete
+        sectionItem.dataset.searchTrigger = 'true';
       } else {
         sectionItem.addEventListener('click', (e) => {
           if (!isDesktop.matches) {
@@ -252,4 +390,20 @@ export default async function decorate(block) {
   const navNotification = nav.querySelector('.nav-notification');
   const navUtilityElement = nav.querySelector('.nav-utility:not(.mobile-only)');
   handleStickyNav(navWrapper, navNotification, navUtilityElement);
+
+  // Set up mobile search overlay
+  const searchTrigger = navSections?.querySelector('[data-search-trigger="true"]');
+  if (searchTrigger) {
+    const searchOverlay = createSearchOverlay(navBrand);
+    navSections.append(searchOverlay);
+
+    setupSearchOverlayHandlers(searchOverlay, nav, navSections, toggleMenu);
+
+    searchTrigger.addEventListener('click', (e) => {
+      if (!isDesktop.matches) {
+        e.stopPropagation();
+        openSearchOverlay(searchOverlay);
+      }
+    });
+  }
 }
