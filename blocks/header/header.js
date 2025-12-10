@@ -255,13 +255,14 @@ function handleStickyNav(navWrapper, navNotification, navUtility) {
     if (scrollY > threshold && scrollY > lastScrollY) {
       // Scrolling down past threshold - make sticky
       navWrapper.classList.add(stickyClass);
+      navWrapper.style.setProperty('--nav-menu-top', `${navWrapper.offsetHeight}px`);
     } else if (scrollY <= threshold) {
       // Scrolled back to top - remove sticky
       navWrapper.classList.remove(stickyClass);
+      navWrapper.style.setProperty('--nav-menu-top', `${navWrapper.offsetHeight - scrollY}px`);
     }
 
     lastScrollY = scrollY;
-    navWrapper.style.setProperty('--nav-menu-top', `${navWrapper.offsetHeight}px`);
   };
 
   window.addEventListener('scroll', updateStickyState, { passive: true });
