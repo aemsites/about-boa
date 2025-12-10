@@ -23,18 +23,19 @@
   }
 
   .nav-sections .nav-section-title {
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 0;
     padding: var(--spacing-md) var(--spacing-l);
     font-size: 1.125rem;
     font-weight: 400;
     color: var(--color-brand-blue);
-    cursor: pointer;
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
   .nav-sections .nav-section-title a {
-    display: block;
+    display: inline;
     font-weight: 400;
     color: var(--color-brand-blue);
     text-decoration: none;
@@ -53,20 +54,30 @@
     padding-left: var(--spacing-s);
   }
 
-  /* Plus icon for mobile accordion */
-  .nav-sections .nav-drop:not(.has-search) .nav-section-title::after {
-    position: absolute;
-    top: 50%;
-    right: var(--spacing-l);
+  /* Expand/collapse button for mobile accordion */
+  .nav-sections .nav-section-expand {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-l)) calc(-1 * var(--spacing-md)) 0;
+    padding: 0;
     font-size: 2rem;
     font-weight: 300;
     line-height: 1;
     color: var(--color-brand-blue);
-    content: '+';
-    transform: translateY(-50%);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
   }
 
-  .nav-sections .nav-drop[aria-expanded='true'] .nav-section-title::after {
+  .nav-sections .nav-section-expand::before {
+    content: '+';
+  }
+
+  .nav-sections .nav-drop[aria-expanded='true'] .nav-section-expand::before {
     font-size: 2.5rem;
     content: '−';
   }
@@ -194,8 +205,8 @@
       pointer-events: auto;
     }
 
-    /* Remove mobile accordion icon */
-    .nav-sections .nav-drop .nav-section-title::after {
+    /* Hide mobile expand button on desktop */
+    .nav-sections .nav-section-expand {
       display: none;
     }
 

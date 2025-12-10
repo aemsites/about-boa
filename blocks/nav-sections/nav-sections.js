@@ -84,16 +84,20 @@ export default function decorate(block) {
         }
       });
 
-      // Add click handler for mobile
-      section.addEventListener('click', (e) => {
-        if (!isDesktop.matches) {
-          if (e.target.closest('a')) {
-            return;
-          }
-          e.stopPropagation();
-          const expanded = section.getAttribute('aria-expanded') === 'true';
-          section.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        }
+      // Add expand/collapse button for mobile accordion
+      const expandButton = document.createElement('button');
+      expandButton.type = 'button';
+      expandButton.className = 'nav-section-expand';
+      expandButton.setAttribute('aria-expanded', 'false');
+      expandButton.setAttribute('aria-label', 'Expand section');
+      section.querySelector('.nav-section-title').append(expandButton);
+
+      expandButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const expanded = section.getAttribute('aria-expanded') === 'true';
+        section.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        expandButton.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        expandButton.setAttribute('aria-label', expanded ? 'Expand section' : 'Collapse section');
       });
     }
   });

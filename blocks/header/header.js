@@ -361,12 +361,20 @@ export default async function decorate(block) {
         // Mark this as the search trigger - overlay will be set up after nav is complete
         sectionItem.dataset.searchTrigger = 'true';
       } else {
-        sectionItem.addEventListener('click', (e) => {
-          if (!isDesktop.matches) {
-            e.stopPropagation();
-            const expanded = sectionItem.getAttribute('aria-expanded') === 'true';
-            sectionItem.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-          }
+        // Add expand/collapse button for mobile accordion
+        const expandButton = document.createElement('button');
+        expandButton.type = 'button';
+        expandButton.className = 'nav-section-expand';
+        expandButton.setAttribute('aria-expanded', 'false');
+        expandButton.setAttribute('aria-label', 'Expand section');
+        sectionItem.querySelector('.nav-section-title').append(expandButton);
+
+        expandButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const expanded = sectionItem.getAttribute('aria-expanded') === 'true';
+          sectionItem.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          expandButton.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+          expandButton.setAttribute('aria-label', expanded ? 'Expand section' : 'Collapse section');
         });
       }
 
