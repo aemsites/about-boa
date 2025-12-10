@@ -305,37 +305,24 @@
       position: absolute;
       top: 100%;
       left: 0;
+      display: none;
       height: auto;
       padding: var(--spacing-xxl) 0;
       background-color: var(--color-white);
       box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
-      transform: translateY(-100%);
-      opacity: 0;
-      visibility: hidden;
+      transform: none;
+      transition: none;
     }
 
     .nav-search-overlay[aria-hidden='false'] {
-      transform: translateY(0);
-      opacity: 1;
-      visibility: visible;
+      display: block;
     }
 
-    /* Hide back button and logo on desktop */
+    /* Hide back button, logo, and close button on desktop (close via search button) */
     .nav-search-overlay .nav-search-back,
-    .nav-search-overlay .nav-search-logo {
-      display: none;
-    }
-
+    .nav-search-overlay .nav-search-logo,
     .nav-search-overlay .nav-search-header {
-      position: absolute;
-      top: var(--spacing-md);
-      right: var(--spacing-l);
-      padding: 0;
-    }
-
-    .nav-search-overlay .nav-search-close {
-      width: 32px;
-      height: 32px;
+      display: none;
     }
 
     .nav-search-overlay .nav-search-form {

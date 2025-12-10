@@ -82,10 +82,15 @@ function createSearchOverlay(navBrand) {
 /**
  * Opens the search overlay
  * @param {Element} overlay The search overlay element
+ * @param {Element} [triggerButton] The button that triggered the overlay (for aria-expanded)
  */
-function openSearchOverlay(overlay) {
+function openSearchOverlay(overlay, triggerButton) {
   overlay.inert = false;
   overlay.setAttribute('aria-hidden', 'false');
+  if (triggerButton) {
+    triggerButton.setAttribute('aria-expanded', 'true');
+    triggerButton.setAttribute('aria-label', 'Close search');
+  }
   const input = overlay.querySelector('.nav-search-input');
   // Focus the input after transition
   setTimeout(() => input?.focus(), 300);
@@ -99,6 +104,8 @@ function openSearchOverlay(overlay) {
 function closeSearchOverlay(overlay, focusTarget) {
   // Move focus out before hiding to avoid aria-hidden focus trap warning
   if (focusTarget) {
+    focusTarget.setAttribute('aria-expanded', 'false');
+    focusTarget.setAttribute('aria-label', 'Open search');
     focusTarget.focus();
   }
   overlay.setAttribute('aria-hidden', 'true');
@@ -466,11 +473,17 @@ export default async function decorate(block) {
       });
     }
 
-    // Desktop search trigger
+    // Desktop search trigger (toggles open/close)
     if (desktopSearchButton) {
+      desktopSearchButton.setAttribute('aria-expanded', 'false');
       desktopSearchButton.addEventListener('click', (e) => {
         e.stopPropagation();
-        openSearchOverlay(searchOverlay);
+        const isOpen = searchOverlay.getAttribute('aria-hidden') === 'false';
+        if (isOpen) {
+          closeSearchOverlay(searchOverlay, desktopSearchButton);
+        } else {
+          openSearchOverlay(searchOverlay, desktopSearchButton);
+        }
       });
     }
   }

@@ -62,11 +62,6 @@
     opacity: 0.8;
   }
 
-  .nav-tools .nav-tool-search .icon {
-    width: var(--spacing-md);
-    height: var(--spacing-md);
-  }
-
   /* Hide search item on mobile (it's duplicated in nav-sections) */
   .nav-tools .nav-tool-search-item {
     display: none;
@@ -82,6 +77,17 @@
   .nav-tools .icon img {
     width: 100%;
     height: 100%;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .nav-tools .nav-tool-search .icon {
+    width: var(--spacing-md);
+    height: var(--spacing-md);
+  }
+
+  /* Search button close state (X icon) - hidden on mobile */
+  .nav-tools .nav-tool-search[aria-expanded='true'] .icon {
+    display: none;
   }
 
   /* Help Dropdown */
@@ -142,6 +148,7 @@
     margin-bottom: var(--spacing-sm);
   }
 
+  /* stylelint-disable-next-line no-descending-specificity */
   .nav-tools .nav-tool-dropdown .icon {
     flex-shrink: 0;
     width: 170px;
@@ -180,6 +187,32 @@
     /* Show search item on desktop */
     .nav-tools .nav-tool-search-item {
       display: block;
+    }
+
+    /* Search button X icon when overlay is open */
+    .nav-tools .nav-tool-search {
+      position: relative;
+      width: 32px;
+      height: 32px;
+    }
+
+    .nav-tools .nav-tool-search[aria-expanded='true']::before,
+    .nav-tools .nav-tool-search[aria-expanded='true']::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      content: '';
+      background-color: currentcolor;
+    }
+
+    .nav-tools .nav-tool-search[aria-expanded='true']::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    .nav-tools .nav-tool-search[aria-expanded='true']::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
     }
 
     .nav-tools .nav-tool-title {
