@@ -201,6 +201,12 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   button?.setAttribute('aria-label', expanded ? 'Open navigation' : 'Close navigation');
 
+  // Prevent focus on nav-sections content when menu is closed on mobile
+  if (navSections) {
+    const isMenuOpen = nav.getAttribute('aria-expanded') === 'true';
+    navSections.inert = !isDesktop.matches && !isMenuOpen;
+  }
+
   // enable nav dropdown keyboard accessibility
   const navDrops = navSections?.querySelectorAll('.nav-drop') || [];
   if (isDesktop.matches) {
