@@ -205,6 +205,12 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   if (navSections) {
     const isMenuOpen = nav.getAttribute('aria-expanded') === 'true';
     navSections.inert = !isDesktop.matches && !isMenuOpen;
+
+    // Move focus to first menu item when opening on mobile
+    if (isMenuOpen && !isDesktop.matches) {
+      const firstFocusable = navSections.querySelector('a, button');
+      firstFocusable?.focus();
+    }
   }
 
   // enable nav dropdown keyboard accessibility
