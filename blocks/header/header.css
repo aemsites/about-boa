@@ -285,7 +285,10 @@
   @media (width >= 900px) {
     header .nav-main {
       gap: var(--spacing-l);
-      padding: 0 var(--spacing-m);
+      width: 100%;
+      max-width: var(--max-content-width);
+      margin: 0 auto;
+      padding: 0 var(--spacing-xl);
       border-bottom: none;
     }
 
@@ -326,6 +329,8 @@
     }
 
     .nav-search-overlay .nav-search-form {
+      max-width: var(--max-content-width);
+      margin: 0 auto;
       padding: 0 var(--spacing-l);
     }
   }
@@ -333,7 +338,6 @@
   @media (width >= 1200px) {
     header .nav-main {
       gap: var(--spacing-xxl);
-      padding: 0 var(--spacing-xl);
     }
   }
 }

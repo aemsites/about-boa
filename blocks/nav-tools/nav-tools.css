@@ -230,10 +230,20 @@
       margin: 0;
     }
 
+    /* Make nav-main not a positioning context for the dropdown */
+    header .nav-main {
+      position: static;
+    }
+
     .nav-tools .nav-tool-dropdown {
       position: absolute;
-      top: calc(100%);
-      padding: var(--spacing-xxl) var(--spacing-xxl) var(--spacing-xl);
+      top: 100%;
+      right: 0;
+      left: 0;
+      display: none;
+      max-width: none;
+      padding: var(--spacing-xxl) max(var(--spacing-xl), calc((100% - var(--max-content-width)) / 2 + var(--spacing-xl))) var(--spacing-xl);
+      background-color: var(--color-white);
       box-shadow: 0 2px 8px rgb(0 0 0 / 15%), 0 0 1px rgb(0 0 0 / 10%);
     }
 

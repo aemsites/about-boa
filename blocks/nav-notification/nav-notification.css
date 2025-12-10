@@ -26,6 +26,9 @@
 
   @media (width >= 900px) {
     .nav-notification {
+      width: 100%;
+      max-width: var(--max-content-width);
+      margin: 0 auto;
       padding: var(--spacing-m) var(--spacing-xl);
       font-size: 0.85rem;
     }
