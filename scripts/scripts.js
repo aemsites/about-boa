@@ -19,7 +19,7 @@ import { replacePlaceholders } from './placeholders.js';
 
 const { searchParams, origin } = new URL(window.location.href);
 
-function decorateIcons(element) {
+export function decorateIcons(element) {
   const icons = element.querySelectorAll('span.icon');
   icons.forEach((span) => {
     const isIcomoon = [...span.classList].some((c) => c.startsWith('icon-icomoon-'));
@@ -76,7 +76,12 @@ function buildAutoBlocks(main) {
     const fragments = main.querySelectorAll('a[href*="/fragments/"]');
     if (fragments.length > 0) {
       fragments.forEach((fragment) => {
-        buildFragment(fragment);
+        const inBlock = fragment.closest('div[class]') ? fragment.closest('div[class]').classList.item(0) : '';
+        // add block names here that allow auto-blocking fragments inside them
+        const autoBlockInside = [];
+        if (!inBlock || autoBlockInside.includes(inBlock)) {
+          buildFragment(fragment);
+        }
       });
     }
 

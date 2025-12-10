@@ -1,0 +1,277 @@
+/* stylelint-disable no-descending-specificity */
+
+/* Search Results Block */
+main .search-results {
+  margin-block: var(--spacing-lg);
+}
+
+/* Container - reserve minimum height to reduce CLS */
+main .search-results .search-results-container {
+  min-height: 50vh;
+}
+
+/* Full-bleed Search Bar */
+main .search-results .search-results-search-bar {
+  background-color: #012169;
+  margin-inline: calc(-50vw + 50%);
+  padding-block: var(--spacing-xxl, 3rem);
+  padding-inline: calc(50vw - 50%);
+  margin-block-end: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
+}
+
+main .search-results .search-results-search-bar form {
+  width: 100%;
+  max-width: 400px;
+}
+
+main .search-results .search-results-input-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: var(--spacing-sm);
+  border-block-end: 2px solid rgb(255 255 255 / 50%);
+  transition: border-color 0.2s ease;
+}
+
+main .search-results .search-results-input-wrapper:focus-within {
+  border-block-end-color: var(--color-white, #fff);
+}
+
+main .search-results .search-results-input-wrapper .icon-search {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+main .search-results .search-results-input-wrapper .icon-search img {
+  width: 100%;
+  height: 100%;
+  filter: brightness(0) invert(1);
+}
+
+main .search-results .search-results-input {
+  flex: 1;
+  width: 100%;
+  padding: var(--spacing-sm) 0;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: 300;
+  color: var(--color-white, #fff);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+main .search-results .search-results-input::placeholder {
+  color: rgb(255 255 255 / 70%);
+  opacity: 1;
+}
+
+/* Hide default search cancel button */
+main .search-results .search-results-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* Results Count - min-height to reduce CLS when text loads */
+main .search-results .search-results-count {
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 300;
+  line-height: 1.25;
+  min-height: 1.25em;
+  margin-block: 0 var(--spacing-md);
+}
+
+/* Results List */
+main .search-results .search-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  max-width: 75ch;
+}
+
+/* Result Item */
+main .search-results .search-results-item {
+  padding-block-end: var(--spacing-lg);
+  border-block-end: 1px solid var(--color-border-light);
+}
+
+main .search-results .search-results-item:last-child {
+  border-block-end: none;
+}
+
+main .search-results .search-results-item-title {
+  display: block;
+  font-size: var(--body-font-size-m);
+  font-weight: 400;
+  color: var(--link-color);
+  text-decoration: none;
+  margin-block-end: var(--spacing-xs);
+}
+
+main .search-results .search-results-item-title:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+main .search-results .search-results-item-description {
+  font-size: var(--body-font-size-s);
+  color: var(--text-color);
+  margin-block: 0 var(--spacing-xs);
+  line-height: 1.5;
+}
+
+main .search-results .search-results-item-date {
+  font-size: var(--body-font-size-xs);
+  color: var(--color-gray);
+  margin-block: 0;
+}
+
+/* Highlighted search terms */
+main .search-results .search-results-item mark {
+  background-color: rgb(255 235 59 / 40%);
+  color: inherit;
+  padding-inline: 0.125em;
+  border-radius: 2px;
+}
+
+/* Pagination */
+main .search-results .search-results-pagination {
+  margin-block-start: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
+}
+
+main .search-results .search-results-pagination ul {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+main .search-results .search-results-pagination button {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: var(--spacing-xs);
+  font-size: var(--body-font-size-s);
+  font-family: inherit;
+  color: var(--link-color);
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+main .search-results .search-results-pagination button.pagination-prev,
+main .search-results .search-results-pagination button.pagination-next {
+  min-width: auto;
+  padding-inline: var(--spacing-sm);
+}
+
+main .search-results .search-results-pagination button:disabled {
+  color: var(--color-gray);
+  cursor: default;
+}
+
+main .search-results .search-results-pagination button[aria-current="page"] {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+main .search-results .search-results-pagination button:hover:not(:disabled) {
+  background-color: var(--color-gray-lightest);
+}
+
+main .search-results .search-results-pagination .pagination-ellipsis {
+  color: var(--color-gray);
+  padding-inline: var(--spacing-xs);
+}
+
+/* Loading State - positioned to reduce CLS when results load */
+main .search-results .search-results-loading {
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 300;
+  color: var(--color-gray);
+  padding-block: var(--spacing-md);
+}
+
+/* Error State */
+main .search-results .search-results-error {
+  font-size: var(--body-font-size-m);
+  color: var(--color-red-bright);
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+/* No Results State */
+main .search-results .search-results-no-results {
+  margin-block-start: var(--spacing-lg);
+}
+
+/* Spacing between recommendation sections in no-results fragment */
+main .search-results .search-results-no-results > .section {
+  margin-block-start: var(--spacing-xl);
+}
+
+main .search-results .search-results-no-results > .section:first-child {
+  margin-block-start: 0;
+}
+
+/* Recommended item styling in no-results fragment */
+main .search-results .search-results-no-results p {
+  margin-block: 0;
+}
+
+main .search-results .search-results-no-results p + p:has(strong) {
+  margin-block-start: var(--spacing-xl);
+}
+
+main .search-results .search-results-no-results p strong {
+  display: block;
+  font-size: var(--body-font-size-xs);
+  font-weight: 500;
+  color: var(--color-red-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-block-end: var(--spacing-xxs);
+}
+
+main .search-results .search-results-no-results p a,
+main .search-results .search-results-no-results p a.button {
+  display: block;
+  font-size: var(--body-font-size-m);
+  font-weight: 400;
+  color: var(--link-color);
+  text-decoration: none;
+  margin-block: var(--spacing-xxs) var(--spacing-xs);
+  background: none;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  text-align: left;
+  white-space: normal;
+}
+
+main .search-results .search-results-no-results p a:hover,
+main .search-results .search-results-no-results p a.button:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+  background: none;
+}
+
+/* Description paragraphs (those without strong or link) */
+main .search-results .search-results-no-results p:not(:has(strong), :has(a), :first-child) {
+  font-size: var(--body-font-size-s);
+  color: var(--text-color);
+  line-height: 1.5;
+}

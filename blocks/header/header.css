@@ -26,10 +26,6 @@
     flex-direction: column;
   }
 
-  header .block {
-    margin-block: 0;
-  }
-
   /* Main Navigation Container */
   header .nav-main {
     position: relative;
