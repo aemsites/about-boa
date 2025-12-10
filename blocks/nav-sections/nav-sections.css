@@ -77,6 +77,25 @@
     content: '+';
   }
 
+  /* Search button for mobile */
+  .nav-sections .nav-section-search {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-s);
+    padding: 0;
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--color-brand-blue);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+  }
+
+  .nav-sections .nav-section-search .icon {
+    width: 20px;
+    height: 20px;
+  }
+
   .nav-sections .nav-drop[aria-expanded='true'] .nav-section-expand::before {
     font-size: 2.5rem;
     content: '−';

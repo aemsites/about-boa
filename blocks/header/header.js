@@ -351,10 +351,22 @@ export default async function decorate(block) {
 
       const searchIcon = sectionItem.querySelector('.icon-search');
       if (searchIcon) {
+        // Create a button for the search trigger
+        const searchButton = document.createElement('button');
+        searchButton.type = 'button';
+        searchButton.className = 'nav-section-search';
+        searchButton.setAttribute('aria-label', 'Open search');
+
+        // Move icon into button and add text
+        searchButton.append(searchIcon.cloneNode(true));
         const searchText = document.createElement('span');
-        searchText.classList.add('mobile-only', 'search-text');
+        searchText.classList.add('search-text');
         searchText.textContent = 'Search';
-        searchIcon?.parentElement?.append(searchText);
+        searchButton.append(searchText);
+
+        // Replace the paragraph content with the button
+        sectionTitle.innerHTML = '';
+        sectionTitle.append(searchButton);
 
         sectionItem.classList.add('has-search');
 
