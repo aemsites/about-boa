@@ -261,12 +261,15 @@ function handleStickyNav(navWrapper, navNotification, navUtility) {
     }
 
     lastScrollY = scrollY;
+    navWrapper.style.setProperty('--nav-menu-top', `${navWrapper.offsetHeight}px`);
   };
 
   window.addEventListener('scroll', updateStickyState, { passive: true });
 
   // Check initial state
-  updateStickyState();
+  setTimeout(() => {
+    updateStickyState();
+  }, 100);
 }
 
 /**

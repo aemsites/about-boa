@@ -2,11 +2,11 @@
   /* Mobile: Sections positioned fixed off-screen */
   .nav-sections {
     position: fixed;
-    top: var(--nav-height);
+    top: var(--nav-menu-top, var(--nav-height));
     right: -100vw;
     z-index: 999;
     width: 100%;
-    height: calc(100vh - var(--nav-height));
+    height: calc(100vh - var(--nav-menu-top, var(--nav-height)));
     overflow-y: auto;
     background-color: var(--color-white);
   }
