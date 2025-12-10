@@ -84,6 +84,7 @@ function createSearchOverlay(navBrand) {
  * @param {Element} overlay The search overlay element
  */
 function openSearchOverlay(overlay) {
+  overlay.inert = false;
   overlay.setAttribute('aria-hidden', 'false');
   const input = overlay.querySelector('.nav-search-input');
   // Focus the input after transition
@@ -91,11 +92,17 @@ function openSearchOverlay(overlay) {
 }
 
 /**
- * Closes the search overlay
+ * Closes the search overlay and returns focus to the trigger
  * @param {Element} overlay The search overlay element
+ * @param {Element} [focusTarget] Element to focus after closing
  */
-function closeSearchOverlay(overlay) {
+function closeSearchOverlay(overlay, focusTarget) {
+  // Move focus out before hiding to avoid aria-hidden focus trap warning
+  if (focusTarget) {
+    focusTarget.focus();
+  }
   overlay.setAttribute('aria-hidden', 'true');
+  overlay.inert = true;
   const input = overlay.querySelector('.nav-search-input');
   if (input) input.value = '';
 }
@@ -105,21 +112,23 @@ function closeSearchOverlay(overlay) {
  * @param {Element} overlay The search overlay element
  * @param {Element} nav The nav element
  * @param {Element} navSections The nav sections element
+ * @param {Element} searchTrigger The button that opens the search overlay
  * @param {Function} toggleMenuFn The toggle menu function
  */
-function setupSearchOverlayHandlers(overlay, nav, navSections, toggleMenuFn) {
+function setupSearchOverlayHandlers(overlay, nav, navSections, searchTrigger, toggleMenuFn) {
   const backButton = overlay.querySelector('.nav-search-back');
   const closeButton = overlay.querySelector('.nav-search-close');
   const form = overlay.querySelector('.nav-search-form');
 
   // Back button returns to main menu
   backButton?.addEventListener('click', () => {
-    closeSearchOverlay(overlay);
+    closeSearchOverlay(overlay, searchTrigger);
   });
 
   // Close button closes entire menu
   closeButton?.addEventListener('click', () => {
-    closeSearchOverlay(overlay);
+    const hamburger = nav.querySelector('.nav-hamburger button');
+    closeSearchOverlay(overlay, hamburger);
     toggleMenuFn(nav, navSections, false);
   });
 
@@ -133,11 +142,11 @@ function setupSearchOverlayHandlers(overlay, nav, navSections, toggleMenuFn) {
     }
   });
 
-  // Close on escape
+  // Close on escape - return to menu
   overlay.addEventListener('keydown', (e) => {
     if (e.code === 'Escape') {
       e.stopPropagation();
-      closeSearchOverlay(overlay);
+      closeSearchOverlay(overlay, searchTrigger);
     }
   });
 }
@@ -428,14 +437,16 @@ export default async function decorate(block) {
   handleStickyNav(navWrapper, navNotification, navUtilityElement);
 
   // Set up mobile search overlay
-  const searchTrigger = navSections?.querySelector('[data-search-trigger="true"]');
-  if (searchTrigger) {
+  const searchTriggerItem = navSections?.querySelector('[data-search-trigger="true"]');
+  if (searchTriggerItem) {
+    const searchButton = searchTriggerItem.querySelector('.nav-section-search');
     const searchOverlay = createSearchOverlay(navBrand);
+    searchOverlay.inert = true; // Start hidden/inert
     navSections.append(searchOverlay);
 
-    setupSearchOverlayHandlers(searchOverlay, nav, navSections, toggleMenu);
+    setupSearchOverlayHandlers(searchOverlay, nav, navSections, searchButton, toggleMenu);
 
-    searchTrigger.addEventListener('click', (e) => {
+    searchTriggerItem.addEventListener('click', (e) => {
       if (!isDesktop.matches) {
         e.stopPropagation();
         openSearchOverlay(searchOverlay);
