@@ -43,6 +43,7 @@ export default function decorate(block) {
     if (divs.length > 1 && divs[1].textContent.trim()) {
       divs[1].classList.add('nav-section-links');
       section.classList.add('nav-drop');
+      section.setAttribute('aria-haspopup', 'true');
       sectionContent.append(divs[1]);
 
       // Third div contains optional image and description
