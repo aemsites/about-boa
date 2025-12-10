@@ -30,6 +30,48 @@
     margin: 0;
   }
 
+  /* Toggle button for dropdown tools (Help) */
+  .nav-tools .nav-tool-toggle {
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+  }
+
+  .nav-tools .nav-tool-toggle:hover {
+    text-decoration: underline;
+  }
+
+  /* Search button */
+  .nav-tools .nav-tool-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: var(--color-brand-blue);
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+  }
+
+  .nav-tools .nav-tool-search:hover {
+    opacity: 0.8;
+  }
+
+  .nav-tools .nav-tool-search .icon {
+    width: var(--spacing-md);
+    height: var(--spacing-md);
+  }
+
+  /* Hide search item on mobile (it's duplicated in nav-sections) */
+  .nav-tools .nav-tool-search-item {
+    display: none;
+  }
+
   .nav-tools .icon {
     display: inline-flex;
     justify-content: center;
@@ -135,13 +177,18 @@
       flex: 0 0 auto;
     }
 
+    /* Show search item on desktop */
+    .nav-tools .nav-tool-search-item {
+      display: block;
+    }
+
     .nav-tools .nav-tool-title {
       font-size: 1.125rem;
       font-weight: 400;
     }
 
     .nav-tools .nav-tool-drop .nav-tool-title {
-      padding: var(--spacing-md) var(--spacing-xs);
+      padding: 0;
       color: var(--color-brand-blue);
       cursor: pointer;
     }

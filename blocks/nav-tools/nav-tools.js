@@ -7,6 +7,10 @@ export function toggleAllNavTools(tools, expanded = false) {
   if (!tools) return;
   tools.querySelectorAll('.nav-tool-drop').forEach((tool) => {
     tool.setAttribute('aria-expanded', expanded);
+    const button = tool.querySelector('.nav-tool-toggle');
+    if (button) {
+      button.setAttribute('aria-expanded', expanded);
+    }
   });
 }
 
@@ -33,6 +37,23 @@ export default function decorate(block) {
       if (container) container.className = '';
     }
 
+    // Check if this is a search icon (single div with icon, no dropdown)
+    const searchIcon = mainDiv.querySelector('.icon-search');
+    if (searchIcon && (divs.length === 1 || !divs[1]?.textContent.trim())) {
+      // Create a button for the search trigger
+      const searchButton = document.createElement('button');
+      searchButton.type = 'button';
+      searchButton.className = 'nav-tool-search';
+      searchButton.setAttribute('aria-label', 'Open search');
+
+      // Move icon into button
+      searchButton.append(searchIcon.cloneNode(true));
+      mainDiv.innerHTML = '';
+      mainDiv.append(searchButton);
+
+      tool.classList.add('nav-tool-search-item');
+    }
+
     // Second div contains dropdown content (for Help)
     if (divs.length > 1 && divs[1].textContent.trim()) {
       divs[1].classList.add('nav-tool-dropdown');
@@ -46,12 +67,23 @@ export default function decorate(block) {
         btn.classList.remove('button');
       });
 
+      // Create toggle button for keyboard accessibility
+      const toggleButton = document.createElement('button');
+      toggleButton.type = 'button';
+      toggleButton.className = 'nav-tool-toggle';
+      toggleButton.setAttribute('aria-expanded', 'false');
+      toggleButton.setAttribute('aria-haspopup', 'true');
+      toggleButton.setAttribute('aria-label', `${mainDiv.textContent.trim()} menu`);
+      toggleButton.textContent = mainDiv.textContent.trim();
+
+      // Replace title content with button
+      mainDiv.textContent = '';
+      mainDiv.append(toggleButton);
+
       // Store click-outside handler reference for proper cleanup
-      // This prevents memory leaks if the tool is removed from DOM
       let clickOutsideHandler = null;
 
       const attachClickOutside = () => {
-        // Remove any existing handler first to prevent duplicates
         if (clickOutsideHandler) {
           document.removeEventListener('click', clickOutsideHandler);
         }
@@ -59,34 +91,36 @@ export default function decorate(block) {
         clickOutsideHandler = (e) => {
           if (!tool.contains(e.target)) {
             tool.setAttribute('aria-expanded', 'false');
+            toggleButton.setAttribute('aria-expanded', 'false');
             document.removeEventListener('click', clickOutsideHandler);
             clickOutsideHandler = null;
           }
         };
 
-        // Use setTimeout to avoid immediate triggering on the same click
         setTimeout(() => {
           document.addEventListener('click', clickOutsideHandler);
         }, 0);
       };
 
-      // Add click handler for both desktop and mobile
-      tool.addEventListener('click', (e) => {
-        if (!e.target.closest('a')) {
-          e.stopPropagation();
-          const expanded = tool.getAttribute('aria-expanded') === 'true';
-          toggleAllNavTools(block);
-          const newState = expanded ? 'false' : 'true';
-          tool.setAttribute('aria-expanded', newState);
+      // Toggle handler
+      const toggle = () => {
+        const expanded = tool.getAttribute('aria-expanded') === 'true';
+        toggleAllNavTools(block);
+        const newState = expanded ? 'false' : 'true';
+        tool.setAttribute('aria-expanded', newState);
+        toggleButton.setAttribute('aria-expanded', newState);
 
-          // Add click-outside listener when opened
-          if (newState === 'true') {
-            attachClickOutside();
-          } else if (clickOutsideHandler) {
-            document.removeEventListener('click', clickOutsideHandler);
-            clickOutsideHandler = null;
-          }
+        if (newState === 'true') {
+          attachClickOutside();
+        } else if (clickOutsideHandler) {
+          document.removeEventListener('click', clickOutsideHandler);
+          clickOutsideHandler = null;
         }
+      };
+
+      toggleButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggle();
       });
 
       tool.setAttribute('aria-expanded', 'false');

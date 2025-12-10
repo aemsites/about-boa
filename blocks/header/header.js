@@ -112,17 +112,17 @@ function closeSearchOverlay(overlay, focusTarget) {
  * @param {Element} overlay The search overlay element
  * @param {Element} nav The nav element
  * @param {Element} navSections The nav sections element
- * @param {Element} searchTrigger The button that opens the search overlay
+ * @param {Function} getFocusTarget Function that returns the button to focus after closing
  * @param {Function} toggleMenuFn The toggle menu function
  */
-function setupSearchOverlayHandlers(overlay, nav, navSections, searchTrigger, toggleMenuFn) {
+function setupSearchOverlayHandlers(overlay, nav, navSections, getFocusTarget, toggleMenuFn) {
   const backButton = overlay.querySelector('.nav-search-back');
   const closeButton = overlay.querySelector('.nav-search-close');
   const form = overlay.querySelector('.nav-search-form');
 
-  // Back button returns to main menu
+  // Back button returns to main menu (mobile) or closes overlay (desktop)
   backButton?.addEventListener('click', () => {
-    closeSearchOverlay(overlay, searchTrigger);
+    closeSearchOverlay(overlay, getFocusTarget());
   });
 
   // Close button closes entire menu
@@ -142,11 +142,11 @@ function setupSearchOverlayHandlers(overlay, nav, navSections, searchTrigger, to
     }
   });
 
-  // Close on escape - return to menu
+  // Close on escape - return to menu/close overlay
   overlay.addEventListener('keydown', (e) => {
     if (e.code === 'Escape') {
       e.stopPropagation();
-      closeSearchOverlay(overlay, searchTrigger);
+      closeSearchOverlay(overlay, getFocusTarget());
     }
   });
 }
@@ -178,17 +178,11 @@ function closeOnEscape(e) {
 function openOnKeydown(e) {
   const focused = document.activeElement;
   const isNavDrop = focused.classList.contains('nav-drop');
-  const isNavToolDrop = focused.classList.contains('nav-tool-drop');
 
-  if ((isNavDrop || isNavToolDrop) && (e.code === 'Enter' || e.code === 'Space')) {
+  if (isNavDrop && (e.code === 'Enter' || e.code === 'Space')) {
     const dropExpanded = focused.getAttribute('aria-expanded') === 'true';
-    if (isNavDrop && focused.closest('.nav-sections')) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavSections(focused.closest('.nav-sections'));
-    } else if (focused.closest('.nav-tools')) {
-      // eslint-disable-next-line no-use-before-define
-      toggleAllNavTools(focused.closest('.nav-tools'));
-    }
+    // eslint-disable-next-line no-use-before-define
+    toggleAllNavSections(focused.closest('.nav-sections'));
     focused.setAttribute('aria-expanded', dropExpanded ? 'false' : 'true');
   }
 }
@@ -346,7 +340,16 @@ export default async function decorate(block) {
       sectionTitle.classList.add('nav-section-title');
       const toolTitle = utilityItem.querySelector('.nav-tool-title');
       if (toolTitle) {
-        sectionTitle.replaceChildren(...toolTitle.cloneNode(true).children);
+        const titleClone = toolTitle.cloneNode(true);
+        // Remove desktop toggle button if present (we'll use mobile expand button instead)
+        const toggleButton = titleClone.querySelector('.nav-tool-toggle');
+        if (toggleButton) {
+          // Extract text from toggle button and create a simple text node
+          const titleText = document.createElement('span');
+          titleText.textContent = toggleButton.textContent;
+          titleClone.replaceChild(titleText, toggleButton);
+        }
+        sectionTitle.replaceChildren(...titleClone.children);
       }
       sectionItem.append(sectionTitle);
 
@@ -436,21 +439,39 @@ export default async function decorate(block) {
   const navUtilityElement = nav.querySelector('.nav-utility:not(.mobile-only)');
   handleStickyNav(navWrapper, navNotification, navUtilityElement);
 
-  // Set up mobile search overlay
+  // Set up search overlay (shared by mobile and desktop)
   const searchTriggerItem = navSections?.querySelector('[data-search-trigger="true"]');
-  if (searchTriggerItem) {
-    const searchButton = searchTriggerItem.querySelector('.nav-section-search');
+  const desktopSearchButton = navTools?.querySelector('.nav-tool-search');
+
+  if (searchTriggerItem || desktopSearchButton) {
+    const mobileSearchButton = searchTriggerItem?.querySelector('.nav-section-search');
     const searchOverlay = createSearchOverlay(navBrand);
     searchOverlay.inert = true; // Start hidden/inert
-    navSections.append(searchOverlay);
 
-    setupSearchOverlayHandlers(searchOverlay, nav, navSections, searchButton, toggleMenu);
+    // Append overlay to nav (parent of both navSections and navTools)
+    nav.append(searchOverlay);
 
-    searchTriggerItem.addEventListener('click', (e) => {
-      if (!isDesktop.matches) {
+    // Determine which button to focus when closing based on viewport
+    const getFocusTarget = () => (isDesktop.matches ? desktopSearchButton : mobileSearchButton);
+
+    setupSearchOverlayHandlers(searchOverlay, nav, navSections, getFocusTarget, toggleMenu);
+
+    // Mobile search trigger
+    if (searchTriggerItem) {
+      searchTriggerItem.addEventListener('click', (e) => {
+        if (!isDesktop.matches) {
+          e.stopPropagation();
+          openSearchOverlay(searchOverlay);
+        }
+      });
+    }
+
+    // Desktop search trigger
+    if (desktopSearchButton) {
+      desktopSearchButton.addEventListener('click', (e) => {
         e.stopPropagation();
         openSearchOverlay(searchOverlay);
-      }
-    });
+      });
+    }
   }
 }
