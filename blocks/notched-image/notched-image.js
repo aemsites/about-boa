@@ -40,10 +40,11 @@ export default async function decorate(block) {
     let focusValue = 'center';
     const img = imageContainer.querySelector('img');
     const { title } = img.dataset;
-    if (!title?.includes('data-focal')) return;
+    if (title?.includes('data-focal')) {
+      const [x, y] = title.split(':')[1].split(',');
+      focusValue = `${x}% ${y}%`;
+    }
     delete img.dataset.title;
-    const [x, y] = title.split(':')[1].split(',');
-    focusValue = `${x}% ${y}%`;
     imageContainer.style.setProperty('--focus-position', focusValue);
 
     imageContainer.className = 'notched-image-image';
