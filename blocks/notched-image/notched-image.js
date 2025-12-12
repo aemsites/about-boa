@@ -37,22 +37,14 @@ export default async function decorate(block) {
   }
 
   if (!hasNoImage) {
-    [...block.classList].forEach((cls) => {
-      if (cls.startsWith('img-focus-')) {
-        const focusPosition = cls.replace('img-focus-', '');
-        let focusValue;
-        if (focusPosition.match(/^[0-9]+$/)) {
-          focusValue = `${focusPosition}%`;
-        } else if (focusPosition === 'left') {
-          focusValue = '25%';
-        } else if (focusPosition === 'right') {
-          focusValue = '75%';
-        } else {
-          focusValue = 'center';
-        }
-        imageContainer.style.setProperty('--focus-position', focusValue);
-      }
-    });
+    let focusValue = 'center';
+    const img = imageContainer.querySelector('img');
+    const { title } = img.dataset;
+    if (!title?.includes('data-focal')) return;
+    delete img.dataset.title;
+    const [x, y] = title.split(':')[1].split(',');
+    focusValue = `${x}% ${y}%`;
+    imageContainer.style.setProperty('--focus-position', focusValue);
 
     imageContainer.className = 'notched-image-image';
   }
