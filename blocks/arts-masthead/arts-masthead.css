@@ -1,0 +1,133 @@
+/* Arts Masthead Block
+ * Hero-style masthead for arts & culture pages
+ * Breakpoints: Mobile (≤600px), Tablet (600-1200px), Desktop (≥1200px)
+ */
+
+/* Base styles (Mobile first) */
+main .arts-masthead {
+  position: relative;
+}
+
+main .arts-masthead .arts-masthead-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Content section */
+main .arts-masthead .arts-masthead-content {
+  padding-block: var(--spacing-xl);
+}
+
+main .arts-masthead .arts-masthead-content h1 {
+  color: var(--color-brand-red);
+  font-family: var(--heading-font-family);
+  font-size: clamp(2.5rem, 5vw + 1rem, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-block: 0 var(--spacing-lg);
+}
+
+main .arts-masthead .arts-masthead-content p {
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
+  margin-block: 0 var(--spacing-md);
+}
+
+main .arts-masthead .arts-masthead-content p strong {
+  font-weight: 700;
+  display: block;
+  margin-block-start: var(--spacing-lg);
+}
+
+/* Program links list */
+main .arts-masthead .arts-masthead-content ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+main .arts-masthead .arts-masthead-content li {
+  margin-block: var(--spacing-xs);
+}
+
+main .arts-masthead .arts-masthead-content a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 400;
+}
+
+main .arts-masthead .arts-masthead-content a:hover {
+  text-decoration: underline;
+  color: var(--link-hover-color);
+}
+
+/* Image section */
+main .arts-masthead .arts-masthead-image {
+  width: 100%;
+}
+
+main .arts-masthead .arts-masthead-image picture {
+  display: block;
+  width: 100%;
+}
+
+main .arts-masthead .arts-masthead-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Tablet (600px - 1200px) */
+@media (width >= 600px) {
+  main .arts-masthead .arts-masthead-content {
+    padding-block: var(--spacing-xxl);
+  }
+
+  main .arts-masthead .arts-masthead-content h1 {
+    margin-block-end: var(--spacing-xl);
+  }
+}
+
+/* Desktop (1200px and above) */
+@media (width >= 1200px) {
+  main .arts-masthead {
+    position: relative;
+  }
+
+  /* Gray background panel extending to left edge */
+  main .arts-masthead::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    margin-left: -100vw;
+    background-color: var(--color-gray-lightest);
+    z-index: -1;
+  }
+
+  main .arts-masthead .arts-masthead-inner {
+    display: grid;
+    grid-template-columns: minmax(300px, 480px) 1fr;
+    gap: var(--spacing-xxxl);
+    align-items: start;
+  }
+
+  /* Content column sits on gray background */
+  main .arts-masthead .arts-masthead-content {
+    padding-block: var(--spacing-xxxl);
+  }
+
+  /* Image column */
+  main .arts-masthead .arts-masthead-image {
+    padding-block: var(--spacing-xxl);
+  }
+
+  main .arts-masthead .arts-masthead-image img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
