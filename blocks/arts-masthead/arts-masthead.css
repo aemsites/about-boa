@@ -22,7 +22,7 @@ main .arts-masthead .arts-masthead-content {
 main .arts-masthead .arts-masthead-content h1 {
   color: var(--color-brand-red);
   font-family: var(--heading-font-family);
-  font-size: clamp(2.5rem, 5vw + 1rem, 4rem);
+  font-size: 4rem;
   font-weight: 300;
   line-height: 1.1;
   margin-block: 0 var(--spacing-lg);
@@ -93,6 +93,7 @@ main .arts-masthead .arts-masthead-image img {
 @media (width >= 1200px) {
   main .arts-masthead {
     position: relative;
+    margin-inline-end: calc(var(--spacing-xxl) * -1);
   }
 
   /* Gray background panel extending to left edge */
@@ -110,14 +111,18 @@ main .arts-masthead .arts-masthead-image img {
 
   main .arts-masthead .arts-masthead-inner {
     display: grid;
-    grid-template-columns: minmax(300px, 480px) 1fr;
-    gap: var(--spacing-xxxl);
+    grid-template-columns: minmax(300px, 320px) 1fr;
+    gap: 5rem;
     align-items: start;
   }
 
   /* Content column sits on gray background */
   main .arts-masthead .arts-masthead-content {
     padding-block: var(--spacing-xxxl);
+  }
+
+  main .arts-masthead .arts-masthead-content h1 {
+    font-size: 5.5rem;
   }
 
   /* Image column */
