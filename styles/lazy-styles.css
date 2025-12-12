@@ -40,3 +40,59 @@ a[href*="#footnote-"]:not(.footnotes a):hover {
   color: var(--link-hover-color);
   text-decoration: none;
 }
+
+main .section.heading-red .default-content-wrapper h1,
+main .section.heading-red .default-content-wrapper h2,
+main .section.heading-red .default-content-wrapper h3,
+main .section.heading-red .default-content-wrapper h4,
+main .section.heading-red .default-content-wrapper h5,
+main .section.heading-red .default-content-wrapper h6 {
+  color: var(--color-brand-red);
+}
+
+main .section.heading-center .default-content-wrapper h1,
+main .section.heading-center .default-content-wrapper h2,
+main .section.heading-center .default-content-wrapper h3,
+main .section.heading-center .default-content-wrapper h4,
+main .section.heading-center .default-content-wrapper h5,
+main .section.heading-center .default-content-wrapper h6 {
+  text-align: center;
+}
+
+main .section.heading-large .default-content-wrapper h1,
+main .section.heading-large .default-content-wrapper h2,
+main .section.heading-large .default-content-wrapper h3 {
+  font-size: var(--heading-font-size-xxl);
+  margin-block-end: var(--spacing-lg);
+}
+
+@media (width >= 900px) {
+  main .section.heading-center .default-content-wrapper h1,
+  main .section.heading-center .default-content-wrapper h2,
+  main .section.heading-center .default-content-wrapper h3,
+  main .section.heading-center .default-content-wrapper h4,
+  main .section.heading-center .default-content-wrapper h5,
+  main .section.heading-center .default-content-wrapper h6 {
+    width: 60%;
+    margin-inline: auto;
+  }
+
+  main .section.heading-large .default-content-wrapper h1,
+  main .section.heading-large .default-content-wrapper h2,
+  main .section.heading-large .default-content-wrapper h3 {
+    font-size: 3rem;
+    margin-block-end: var(--spacing-xl);
+  }
+}
+
+.modal .section.center,
+.modal .section.center p {
+  text-align: center;
+}
+
+.modal .section.small-image picture,
+.modal .section.small-image img {
+  max-width: 150px;
+  height: auto;
+  margin-inline: auto;
+}
