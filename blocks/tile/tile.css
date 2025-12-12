@@ -61,4 +61,86 @@
       display: none;
     }
   }
+
+  /* =====================================================
+     MODULAR VARIANT
+     Statistics/metrics display with outlined numbers
+     ===================================================== */
+
+  /* Modular: Remove borders from tiles */
+  main .tile.modular .tile-item {
+    border: none;
+    background-color: transparent;
+  }
+
+  /* Modular: Center text alignment */
+  main .tile.modular .tile-item-body {
+    text-align: center;
+    padding: var(--spacing-lg);
+  }
+
+  /* Modular: Outline text effect for headlines */
+  main .tile.modular .tile-item-body h2 {
+    font-family: var(--heading-font-family);
+    font-size: clamp(3rem, 2rem + 5vw, 5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-brand-blue);
+    paint-order: stroke fill;
+    margin-block-end: var(--spacing-md);
+  }
+
+  /* Modular: Description text styling */
+  main .tile.modular .tile-item-body p {
+    font-size: var(--body-font-size-s);
+    line-height: 1.6;
+    color: var(--text-color);
+    margin: 0;
+  }
+
+  /* Modular: Tablet and Desktop layout with dividers */
+  @media (width >= 600px) {
+    main .tile.modular .carousel-slides {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 0;
+      padding: 0;
+    }
+
+    /* Vertical dividers between tiles */
+    main .tile.modular .tile-item {
+      position: relative;
+      padding-inline: var(--spacing-lg);
+    }
+
+    main .tile.modular .tile-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      right: 0;
+      height: 80%;
+      width: 1px;
+      background-color: var(--color-border);
+    }
+
+    main .tile.modular .tile-item-body h2 {
+      -webkit-text-stroke: 3px var(--color-brand-blue);
+    }
+  }
+
+  /* Modular: Desktop - 3 columns */
+  @media (width >= 900px) {
+    main .tile.modular .carousel-slides {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    main .tile.modular .tile-item {
+      padding-inline: var(--spacing-xl);
+    }
+
+    main .tile.modular .tile-item-body {
+      padding: var(--spacing-xl);
+    }
+  }
 }
