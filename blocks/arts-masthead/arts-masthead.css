@@ -19,13 +19,13 @@ main .arts-masthead .arts-masthead-content {
   padding-block: var(--spacing-xl);
 }
 
-main .arts-masthead .arts-masthead-content h1 {
+main .arts-masthead .arts-masthead-content > h1 {
+  font-size: 3rem;
+}
+
+main .arts-masthead.heading-red .arts-masthead-content h1 {
   color: var(--color-brand-red);
-  font-family: var(--heading-font-family);
   font-size: 4rem;
-  font-weight: 300;
-  line-height: 1.1;
-  margin-block: 0 var(--spacing-lg);
 }
 
 main .arts-masthead .arts-masthead-content p {
@@ -122,6 +122,11 @@ main .arts-masthead .arts-masthead-image img {
   }
 
   main .arts-masthead .arts-masthead-content h1 {
+    margin-block-start: 4rem;
+    font-size: 3.5rem;
+  }
+
+  main .arts-masthead.heading-red .arts-masthead-content h1 {
     font-size: 5.5rem;
   }
 
