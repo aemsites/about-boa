@@ -80,18 +80,18 @@
   }
 
   /* Modular: Outline text effect for headlines using inline font */
-  main .tile.modular .tile-item-body h2 {
+  main .tile.modular .tile-item-body h3 {
     font-family: connectionsinline, var(--heading-font-family);
     font-size: clamp(3rem, 2rem + 5vw, 5rem);
     font-weight: 400;
     line-height: 1.125;
-    color: var(--color-brand-blue);
+    color: var(--color-blue-neptune);
     margin-block-end: var(--spacing-md);
   }
 
   /* Modular: Description text styling */
   main .tile.modular .tile-item-body p {
-    font-size: var(--body-font-size-s);
+    font-size: 1.5rem;
     line-height: 1.6;
     color: var(--text-color);
     margin: 0;
@@ -109,7 +109,6 @@
     /* Vertical dividers between tiles */
     main .tile.modular .tile-item {
       position: relative;
-      padding-inline: var(--spacing-lg);
     }
 
     main .tile.modular .tile-item:not(:last-child)::after {
@@ -119,22 +118,126 @@
       right: 0;
       height: 80%;
       width: 1px;
-      background-color: var(--color-border);
+      background-color: var(--color-blue-ultramarine);
     }
   }
 
-  /* Modular: Desktop - 3 columns */
+  /* =====================================================
+     HORIZONTAL VARIANT
+     Side-by-side layout with text and image
+     ===================================================== */
+
+  main .tile.horizontal .tile-item {
+    display: flex;
+    flex-direction: column;
+    border: none;
+    background-color: transparent;
+  }
+
+  /* Image on top for mobile */
+  main .tile.horizontal .tile-item-image {
+    order: -1;
+  }
+
+  /* Body styling for horizontal variant */
+  main .tile.horizontal .tile-item-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--spacing-lg) 0 0 0;
+  }
+
+  /* Eyebrow text (first paragraph with strong) */
+  main .tile.horizontal .tile-item-body > p:first-child {
+    margin-block-end: var(--spacing-sm);
+    text-transform: uppercase;
+    color: var(--color-brand-red);
+    font-weight: 300;
+  }
+
+  main .tile.horizontal .tile-item-body > p:first-child strong {
+    font-family: var(--body-font-family);
+    font-size: var(--body-font-size-xs);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-brand-red);
+  }
+
+  /* Heading styling */
+  main .tile.horizontal .tile-item-body h2,
+  main .tile.horizontal .tile-item-body h3 {
+    margin-block-end: var(--spacing-lg);
+  }
+
+  main .tile.horizontal .tile-item-body > p:not(:first-child, :last-child) {
+    margin-block-end: var(--spacing-md);
+  }
+
+  main .tile.horizontal .tile-item-body > p:last-child a::after {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-inline-start: var(--spacing-xs);
+    border-right: 1px solid var(--link-color);
+    border-bottom: 1px solid var(--link-color);
+    vertical-align: middle;
+    content: '';
+    transform: rotate(-45deg);
+  }
+
+  main .tile.horizontal .tile-item-body > p:last-child a:hover {
+    text-decoration: underline;
+  }
+
+  /* Horizontal: Tablet and Desktop - side by side layout */
+  @media (width >= 600px) {
+    main .tile.horizontal .tile-item {
+      flex-direction: row;
+      align-items: stretch;
+    }
+
+    /* Text on left, image on right */
+    main .tile.horizontal .tile-item-body {
+      flex: 1 1 60%;
+      padding: var(--spacing-xl) var(--spacing-xl) var(--spacing-xl) 0;
+    }
+
+    main .tile.horizontal .tile-item-image {
+      flex: 1 1 40%;
+      order: 1;
+    }
+
+    main .tile.horizontal .tile-item-image img {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      object-fit: cover;
+    }
+  }
+
+  /* Horizontal: Larger spacing on desktop */
   @media (width >= 900px) {
-    main .tile.modular .carousel-slides {
-      grid-template-columns: repeat(3, 1fr);
+
+
+    main .tile.horizontal .tile-item-body h2,
+    main .tile.horizontal .tile-item-body h3 {
+      font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+    }
+  }
+
+  /* Horizontal Reversed: Image on left, text on right */
+  main .tile.horizontal.reversed .tile-item-image {
+    order: -1;
+  }
+
+  @media (width >= 600px) {
+    main .tile.horizontal.reversed .tile-item-image {
+      order: -1;
     }
 
-    main .tile.modular .tile-item {
-      padding-inline: var(--spacing-xl);
-    }
-
-    main .tile.modular .tile-item-body {
-      padding: var(--spacing-xl);
+    main .tile.horizontal.reversed .tile-item-body {
+      order: 1;
     }
   }
 }
