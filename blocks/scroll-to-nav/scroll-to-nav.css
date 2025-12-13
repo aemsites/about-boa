@@ -1,0 +1,171 @@
+/* Scroll-to-nav Block
+ * Navigation with anchor links - collapsible dropdown on mobile, inline on tablet/desktop
+ * Breakpoints: Mobile (< 600px), Tablet/Desktop (≥ 600px)
+ */
+
+/* Base styles */
+main .scroll-to-nav {
+  margin-block: var(--spacing-lg);
+}
+
+main .scroll-to-nav .scroll-to-nav-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile custom dropdown */
+main .scroll-to-nav .scroll-to-nav-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Toggle button */
+main .scroll-to-nav .scroll-to-nav-toggle {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+main .scroll-to-nav .scroll-to-nav-toggle:focus {
+  outline: 2px solid var(--color-blue-royal);
+  outline-offset: 2px;
+}
+
+/* Selected text display */
+main .scroll-to-nav .scroll-to-nav-selected {
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  font-weight: 500;
+  color: var(--link-color);
+}
+
+/* Chevron icon - points down when closed */
+main .scroll-to-nav .scroll-to-nav-chevron {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--color-blue-royal);
+  border-bottom: 2px solid var(--color-blue-royal);
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
+  margin-top: -4px;
+}
+
+/* Chevron points up when open */
+main .scroll-to-nav .scroll-to-nav-mobile.is-open .scroll-to-nav-chevron {
+  transform: rotate(-135deg);
+  margin-top: 4px;
+}
+
+/* Mobile links list */
+main .scroll-to-nav .scroll-to-nav-list {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+
+main .scroll-to-nav .scroll-to-nav-mobile.is-open .scroll-to-nav-list {
+  display: block;
+}
+
+main .scroll-to-nav .scroll-to-nav-list li {
+  margin: 0;
+  padding: 0;
+}
+
+main .scroll-to-nav .scroll-to-nav-list a {
+  display: block;
+  padding: var(--spacing-md) var(--spacing-sm);
+  color: var(--link-color);
+  font-size: var(--body-font-size-m);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+main .scroll-to-nav .scroll-to-nav-list a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+main .scroll-to-nav .scroll-to-nav-list a:focus {
+  outline: 2px solid var(--color-blue-royal);
+  outline-offset: 2px;
+}
+
+/* Desktop navigation - hidden on mobile */
+main .scroll-to-nav .scroll-to-nav-desktop {
+  display: none;
+}
+
+/* Desktop/Tablet styles (600px and above) */
+@media (width >= 600px) {
+  /* Hide mobile dropdown */
+  main .scroll-to-nav .scroll-to-nav-mobile {
+    display: none;
+  }
+
+  /* Show desktop navigation */
+  main .scroll-to-nav .scroll-to-nav-desktop {
+    display: block;
+  }
+
+  main .scroll-to-nav .scroll-to-nav-desktop ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-md) var(--spacing-xl);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  main .scroll-to-nav .scroll-to-nav-desktop li {
+    margin: 0;
+    padding: 0;
+  }
+
+  main .scroll-to-nav .scroll-to-nav-desktop a {
+    display: inline-block;
+    color: var(--link-color);
+    font-size: var(--body-font-size-s);
+    font-weight: 500;
+    text-decoration: none;
+    padding-block: var(--spacing-xs);
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  main .scroll-to-nav .scroll-to-nav-desktop a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
+  }
+
+  main .scroll-to-nav .scroll-to-nav-desktop a:focus {
+    outline: 2px solid var(--color-blue-royal);
+    outline-offset: 4px;
+  }
+}
+
+/* Larger desktop - more spacing */
+@media (width >= 900px) {
+  main .scroll-to-nav .scroll-to-nav-desktop ul {
+    gap: var(--spacing-md) var(--spacing-xxl);
+  }
+
+  main .scroll-to-nav .scroll-to-nav-desktop a {
+    font-size: var(--body-font-size-m);
+  }
+}
