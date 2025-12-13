@@ -218,8 +218,6 @@
 
   /* Horizontal: Larger spacing on desktop */
   @media (width >= 900px) {
-
-
     main .tile.horizontal .tile-item-body h2,
     main .tile.horizontal .tile-item-body h3 {
       font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
