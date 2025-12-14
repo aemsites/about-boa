@@ -98,7 +98,7 @@
     display: none;
     width: 100%;
     min-width: auto;
-    padding: var(--spacing-m) 0 0 var(--spacing-m);
+    padding: var(--spacing-md) 0 0 var(--spacing-md);
     white-space: normal;
     background-color: var(--color-white);
     border-radius: 0;
@@ -175,7 +175,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-self: start;
-    padding: var(--spacing-l) 0;
+    padding: var(--spacing-lg) 0;
   }
 
   @media (width >= 900px) {

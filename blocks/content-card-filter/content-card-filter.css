@@ -3,7 +3,7 @@
 .content-card-filter {
   margin: 0 auto;
   max-width: var(--max-content-width);
-  padding: var(--spacing-l);
+  padding: var(--spacing-lg);
 }
 
 .content-card-filter-form {
@@ -87,6 +87,6 @@
 .view-all-button-wrapper {
   display: flex;
   justify-content: center;
-  margin: var(--spacing-l) 0;
+  margin: var(--spacing-lg) 0;
 }
 

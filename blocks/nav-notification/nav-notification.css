@@ -5,7 +5,7 @@
 
   .nav-notification {
     margin: 0 auto;
-    padding: var(--spacing-xs) var(--spacing-l);
+    padding: var(--spacing-xs) var(--spacing-lg);
     font-size: 0.75rem;
     line-height: 1.4;
   }
@@ -29,7 +29,7 @@
       width: 100%;
       max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
       margin: 0 auto;
-      padding: var(--spacing-m) var(--default-inline-spacing);
+      padding: var(--spacing-md) var(--default-inline-spacing);
       font-size: 0.85rem;
     }
   }

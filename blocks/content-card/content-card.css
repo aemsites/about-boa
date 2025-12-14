@@ -6,11 +6,11 @@
     padding: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--spacing-l);
+    gap: var(--spacing-lg);
   }
 
   .content-card.grid {
-    margin-inline: calc(var(--spacing-l) * -1);
+    margin-inline: calc(var(--spacing-lg) * -1);
   }
 
   .content-card.grid .content-card-body {
