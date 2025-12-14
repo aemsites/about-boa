@@ -32,11 +32,11 @@
   @media (width >= 900px) {
     .nav-brand {
       flex: 0 0 auto;
-      margin-right: var(--spacing-md);
+      margin-right: var(--spacing-xs);
     }
 
     .nav-brand .icon {
-      width: 220px;
+      width: 180px;
     }
   }
 
@@ -46,4 +46,5 @@
     }
   }
 }
+
 

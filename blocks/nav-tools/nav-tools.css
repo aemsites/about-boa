@@ -182,6 +182,7 @@
     .nav-tools {
       display: flex;
       flex: 0 0 auto;
+      gap: var(--spacing-xs);
     }
 
     /* Show search item on desktop */
@@ -216,7 +217,7 @@
     }
 
     .nav-tools .nav-tool-title {
-      font-size: 1.125rem;
+      font-size: var(--body-font-size-s);
       font-weight: 400;
     }
 
@@ -263,6 +264,12 @@
       flex-direction: row;
       align-items: center;
       padding: 0;
+    }
+  }
+
+  @media (width >= 1200px) {
+    .nav-tools .nav-tool-title {
+      font-size: var(--body-font-size-m);
     }
   }
 }
