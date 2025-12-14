@@ -59,6 +59,15 @@ export default function decorate(block) {
       divs[1].classList.add('nav-tool-dropdown');
       tool.classList.add('nav-tool-drop');
 
+      // Wrap dropdown content in a container for consistent max-width styling
+      const dropdownContent = divs[1];
+      const container = document.createElement('div');
+      container.className = 'nav-tool-dropdown-container';
+      while (dropdownContent.firstChild) {
+        container.appendChild(dropdownContent.firstChild);
+      }
+      dropdownContent.appendChild(container);
+
       // Clean up button classes
       tool.querySelectorAll('.button-container').forEach((bc) => {
         bc.className = '';

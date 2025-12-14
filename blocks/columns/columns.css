@@ -23,7 +23,7 @@
   @media (width >= 900px) {
     .columns > div {
       flex-direction: unset;
-      gap: var(--spacing-l);
+      gap: var(--spacing-lg);
     }
 
     .columns > div > div {

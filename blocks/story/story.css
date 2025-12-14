@@ -64,7 +64,7 @@
 .story .story-content a::after {
   content: '';
   display: inline-block;
-  margin-inline-start: var(--spacing-m);
+  margin-inline-start: var(--spacing-md);
   width: 10px;
   height: 10px;
   border-right: 1px solid var(--link-color);

@@ -115,8 +115,8 @@
 }
 
 .video .video-transcript-close svg {
-  width: var(--spacing-l);
-  height: var(--spacing-l);
+  width: var(--spacing-lg);
+  height: var(--spacing-lg);
 }
 
 .video .video-transcript-content {

@@ -27,7 +27,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 0;
-    padding: var(--spacing-md) var(--spacing-l);
+    padding: var(--spacing-md) var(--spacing-lg);
     font-size: 1.125rem;
     font-weight: 400;
     color: var(--color-brand-blue);
@@ -51,7 +51,7 @@
 
   .nav-sections .nav-section-title .search-text {
     display: inline-block;
-    padding-left: var(--spacing-s);
+    padding-left: var(--spacing-sm);
   }
 
   /* Expand/collapse button for mobile accordion */
@@ -62,7 +62,7 @@
     justify-content: center;
     width: 44px;
     height: 44px;
-    margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-l)) calc(-1 * var(--spacing-md)) 0;
+    margin: calc(-1 * var(--spacing-md)) calc(-1 * var(--spacing-lg)) calc(-1 * var(--spacing-md)) 0;
     padding: 0;
     font-size: 2rem;
     font-weight: 300;
@@ -81,7 +81,7 @@
   .nav-sections .nav-section-search {
     display: flex;
     align-items: center;
-    gap: var(--spacing-s);
+    gap: var(--spacing-sm);
     padding: 0;
     font-size: 1.125rem;
     font-weight: 400;
@@ -103,9 +103,9 @@
 
   /* Hide sub-content by default on mobile */
   .nav-sections .nav-section-links {
-    padding-right: var(--spacing-l);
-    padding-bottom: var(--spacing-m);
-    padding-left: var(--spacing-l);
+    padding-right: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    padding-left: var(--spacing-lg);
   }
 
   .nav-sections .nav-drop .nav-section-content {
@@ -113,13 +113,13 @@
   }
 
   .nav-sections .nav-drop .nav-section-content h2 {
-    padding-inline: var(--spacing-l);
+    padding-inline: var(--spacing-lg);
     font-size: 1.25rem;
   }
 
   .nav-sections .nav-drop .nav-section-content ul {
     list-style: none;
-    padding-inline: var(--spacing-l);
+    padding-inline: var(--spacing-lg);
   }
 
   .nav-sections .nav-drop .nav-section-content .icon {
@@ -147,7 +147,7 @@
   /* Hide feature section by default on mobile */
   .nav-sections .nav-section-feature {
     margin-top: 0;
-    padding: var(--spacing-m);
+    padding: var(--spacing-md);
     background-color: var(--color-white);
     width: 50%;
   }
@@ -183,9 +183,10 @@
       display: flex !important;
       flex: 1 1 auto;
       flex-direction: row !important;
-      gap: var(--spacing-m);
+      gap: var(--spacing-sm);
       align-items: center;
       width: auto;
+      min-width: 0;
       height: auto;
       overflow-y: visible;
       visibility: visible;
@@ -214,7 +215,7 @@
       display: inline-block;
       margin-bottom: 0;
       padding: var(--spacing-md) 0;
-      font-size: 1rem;
+      font-size: var(--body-font-size-s);
       cursor: pointer;
       color: var(--color-brand-blue);
     }
@@ -230,7 +231,7 @@
     }
 
     .nav-sections .nav-section-feature {
-      margin-top: var(--spacing-m);
+      margin-top: var(--spacing-md);
       width: auto;
     }
 
@@ -308,7 +309,7 @@
     }
 
     .nav-sections .nav-section-title {
-      font-size: 1.125rem;
+      font-size: var(--body-font-size-m);
     }
   }
 }

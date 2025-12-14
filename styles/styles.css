@@ -123,16 +123,11 @@
     --spacing-xxs: 0.25rem;  /* 4px */
     --spacing-xs: 0.5rem;    /* 8px */
     --spacing-sm: 1rem;      /* 16px */
-    --spacing-md: 1.25rem;   /* 20px - most common in BofA blocks */
+    --spacing-md: 1.25rem;   /* 20px */
     --spacing-lg: 1.5rem;    /* 24px */
     --spacing-xl: 2rem;      /* 32px */
     --spacing-xxl: 3rem;     /* 48px */
     --spacing-xxxl: 4rem;    /* 64px */
-
-    /* Legacy spacing names for compatibility */
-    --spacing-s: var(--spacing-sm);
-    --spacing-m: var(--spacing-md);
-    --spacing-l: var(--spacing-lg);
     --default-inline-spacing: var(--spacing-lg);
   }
 
@@ -244,7 +239,7 @@
   }
 
   pre {
-    padding: var(--spacing-m);
+    padding: var(--spacing-md);
     border-radius: 8px;
     background-color: var(--light-color);
     overflow-x: auto;
