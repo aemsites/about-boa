@@ -242,13 +242,21 @@
       left: 0;
       display: none;
       max-width: none;
-      padding: var(--spacing-xxl) max(var(--spacing-xl), calc((100% - var(--max-content-width)) / 2 + var(--spacing-xl))) var(--spacing-xl);
+      padding: var(--spacing-xxl) 0 var(--default-inline-spacing);
       background-color: var(--color-white);
       box-shadow: 0 2px 8px rgb(0 0 0 / 15%), 0 0 1px rgb(0 0 0 / 10%);
     }
 
-    .nav-tools .nav-tool-drop[aria-expanded='true'] .nav-tool-dropdown {
+    .nav-tools .nav-tool-dropdown-container {
       display: flex;
+      width: 100%;
+      max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
+      margin: 0 auto;
+      padding: 0 var(--default-inline-spacing);
+    }
+
+    .nav-tools .nav-tool-drop[aria-expanded='true'] .nav-tool-dropdown {
+      display: block;
     }
 
     header nav[aria-expanded='true'] .nav-tools {

@@ -286,9 +286,9 @@
     header .nav-main {
       gap: var(--spacing-l);
       width: 100%;
-      max-width: var(--max-content-width);
+      max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
       margin: 0 auto;
-      padding: 0 var(--spacing-xl);
+      padding: 0 var(--default-inline-spacing);
       border-bottom: none;
     }
 
@@ -329,9 +329,9 @@
     }
 
     .nav-search-overlay .nav-search-form {
-      max-width: var(--max-content-width);
+      max-width: calc(var(--max-content-width) + (var(--default-inline-spacing) * 2));
       margin: 0 auto;
-      padding: 0 var(--spacing-l);
+      padding: 0 var(--default-inline-spacing);
     }
   }
 
