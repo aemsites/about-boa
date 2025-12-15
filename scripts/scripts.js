@@ -120,7 +120,7 @@ function decorateNestedSections(main) {
 
   nodesToProcess.forEach((textNode) => {
     const text = textNode.textContent;
-    const matches = [...text.matchAll(/\{\{#([^}]+)\}\}/g)];
+    const matches = [...text.matchAll(placeholderPattern)];
 
     if (matches.length > 0) {
       const parent = textNode.parentElement;
