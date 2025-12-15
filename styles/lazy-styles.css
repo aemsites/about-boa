@@ -50,15 +50,6 @@ main .section.heading-red .default-content-wrapper h6 {
   color: var(--color-brand-red);
 }
 
-main .section.heading-center .default-content-wrapper h1,
-main .section.heading-center .default-content-wrapper h2,
-main .section.heading-center .default-content-wrapper h3,
-main .section.heading-center .default-content-wrapper h4,
-main .section.heading-center .default-content-wrapper h5,
-main .section.heading-center .default-content-wrapper h6 {
-  text-align: center;
-}
-
 main .section.heading-large .default-content-wrapper h1,
 main .section.heading-large .default-content-wrapper h2,
 main .section.heading-large .default-content-wrapper h3 {
@@ -67,16 +58,6 @@ main .section.heading-large .default-content-wrapper h3 {
 }
 
 @media (width >= 900px) {
-  main .section.heading-center .default-content-wrapper h1,
-  main .section.heading-center .default-content-wrapper h2,
-  main .section.heading-center .default-content-wrapper h3,
-  main .section.heading-center .default-content-wrapper h4,
-  main .section.heading-center .default-content-wrapper h5,
-  main .section.heading-center .default-content-wrapper h6 {
-    width: 60%;
-    margin-inline: auto;
-  }
-
   main .section.heading-large .default-content-wrapper h1,
   main .section.heading-large .default-content-wrapper h2,
   main .section.heading-large .default-content-wrapper h3 {
