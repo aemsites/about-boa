@@ -17,6 +17,12 @@
     max-width: var(--max-width-padding);
     margin: 0 auto;
     padding: 0 var(--default-inline-spacing);
+    text-align: center;
+  }
+
+  .notched-image.align-left .notched-image-content,
+  .notched-image.align-right .notched-image-content {
+    text-align: left;
   }
 
   .notched-image.no-image .notched-image-content {
