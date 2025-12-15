@@ -237,17 +237,20 @@ function bindEvents(block) {
 }
 
 /**
- * Makes all focusable elements in a cloned slide non-focusable for accessibility
+ * Makes a cloned slide non-interactive and removes duplicate IDs
  * @param {HTMLElement} clonedSlide - The cloned slide element
  */
 function makeCloneNonInteractive(clonedSlide) {
-  // Set tabindex="-1" on all focusable elements
-  const focusableElements = clonedSlide.querySelectorAll(
-    'a, button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])',
-  );
-  focusableElements.forEach((element) => {
-    element.setAttribute('tabindex', '-1');
+  // inert makes the element and all descendants non-interactive and hidden from AT
+  clonedSlide.inert = true;
+
+  // Remove IDs from all elements inside the clone to avoid duplicate IDs in the DOM
+  clonedSlide.querySelectorAll('[id]').forEach((element) => {
+    element.removeAttribute('id');
   });
+
+  // Remove aria-labelledby since the referenced IDs are now removed
+  clonedSlide.removeAttribute('aria-labelledby');
 }
 
 export function updateCarousel(container, settings = {}) {
