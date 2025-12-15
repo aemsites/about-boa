@@ -1,6 +1,6 @@
 .accordion details {
   border-top: 1px solid var(--color-border);
-  padding-block: var(--spacing-l);
+  padding-block: var(--spacing-lg);
 }
 
 .accordion details:last-of-type {
@@ -13,7 +13,7 @@
 
 .accordion details summary {
   position: relative;
-  padding: 0 var(--spacing-s);
+  padding: 0 var(--spacing-sm);
   padding-right: var(--spacing-xxl);
   cursor: pointer;
   list-style: none;
@@ -34,7 +34,7 @@
   content: '+';
   position: absolute;
   top: 50%;
-  right: var(--spacing-s);
+  right: var(--spacing-sm);
   transform: translateY(-50%);
   font-size: var(--heading-font-size-xxl);
   font-family: var(--heading-font-family);
@@ -48,7 +48,7 @@
 }
 
 .accordion details .accordion-item-body {
-  padding: 0 var(--spacing-s);
+  padding: 0 var(--spacing-sm);
 }
 
 @media (width >= 900px) {

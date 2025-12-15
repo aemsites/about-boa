@@ -31,22 +31,15 @@ export default async function decorate(block) {
   }
 
   // Handle image focus positioning
-  [...block.classList].forEach((cls) => {
-    if (cls.startsWith('img-focus-')) {
-      const focusPosition = cls.replace('img-focus-', '');
-      let focusValue;
-      if (focusPosition.match(/^[0-9]+$/)) {
-        focusValue = `${focusPosition}%`;
-      } else if (focusPosition === 'left') {
-        focusValue = '25%';
-      } else if (focusPosition === 'right') {
-        focusValue = '75%';
-      } else {
-        focusValue = 'center';
-      }
-      imageContainer.style.setProperty('--focus-position', focusValue);
-    }
-  });
+  let focusValue = 'center';
+  const img = imageContainer.querySelector('img');
+  const { title } = img.dataset;
+  if (title?.includes('data-focal')) {
+    const [x, y] = title.split(':')[1].split(',');
+    focusValue = `${x}% ${y}%`;
+  }
+  delete img.dataset.title;
+  imageContainer.style.setProperty('--focus-position', focusValue);
 
   // Create the structure
   imageContainer.className = 'highlight-image';

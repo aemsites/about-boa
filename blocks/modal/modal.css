@@ -28,7 +28,7 @@ body.modal-open {
 }
 
 .modal dialog:has(.modal-header) {
-  border-radius: var(--spacing-m);
+  border-radius: var(--spacing-md);
 }
 
 .modal dialog .modal-content {

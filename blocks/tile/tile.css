@@ -6,14 +6,14 @@
 
   /* Tile-specific carousel customizations */
   main .tile .carousel-slides {
-    gap: var(--spacing-m);
+    gap: var(--spacing-md);
     padding: 0 0 4rem;
     margin: 0;
     list-style: none;
   }
 
   main .tile .carousel-slides-container {
-    --carousel-gap: var(--spacing-m);
+    --carousel-gap: var(--spacing-md);
   }
 
   /* Tile item styling */
@@ -33,7 +33,7 @@
   }
 
   main .tile .tile-item-body {
-    padding: var(--spacing-m);
+    padding: var(--spacing-md);
   }
 
   /* Tablet and Desktop: Switch to grid layout */
@@ -45,7 +45,7 @@
     main .tile .carousel-slides {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: var(--spacing-l);
+      gap: var(--spacing-lg);
       padding: 0;
       overflow-x: visible;
       scroll-snap-type: none;
@@ -218,8 +218,6 @@
 
   /* Horizontal: Larger spacing on desktop */
   @media (width >= 900px) {
-
-
     main .tile.horizontal .tile-item-body h2,
     main .tile.horizontal .tile-item-body h3 {
       font-size: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);

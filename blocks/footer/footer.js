@@ -8,7 +8,7 @@ import { loadFragment } from '../fragment/fragment.js';
 export default async function decorate(block) {
   // load footer as fragment
   const footerMeta = getMetadata('footer');
-  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
+  const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/en/navs/footer';
   const fragment = await loadFragment(footerPath);
 
   // decorate sections by their data-id attributes (already processed by section decoration)
