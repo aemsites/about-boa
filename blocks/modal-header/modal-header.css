@@ -60,6 +60,10 @@
   background-color: var(--color-red-regal);
 }
 
+.modal-header .video {
+  margin: 0;
+}
+
 @media (width >= 900px) {
   .modal-header {
     margin-inline: calc(var(--spacing-xl) * -1);

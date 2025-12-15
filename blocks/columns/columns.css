@@ -23,12 +23,30 @@
   @media (width >= 900px) {
     .columns > div {
       flex-direction: unset;
-      gap: var(--spacing-lg);
+      gap: var(--spacing-xxl);
     }
 
     .columns > div > div {
       flex: 1;
       order: unset;
+    }
+
+    /* 75-25 variation */
+    .columns.split-75-25 > div > div:first-child {
+      flex: 3;
+    }
+
+    .columns.split-75-25 > div > div:last-child {
+      flex: 1;
+    }
+
+    /* 25-75 variation */
+    .columns.split-25-75 > div > div:first-child {
+      flex: 1;
+    }
+
+    .columns.split-25-75 > div > div:last-child {
+      flex: 3;
     }
   }
 }

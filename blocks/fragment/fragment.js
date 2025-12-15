@@ -11,6 +11,7 @@ import {
 
 import {
   loadSections,
+  loadBlock,
 } from '../../scripts/aem.js';
 
 /**
@@ -36,6 +37,11 @@ export async function loadFragment(path) {
 
       decorateMain(main);
       await loadSections(main);
+
+      // Load any nested blocks that were inserted by buildNestedSections
+      const nestedBlocks = main.querySelectorAll('.nested-block');
+      await Promise.all([...nestedBlocks].map((block) => loadBlock(block)));
+
       return main;
     }
   }

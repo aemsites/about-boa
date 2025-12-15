@@ -71,6 +71,118 @@ export function buildFragment(link) {
 }
 
 /**
+ * Decorates nested sections by replacing {{#section-id}} placeholders
+ * with the content of sections that have matching IDs in their section-metadata.
+ * Only sections that are actually used as placeholders are removed from the page.
+ * Runs after decorateSections and decorateBlocks so content is already decorated.
+ * @param {Element} main The container element
+ */
+function decorateNestedSections(main) {
+  // Build a map of section IDs to their decorated content and element reference
+  const sectionMap = new Map();
+
+  // Find all decorated sections with an id (set from section-metadata by decorateSections)
+  main.querySelectorAll('.section[data-id]').forEach((section) => {
+    const sectionId = section.dataset.id;
+    if (sectionId) {
+      // Collect all block wrappers from this section (already decorated)
+      const contentWrapper = document.createElement('div');
+      [...section.children].forEach((child) => {
+        contentWrapper.appendChild(child.cloneNode(true));
+      });
+      sectionMap.set(sectionId, { content: contentWrapper, element: section });
+    }
+  });
+
+  // Track which sections were actually used for replacement
+  const usedSectionIds = new Set();
+
+  // Find and replace all {{#section-id}} placeholders
+  const placeholderPattern = /\{\{#([^}]+)\}\}/g;
+
+  // Walk through all text nodes to find placeholders
+  const walker = document.createTreeWalker(
+    main,
+    NodeFilter.SHOW_TEXT,
+    null,
+    false,
+  );
+
+  const nodesToProcess = [];
+  let node = walker.nextNode();
+  while (node) {
+    if (placeholderPattern.test(node.textContent)) {
+      nodesToProcess.push(node);
+    }
+    placeholderPattern.lastIndex = 0; // Reset regex
+    node = walker.nextNode();
+  }
+
+  nodesToProcess.forEach((textNode) => {
+    const text = textNode.textContent;
+    const matches = [...text.matchAll(placeholderPattern)];
+
+    if (matches.length > 0) {
+      const parent = textNode.parentElement;
+
+      matches.forEach((match) => {
+        const [fullMatch, sectionId] = match;
+        const sectionData = sectionMap.get(sectionId);
+
+        if (sectionData) {
+          const clonedContent = sectionData.content.cloneNode(true);
+          const insertedElements = [...clonedContent.children];
+
+          // If the placeholder is the only content in its container, replace the container
+          if (parent && parent.textContent.trim() === fullMatch) {
+            // Insert the section content before the parent element
+            insertedElements.forEach((child) => {
+              parent.before(child);
+            });
+            parent.remove();
+          } else {
+            // Replace just the text placeholder inline
+            const parts = text.split(fullMatch);
+            const fragment = document.createDocumentFragment();
+
+            if (parts[0]) {
+              fragment.appendChild(document.createTextNode(parts[0]));
+            }
+            insertedElements.forEach((child) => {
+              fragment.appendChild(child);
+            });
+            if (parts[1]) {
+              fragment.appendChild(document.createTextNode(parts[1]));
+            }
+
+            textNode.replaceWith(fragment);
+          }
+
+          // Mark this section as used
+          usedSectionIds.add(sectionId);
+
+          // Blocks are already decorated since we run after decorateBlocks
+          insertedElements.forEach((el) => {
+            const block = el.querySelector('.block') || (el.classList.contains('block') ? el : null);
+            if (block) {
+              block.classList.add('nested-block');
+            }
+          });
+        }
+      });
+    }
+  });
+
+  // Remove only the sections that were actually used for nesting
+  usedSectionIds.forEach((sectionId) => {
+    const sectionData = sectionMap.get(sectionId);
+    if (sectionData?.element) {
+      sectionData.element.remove();
+    }
+  });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -164,6 +276,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateNestedSections(main);
   normalizeLists(main);
   decorateLinks(main);
   decorateButtons(main);
