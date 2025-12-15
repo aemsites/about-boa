@@ -451,11 +451,8 @@
     margin-block: 0;
   }
 
-  main > .section.center {
+  main > .section.center > div.default-content-wrapper {
     text-align: center;
-  }
-
-  main > .section.center > div {
     max-width: 80ch;
   }
 
