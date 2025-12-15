@@ -9,7 +9,6 @@ import {
   waitForFirstImage,
   loadSection,
   loadSections,
-  loadBlock,
   loadCSS,
   getMetadata,
   buildBlock,
@@ -72,44 +71,36 @@ export function buildFragment(link) {
 }
 
 /**
- * Builds nested sections by replacing {{#section-id}} placeholders
+ * Decorates nested sections by replacing {{#section-id}} placeholders
  * with the content of sections that have matching IDs in their section-metadata.
- * After nesting, the original sections are removed from the page.
+ * Only sections that are actually used as placeholders are removed from the page.
+ * Runs after decorateSections and decorateBlocks so content is already decorated.
  * @param {Element} main The container element
  */
-function buildNestedSections(main) {
-  // Build a map of section IDs to their content
+function decorateNestedSections(main) {
+  // Build a map of section IDs to their decorated content and element reference
   const sectionMap = new Map();
-  const sectionsToRemove = [];
 
-  // Find all sections with section-metadata containing an id
-  main.querySelectorAll('.section-metadata').forEach((metadata) => {
-    const idRow = [...metadata.querySelectorAll(':scope > div')].find((row) => {
-      const key = row.children[0]?.textContent?.trim().toLowerCase();
-      return key === 'id';
-    });
-
-    if (idRow) {
-      const sectionId = idRow.children[1]?.textContent?.trim();
-      if (sectionId) {
-        const section = metadata.parentElement;
-        // Clone section content excluding the section-metadata itself
-        const contentWrapper = document.createElement('div');
-        [...section.children].forEach((child) => {
-          if (!child.classList.contains('section-metadata')) {
-            contentWrapper.appendChild(child.cloneNode(true));
-          }
-        });
-        sectionMap.set(sectionId, contentWrapper);
-        sectionsToRemove.push(section);
-      }
+  // Find all decorated sections with an id (set from section-metadata by decorateSections)
+  main.querySelectorAll('.section[data-id]').forEach((section) => {
+    const sectionId = section.dataset.id;
+    if (sectionId) {
+      // Collect all block wrappers from this section (already decorated)
+      const contentWrapper = document.createElement('div');
+      [...section.children].forEach((child) => {
+        contentWrapper.appendChild(child.cloneNode(true));
+      });
+      sectionMap.set(sectionId, { content: contentWrapper, element: section });
     }
   });
+
+  // Track which sections were actually used for replacement
+  const usedSectionIds = new Set();
 
   // Find and replace all {{#section-id}} placeholders
   const placeholderPattern = /\{\{#([^}]+)\}\}/g;
 
-  // Walk through all text nodes and elements that might contain placeholders
+  // Walk through all text nodes to find placeholders
   const walker = document.createTreeWalker(
     main,
     NodeFilter.SHOW_TEXT,
@@ -136,10 +127,10 @@ function buildNestedSections(main) {
 
       matches.forEach((match) => {
         const [fullMatch, sectionId] = match;
-        const sectionContent = sectionMap.get(sectionId);
+        const sectionData = sectionMap.get(sectionId);
 
-        if (sectionContent) {
-          const clonedContent = sectionContent.cloneNode(true);
+        if (sectionData) {
+          const clonedContent = sectionData.content.cloneNode(true);
           const insertedElements = [...clonedContent.children];
 
           // If the placeholder is the only content in its container, replace the container
@@ -167,29 +158,27 @@ function buildNestedSections(main) {
             textNode.replaceWith(fragment);
           }
 
-          // Decorate and mark nested blocks for deferred loading
-          // These won't be found by standard decorateBlocks since they're nested deeper
+          // Mark this section as used
+          usedSectionIds.add(sectionId);
+
+          // Blocks are already decorated since we run after decorateBlocks
           insertedElements.forEach((el) => {
-            if (el.classList && el.classList.length > 0) {
-              decorateBlock(el);
-              el.classList.add('nested-block');
+            const block = el.querySelector('.block') || (el.classList.contains('block') ? el : null);
+            if (block) {
+              block.classList.add('nested-block');
             }
-            // Also check for nested blocks within
-            el.querySelectorAll?.('div[class]').forEach((nestedBlock) => {
-              if (nestedBlock.classList.length > 0 && !nestedBlock.dataset.blockStatus) {
-                decorateBlock(nestedBlock);
-                nestedBlock.classList.add('nested-block');
-              }
-            });
           });
         }
       });
     }
   });
 
-  // Remove the original sections that were used for nesting
-  sectionsToRemove.forEach((section) => {
-    section.remove();
+  // Remove only the sections that were actually used for nesting
+  usedSectionIds.forEach((sectionId) => {
+    const sectionData = sectionMap.get(sectionId);
+    if (sectionData?.element) {
+      sectionData.element.remove();
+    }
   });
 }
 
@@ -199,9 +188,6 @@ function buildNestedSections(main) {
  */
 function buildAutoBlocks(main) {
   try {
-    // Process nested sections first
-    buildNestedSections(main);
-
     const fragments = main.querySelectorAll('a[href*="/fragments/"]');
     if (fragments.length > 0) {
       fragments.forEach((fragment) => {
@@ -290,6 +276,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateNestedSections(main);
   normalizeLists(main);
   decorateLinks(main);
   decorateButtons(main);
@@ -368,11 +355,6 @@ async function loadLazy(doc) {
   }
 
   await loadSections(main);
-
-  // Load any nested blocks that were inserted by buildNestedSections
-  const nestedBlocks = main.querySelectorAll('.nested-block');
-  await Promise.all([...nestedBlocks].map((block) => loadBlock(block)));
-
   await templateModule.loadLazy(main);
 
   const { hash } = window.location;

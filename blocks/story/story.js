@@ -15,7 +15,7 @@ export default function decorate(block) {
   rows.forEach((row) => {
     const cells = [...row.children];
     cells.forEach((cell) => {
-      if (!cell.querySelector('picture')) {
+      if (cell.innerText.trim().length > 0) {
         contentCells.push(cell);
       }
     });
