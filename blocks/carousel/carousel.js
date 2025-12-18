@@ -94,7 +94,7 @@ function repositionIfNeeded(block) {
   return false;
 }
 
-function showSlide(block, logicalIndex = 0, immediate = false) {
+export function showSlide(block, logicalIndex = 0, immediate = false) {
   // Prevent navigation if already scrolling
   if (block.dataset.isScrolling === 'true' && !immediate) {
     return;
