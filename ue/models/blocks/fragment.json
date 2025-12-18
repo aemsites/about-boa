@@ -1,0 +1,35 @@
+{
+  "definitions": [
+    {
+      "title": "Fragment",
+      "id": "fragment",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"fragment\"><div><div><p><a href=\"\">Fragment URL</a></p></div></div></div>"
+        }
+      },
+      "model": "fragment"
+    }
+  ],
+  "models": [
+    {
+      "id": "fragment",
+      "fields": [
+        {
+          "component": "aem-content",
+          "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+          "label": "Fragment Path",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)",
+          "label": "Fragment URL Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

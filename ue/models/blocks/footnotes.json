@@ -1,0 +1,51 @@
+{
+  "definitions": [
+    {
+      "title": "Footnotes",
+      "id": "footnotes",
+      "plugins": {
+        "da": {
+          "name": "footnotes",
+          "rows": 1,
+          "columns": 1
+        }
+      },
+      "filter": "footnotes"
+    },
+    {
+      "title": "Footnote",
+      "id": "footnote-item",
+      "plugins": {
+        "da": {
+          "name": "footnote-item",
+          "rows": 1,
+          "columns": 1
+        }
+      },
+      "model": "footnote-item"
+    }
+  ],
+  "models": [
+    {
+      "id": "footnote-item",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)",
+          "label": "Footnote Content",
+          "valueType": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "footnotes",
+      "components": [
+        "footnote-item"
+      ]
+    }
+  ]
+}
+

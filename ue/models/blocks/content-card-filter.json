@@ -1,0 +1,30 @@
+{
+  "definitions": [
+    {
+      "title": "Content Card Filter",
+      "id": "content-card-filter",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"content-card-filter\"><div><div><p><a href=\"\">Form URL</a></p></div></div></div>"
+        }
+      },
+      "model": "content-card-filter"
+    }
+  ],
+  "models": [
+    {
+      "id": "content-card-filter",
+      "fields": [
+        {
+          "component": "aem-content",
+          "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+          "label": "Form Path",
+          "description": "Path to form JSON for filter configuration",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

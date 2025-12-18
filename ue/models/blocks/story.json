@@ -1,0 +1,88 @@
+{
+  "definitions": [
+    {
+      "title": "Story",
+      "id": "story",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"story\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+        }
+      },
+      "model": "story"
+    }
+  ],
+  "models": [
+    {
+      "id": "story",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "label": "Image Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)>div:nth-child(2)",
+          "label": "Content",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Background",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Blue",
+              "value": "bg-blue"
+            },
+            {
+              "name": "Red",
+              "value": "bg-red"
+            },
+            {
+              "name": "White",
+              "value": "bg-white"
+            },
+            {
+              "name": "Gray",
+              "value": "bg-gray"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "classes_alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Left",
+              "value": "align-left"
+            },
+            {
+              "name": "Right",
+              "value": "align-right"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

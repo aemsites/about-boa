@@ -1,0 +1,32 @@
+{
+  "definitions": [
+    {
+      "title": "Scroll To Nav",
+      "id": "scroll-to-nav",
+      "plugins": {
+        "da": {
+          "name": "scroll-to-nav",
+          "rows": 1,
+          "columns": 1
+        }
+      },
+      "model": "scroll-to-nav"
+    }
+  ],
+  "models": [
+    {
+      "id": "scroll-to-nav",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)>div:nth-child(1)",
+          "label": "Navigation Links",
+          "description": "Bulleted list of anchor links",
+          "valueType": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

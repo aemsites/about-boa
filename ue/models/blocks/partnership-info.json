@@ -1,0 +1,40 @@
+{
+  "definitions": [
+    {
+      "title": "Partnership Info",
+      "id": "partnership-info",
+      "plugins": {
+        "da": {
+          "name": "partnership-info",
+          "rows": 1,
+          "columns": 2
+        }
+      },
+      "model": "partnership-info"
+    }
+  ],
+  "models": [
+    {
+      "id": "partnership-info",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)>div:nth-child(1)",
+          "label": "Statistic",
+          "description": "Large statistic or number",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)>div:nth-child(2)",
+          "label": "Description",
+          "valueType": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

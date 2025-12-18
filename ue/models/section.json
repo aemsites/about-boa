@@ -1,0 +1,107 @@
+{
+  "definitions": [
+    {
+      "title": "Section",
+      "id": "section",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div></div>"
+        }
+      },
+      "filter": "section",
+      "model": "section"
+    }
+  ],
+  "models": [
+    {
+      "id": "section",
+      "fields": [
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Background",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Gray",
+              "value": "bg-gray"
+            },
+            {
+              "name": "Blue",
+              "value": "bg-blue"
+            },
+            {
+              "name": "Red",
+              "value": "bg-red"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "classes_margin",
+          "label": "Margin",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Small",
+              "value": "margin-small"
+            },
+            {
+              "name": "Extra Small",
+              "value": "margin-xsmall"
+            },
+            {
+              "name": "None",
+              "value": "margin-none"
+            }
+          ]
+        },
+        {
+          "component": "boolean",
+          "name": "classes_center",
+          "label": "Center Content",
+          "valueType": "boolean"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "section",
+      "components": [
+        "accordion",
+        "arts-masthead",
+        "cards",
+        "carousel",
+        "columns",
+        "content-card",
+        "content-card-filter",
+        "footnotes",
+        "form",
+        "fragment",
+        "highlight",
+        "icon-list",
+        "image",
+        "locator",
+        "nested-accordion",
+        "notched-image",
+        "partnership-info",
+        "quote",
+        "scroll-to-nav",
+        "search-results",
+        "social-share",
+        "story",
+        "table",
+        "text",
+        "tile",
+        "video"
+      ]
+    }
+  ]
+}

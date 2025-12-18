@@ -1,0 +1,40 @@
+{
+  "definitions": [
+    {
+      "title": "Table",
+      "id": "table",
+      "plugins": {
+        "da": {
+          "name": "table",
+          "rows": 2,
+          "columns": 2
+        }
+      },
+      "model": "table"
+    }
+  ],
+  "models": [
+    {
+      "id": "table",
+      "fields": [
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Style",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "No Header",
+              "value": "no-header"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

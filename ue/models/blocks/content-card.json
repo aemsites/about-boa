@@ -1,0 +1,101 @@
+{
+  "definitions": [
+    {
+      "title": "Content Card",
+      "id": "content-card",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"content-card\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+        }
+      },
+      "model": "content-card",
+      "filter": "content-card"
+    },
+    {
+      "title": "Content Card Item",
+      "id": "content-card-item",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div><div></div></div>"
+        }
+      },
+      "model": "content-card-item"
+    }
+  ],
+  "models": [
+    {
+      "id": "content-card",
+      "fields": [
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Style",
+          "options": [
+            {
+              "name": "Dark (Default)",
+              "value": ""
+            },
+            {
+              "name": "Light",
+              "value": "light"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "classes_layout",
+          "label": "Layout",
+          "options": [
+            {
+              "name": "Grid (Default)",
+              "value": ""
+            },
+            {
+              "name": "Carousel",
+              "value": "carousel"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "content-card-item",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "label": "Image Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(2)",
+          "label": "Content",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "name": "div:nth-child(3)",
+          "label": "Category",
+          "description": "Optional category for filtering",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "content-card",
+      "components": [
+        "content-card-item"
+      ]
+    }
+  ]
+}

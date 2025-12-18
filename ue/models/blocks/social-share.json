@@ -1,0 +1,32 @@
+{
+  "definitions": [
+    {
+      "title": "Social Share",
+      "id": "social-share",
+      "plugins": {
+        "da": {
+          "name": "social-share",
+          "rows": 1,
+          "columns": 1
+        }
+      },
+      "model": "social-share"
+    }
+  ],
+  "models": [
+    {
+      "id": "social-share",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)>div:nth-child(1)",
+          "label": "Social Icons",
+          "description": "Bulleted list of social media icons (e.g., :facebook:, :twitter:, :linkedin:, :mail:)",
+          "valueType": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

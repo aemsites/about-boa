@@ -1,0 +1,415 @@
+{
+  "groups": [
+    {
+      "title": "Default Content",
+      "id": "default",
+      "components": [
+        {
+          "title": "Text",
+          "id": "text",
+          "plugins": {
+            "da": {
+              "name": "text",
+              "type": "text"
+            }
+          }
+        },
+        {
+          "title": "Image",
+          "id": "image",
+          "plugins": {
+            "da": {
+              "name": "image",
+              "type": "image"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Sections",
+      "id": "sections",
+      "components": [
+        {
+          "title": "Section",
+          "id": "section",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div></div>"
+            }
+          },
+          "filter": "section",
+          "model": "section"
+        }
+      ]
+    },
+    {
+      "title": "Blocks",
+      "id": "blocks",
+      "components": [
+        {
+          "title": "Accordion",
+          "id": "accordion",
+          "plugins": {
+            "da": {
+              "name": "accordion",
+              "rows": 1,
+              "columns": 2
+            }
+          },
+          "filter": "accordion"
+        },
+        {
+          "title": "Accordion Item",
+          "id": "accordion-item",
+          "plugins": {
+            "da": {
+              "name": "accordion-item",
+              "rows": 2,
+              "columns": 0
+            }
+          }
+        },
+        {
+          "title": "Arts Masthead",
+          "id": "arts-masthead",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"arts-masthead\"><div><div></div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div></div></div>"
+            }
+          },
+          "model": "arts-masthead"
+        },
+        {
+          "title": "Cards",
+          "id": "cards",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"cards\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "model": "cards",
+          "filter": "cards"
+        },
+        {
+          "title": "Card",
+          "id": "card",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+            }
+          },
+          "model": "card"
+        },
+        {
+          "title": "Carousel",
+          "id": "carousel",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"carousel\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "filter": "carousel"
+        },
+        {
+          "title": "Carousel Slide",
+          "id": "carousel-item",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+            }
+          },
+          "model": "carousel-item"
+        },
+        {
+          "title": "Columns",
+          "id": "columns",
+          "plugins": {
+            "da": {
+              "name": "columns",
+              "rows": 1,
+              "columns": 2,
+              "behaviour": "columns"
+            }
+          },
+          "model": "columns",
+          "filter": "columns"
+        },
+        {
+          "title": "Columns Row",
+          "id": "columns-row",
+          "plugins": {
+            "da": {
+              "name": "columns-row",
+              "behaviour": "columns-row"
+            }
+          }
+        },
+        {
+          "title": "Columns Cell",
+          "id": "columns-cell",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div></div>",
+              "behaviour": "columns-cell"
+            }
+          },
+          "filter": "columns-cell"
+        },
+        {
+          "title": "Content Card Filter",
+          "id": "content-card-filter",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"content-card-filter\"><div><div><p><a href=\"\">Form URL</a></p></div></div></div>"
+            }
+          },
+          "model": "content-card-filter"
+        },
+        {
+          "title": "Content Card",
+          "id": "content-card",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"content-card\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "model": "content-card",
+          "filter": "content-card"
+        },
+        {
+          "title": "Content Card Item",
+          "id": "content-card-item",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div><div></div></div>"
+            }
+          },
+          "model": "content-card-item"
+        },
+        {
+          "title": "Footnotes",
+          "id": "footnotes",
+          "plugins": {
+            "da": {
+              "name": "footnotes",
+              "rows": 1,
+              "columns": 1
+            }
+          },
+          "filter": "footnotes"
+        },
+        {
+          "title": "Footnote",
+          "id": "footnote-item",
+          "plugins": {
+            "da": {
+              "name": "footnote-item",
+              "rows": 1,
+              "columns": 1
+            }
+          },
+          "model": "footnote-item"
+        },
+        {
+          "title": "Form",
+          "id": "form",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"form\"><div><div><p><a href=\"\">Form URL</a></p></div></div></div>"
+            }
+          },
+          "model": "form"
+        },
+        {
+          "title": "Fragment",
+          "id": "fragment",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"fragment\"><div><div><p><a href=\"\">Fragment URL</a></p></div></div></div>"
+            }
+          },
+          "model": "fragment"
+        },
+        {
+          "title": "Highlight",
+          "id": "highlight",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"highlight\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "model": "highlight"
+        },
+        {
+          "title": "Icon List",
+          "id": "icon-list",
+          "plugins": {
+            "da": {
+              "name": "icon-list",
+              "rows": 1,
+              "columns": 2
+            }
+          },
+          "filter": "icon-list"
+        },
+        {
+          "title": "Icon List Item",
+          "id": "icon-list-item",
+          "plugins": {
+            "da": {
+              "name": "icon-list-item",
+              "rows": 1,
+              "columns": 2
+            }
+          },
+          "model": "icon-list-item"
+        },
+        {
+          "title": "Locator",
+          "id": "locator",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"locator\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "model": "locator"
+        },
+        {
+          "title": "Nested Accordion",
+          "id": "nested-accordion",
+          "plugins": {
+            "da": {
+              "name": "nested-accordion",
+              "rows": 1,
+              "columns": 2
+            }
+          },
+          "model": "nested-accordion"
+        },
+        {
+          "title": "Notched Image",
+          "id": "notched-image",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"notched-image\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "model": "notched-image"
+        },
+        {
+          "title": "Partnership Info",
+          "id": "partnership-info",
+          "plugins": {
+            "da": {
+              "name": "partnership-info",
+              "rows": 1,
+              "columns": 2
+            }
+          },
+          "model": "partnership-info"
+        },
+        {
+          "title": "Quote",
+          "id": "quote",
+          "plugins": {
+            "da": {
+              "name": "quote",
+              "rows": 2,
+              "columns": 1
+            }
+          },
+          "model": "quote"
+        },
+        {
+          "title": "Scroll To Nav",
+          "id": "scroll-to-nav",
+          "plugins": {
+            "da": {
+              "name": "scroll-to-nav",
+              "rows": 1,
+              "columns": 1
+            }
+          },
+          "model": "scroll-to-nav"
+        },
+        {
+          "title": "Search Results",
+          "id": "search-results",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"search-results\"><div><div><p><a href=\"\">No Results Fragment</a></p></div></div></div>"
+            }
+          },
+          "model": "search-results"
+        },
+        {
+          "title": "Social Share",
+          "id": "social-share",
+          "plugins": {
+            "da": {
+              "name": "social-share",
+              "rows": 1,
+              "columns": 1
+            }
+          },
+          "model": "social-share"
+        },
+        {
+          "title": "Story",
+          "id": "story",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"story\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "model": "story"
+        },
+        {
+          "title": "Table",
+          "id": "table",
+          "plugins": {
+            "da": {
+              "name": "table",
+              "rows": 2,
+              "columns": 2
+            }
+          },
+          "model": "table"
+        },
+        {
+          "title": "Tile",
+          "id": "tile",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"tile\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "filter": "tile"
+        },
+        {
+          "title": "Tile Item",
+          "id": "tile-item",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+            }
+          },
+          "model": "tile-item"
+        },
+        {
+          "title": "Video",
+          "id": "video",
+          "plugins": {
+            "da": {
+              "name": "video",
+              "rows": 2,
+              "columns": 1
+            }
+          },
+          "model": "video"
+        }
+      ]
+    }
+  ]
+}

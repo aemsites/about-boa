@@ -1,0 +1,98 @@
+[
+  {
+    "id": "main",
+    "components": [
+      "section"
+    ]
+  },
+  {
+    "id": "section",
+    "components": [
+      "accordion",
+      "arts-masthead",
+      "cards",
+      "carousel",
+      "columns",
+      "content-card",
+      "content-card-filter",
+      "footnotes",
+      "form",
+      "fragment",
+      "highlight",
+      "icon-list",
+      "image",
+      "locator",
+      "nested-accordion",
+      "notched-image",
+      "partnership-info",
+      "quote",
+      "scroll-to-nav",
+      "search-results",
+      "social-share",
+      "story",
+      "table",
+      "text",
+      "tile",
+      "video"
+    ]
+  },
+  {
+    "id": "accordion",
+    "components": [
+      "accordion-item"
+    ]
+  },
+  {
+    "id": "cards",
+    "components": [
+      "card"
+    ]
+  },
+  {
+    "id": "carousel",
+    "components": [
+      "carousel-item"
+    ]
+  },
+  {
+    "id": "columns",
+    "components": [
+      "columns-row"
+    ]
+  },
+  {
+    "id": "columns-row",
+    "components": []
+  },
+  {
+    "id": "columns-cell",
+    "components": [
+      "text",
+      "image"
+    ]
+  },
+  {
+    "id": "content-card",
+    "components": [
+      "content-card-item"
+    ]
+  },
+  {
+    "id": "footnotes",
+    "components": [
+      "footnote-item"
+    ]
+  },
+  {
+    "id": "icon-list",
+    "components": [
+      "icon-list-item"
+    ]
+  },
+  {
+    "id": "tile",
+    "components": [
+      "tile-item"
+    ]
+  }
+]

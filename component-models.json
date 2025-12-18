@@ -1,0 +1,685 @@
+[
+  {
+    "id": "page-metadata",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "text",
+        "name": "description",
+        "label": "Description"
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image"
+      },
+      {
+        "component": "text",
+        "name": "robots",
+        "label": "Robots",
+        "description": "Index control via robots"
+      }
+    ]
+  },
+  {
+    "id": "image",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "hidden": true,
+        "multi": false
+      },
+      {
+        "component": "reference",
+        "name": "img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "name": "img:nth-child(3)[alt]",
+        "label": "Alt Text"
+      }
+    ]
+  },
+  {
+    "id": "section",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Background",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Gray",
+            "value": "bg-gray"
+          },
+          {
+            "name": "Blue",
+            "value": "bg-blue"
+          },
+          {
+            "name": "Red",
+            "value": "bg-red"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "classes_margin",
+        "label": "Margin",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Small",
+            "value": "margin-small"
+          },
+          {
+            "name": "Extra Small",
+            "value": "margin-xsmall"
+          },
+          {
+            "name": "None",
+            "value": "margin-none"
+          }
+        ]
+      },
+      {
+        "component": "boolean",
+        "name": "classes_center",
+        "label": "Center Content",
+        "valueType": "boolean"
+      }
+    ]
+  },
+  {
+    "id": "accordion-item",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "div:nth-child(1)",
+        "value": "",
+        "label": "Summary",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "value": "",
+        "label": "Content",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "arts-masthead",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(1)",
+        "label": "Content",
+        "description": "Title, description, and links",
+        "valueType": "string"
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(2)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(2)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      }
+    ]
+  },
+  {
+    "id": "card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "value": "",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "carousel-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "columns",
+    "fields": [
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "columns",
+        "label": "Number of Columns",
+        "value": 2,
+        "validation": {
+          "numberMin": 1,
+          "numberMax": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "content-card-filter",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+        "label": "Form Path",
+        "description": "Path to form JSON for filter configuration",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "content-card",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Dark (Default)",
+            "value": ""
+          },
+          {
+            "name": "Light",
+            "value": "light"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "classes_layout",
+        "label": "Layout",
+        "options": [
+          {
+            "name": "Grid (Default)",
+            "value": ""
+          },
+          {
+            "name": "Carousel",
+            "value": "carousel"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "content-card-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(3)",
+        "label": "Category",
+        "description": "Optional category for filtering",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "footnote-item",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)",
+        "label": "Footnote Content",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "form",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+        "label": "Form Path",
+        "description": "Path to form JSON definition",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "fragment",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+        "label": "Fragment Path",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)",
+        "label": "Fragment URL Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "highlight",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Background Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "icon-list-item",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "div:nth-child(1)",
+        "label": "Visual (Icon or Image)",
+        "description": "Add an icon or image"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "locator",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "nested-accordion",
+    "fields": [
+      {
+        "component": "select",
+        "name": "div:nth-child(1)>div:nth-child(2)",
+        "label": "Heading Level",
+        "description": "Heading tag to use for accordion items",
+        "options": [
+          {
+            "name": "H2",
+            "value": "h2"
+          },
+          {
+            "name": "H3",
+            "value": "h3"
+          },
+          {
+            "name": "H4",
+            "value": "h4"
+          },
+          {
+            "name": "H5",
+            "value": "h5"
+          },
+          {
+            "name": "H6",
+            "value": "h6"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "notched-image",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Masthead",
+            "value": "masthead"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "partnership-info",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(1)",
+        "label": "Statistic",
+        "description": "Large statistic or number",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(2)",
+        "label": "Description",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "quote",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)",
+        "label": "Quote",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(2)>div:nth-child(1)",
+        "label": "Attribution",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "scroll-to-nav",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(1)",
+        "label": "Navigation Links",
+        "description": "Bulleted list of anchor links",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "search-results",
+    "fields": [
+      {
+        "component": "aem-content",
+        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+        "label": "No Results Fragment",
+        "description": "Optional path to fragment shown when no results found"
+      }
+    ]
+  },
+  {
+    "id": "social-share",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(1)",
+        "label": "Social Icons",
+        "description": "Bulleted list of social media icons (e.g., :facebook:, :twitter:, :linkedin:, :mail:)",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "story",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(1)>div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      },
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Background",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Blue",
+            "value": "bg-blue"
+          },
+          {
+            "name": "Red",
+            "value": "bg-red"
+          },
+          {
+            "name": "White",
+            "value": "bg-white"
+          },
+          {
+            "name": "Gray",
+            "value": "bg-gray"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "classes_alignment",
+        "label": "Alignment",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Left",
+            "value": "align-left"
+          },
+          {
+            "name": "Right",
+            "value": "align-right"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "No Header",
+            "value": "no-header"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tile-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "video",
+    "fields": [
+      {
+        "component": "text",
+        "name": "div:nth-child(1)>div:nth-child(1)",
+        "label": "Kaltura Entry ID",
+        "description": "The Kaltura video entry ID (e.g., 1_abc123)",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)>div:nth-child(1)",
+        "label": "Transcript",
+        "description": "Optional video transcript",
+        "valueType": "string"
+      }
+    ]
+  }
+]

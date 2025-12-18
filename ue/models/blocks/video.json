@@ -1,0 +1,40 @@
+{
+  "definitions": [
+    {
+      "title": "Video",
+      "id": "video",
+      "plugins": {
+        "da": {
+          "name": "video",
+          "rows": 2,
+          "columns": 1
+        }
+      },
+      "model": "video"
+    }
+  ],
+  "models": [
+    {
+      "id": "video",
+      "fields": [
+        {
+          "component": "text",
+          "name": "div:nth-child(1)>div:nth-child(1)",
+          "label": "Kaltura Entry ID",
+          "description": "The Kaltura video entry ID (e.g., 1_abc123)",
+          "valueType": "string",
+          "required": true
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(2)>div:nth-child(1)",
+          "label": "Transcript",
+          "description": "Optional video transcript",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

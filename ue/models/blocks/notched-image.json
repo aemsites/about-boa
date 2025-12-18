@@ -1,0 +1,57 @@
+{
+  "definitions": [
+    {
+      "title": "Notched Image",
+      "id": "notched-image",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"notched-image\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+        }
+      },
+      "model": "notched-image"
+    }
+  ],
+  "models": [
+    {
+      "id": "notched-image",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "label": "Image Alt"
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)>div:nth-child(2)",
+          "label": "Content",
+          "valueType": "string"
+        },
+        {
+          "component": "select",
+          "name": "classes",
+          "label": "Style",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Masthead",
+              "value": "masthead"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

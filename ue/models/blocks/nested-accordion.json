@@ -1,0 +1,53 @@
+{
+  "definitions": [
+    {
+      "title": "Nested Accordion",
+      "id": "nested-accordion",
+      "plugins": {
+        "da": {
+          "name": "nested-accordion",
+          "rows": 1,
+          "columns": 2
+        }
+      },
+      "model": "nested-accordion"
+    }
+  ],
+  "models": [
+    {
+      "id": "nested-accordion",
+      "fields": [
+        {
+          "component": "select",
+          "name": "div:nth-child(1)>div:nth-child(2)",
+          "label": "Heading Level",
+          "description": "Heading tag to use for accordion items",
+          "options": [
+            {
+              "name": "H2",
+              "value": "h2"
+            },
+            {
+              "name": "H3",
+              "value": "h3"
+            },
+            {
+              "name": "H4",
+              "value": "h4"
+            },
+            {
+              "name": "H5",
+              "value": "h5"
+            },
+            {
+              "name": "H6",
+              "value": "h6"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

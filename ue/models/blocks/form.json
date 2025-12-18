@@ -1,0 +1,30 @@
+{
+  "definitions": [
+    {
+      "title": "Form",
+      "id": "form",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"form\"><div><div><p><a href=\"\">Form URL</a></p></div></div></div>"
+        }
+      },
+      "model": "form"
+    }
+  ],
+  "models": [
+    {
+      "id": "form",
+      "fields": [
+        {
+          "component": "aem-content",
+          "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+          "label": "Form Path",
+          "description": "Path to form JSON definition",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

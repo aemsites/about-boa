@@ -1,0 +1,43 @@
+{
+  "definitions": [
+    {
+      "title": "Arts Masthead",
+      "id": "arts-masthead",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"arts-masthead\"><div><div></div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div></div></div>"
+        }
+      },
+      "model": "arts-masthead"
+    }
+  ],
+  "models": [
+    {
+      "id": "arts-masthead",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "div:nth-child(1)>div:nth-child(1)",
+          "label": "Content",
+          "description": "Title, description, and links",
+          "valueType": "string"
+        },
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "div:nth-child(1)>div:nth-child(2)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "div:nth-child(1)>div:nth-child(2)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "label": "Image Alt"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+

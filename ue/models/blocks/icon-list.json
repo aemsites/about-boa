@@ -1,0 +1,56 @@
+{
+  "definitions": [
+    {
+      "title": "Icon List",
+      "id": "icon-list",
+      "plugins": {
+        "da": {
+          "name": "icon-list",
+          "rows": 1,
+          "columns": 2
+        }
+      },
+      "filter": "icon-list"
+    },
+    {
+      "title": "Icon List Item",
+      "id": "icon-list-item",
+      "plugins": {
+        "da": {
+          "name": "icon-list-item",
+          "rows": 1,
+          "columns": 2
+        }
+      },
+      "model": "icon-list-item"
+    }
+  ],
+  "models": [
+    {
+      "id": "icon-list-item",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "div:nth-child(1)",
+          "label": "Visual (Icon or Image)",
+          "description": "Add an icon or image"
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(2)",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "icon-list",
+      "components": [
+        "icon-list-item"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "definitions": [
+    {
+      "title": "Search Results",
+      "id": "search-results",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"search-results\"><div><div><p><a href=\"\">No Results Fragment</a></p></div></div></div>"
+        }
+      },
+      "model": "search-results"
+    }
+  ],
+  "models": [
+    {
+      "id": "search-results",
+      "fields": [
+        {
+          "component": "aem-content",
+          "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+          "label": "No Results Fragment",
+          "description": "Optional path to fragment shown when no results found"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}
+
